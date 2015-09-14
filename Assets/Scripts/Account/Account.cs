@@ -22,8 +22,22 @@ public class Account : MonoBehaviour
 
     public Inventory _inventory { get; private set; }
     public AccountStats _stats { get; private set; }
+    
+    private static Account _instance;
 
-    public Account(long _playerId) 
+    #endregion 
+
+    public static Account Instance()
+    {
+        if (_instance == null)
+        {
+            _instance = new Account();
+        }
+
+        return _instance;
+    }
+    
+    public void LoadAccount(long _playerId)
     {
         if (_playerId != null)
         {
@@ -31,22 +45,27 @@ public class Account : MonoBehaviour
             LoadPlayer();
         }
         else
-        { 
+        {
             // CREATE NEW ACCOUNT
             NewPlayer();
         }
-        _inventory = new Inventory();
+        _inventory = new Inventory(_playerId);
         _stats = new AccountStats();
     }
 
-    #endregion 
+    void Awake()
+    {
+        _instance = this;
+    }
 
     private void LoadPlayer()
     { 
     
     }
+
     private void NewPlayer()
     {
+
     }
 
     public void ChangeName(string name)

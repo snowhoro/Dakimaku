@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class AccountStats : MonoBehaviour
+public class AccountStats
 {
     #region Attributes
 
