@@ -50,4 +50,9 @@ public class Character : BaseCharacter
         if (_physicalSpecDefense > _maxPhysicalSpecDefense)
             _physicalSpecDefense = _maxMagicSpecDefense;
     }
+
+    public override void LoadCharacter()
+    {
+        
+    }
 }

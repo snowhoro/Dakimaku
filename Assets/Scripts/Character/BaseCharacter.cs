@@ -48,4 +48,7 @@ public class BaseCharacter : MonoBehaviour
         _physicalBaseDefense += defenseAmount;
     }
 
+    public virtual void LoadCharacter()
+    { }
+
 }

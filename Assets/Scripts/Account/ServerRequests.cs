@@ -5,15 +5,29 @@ using MiniJSON;
 
 public class ServerRequests : MonoBehaviour
 {
+    private static ServerRequests _instance;
 
     public static string host = "https://localhost:3030";
 
     public delegate void CallBack(Dictionary<string, System.Object> d);	//declaro el callback :)
 
+    void Awake()
+    {
+        _instance = this;
+    }
+
     void Start()
     {
-        //CallService ("FindUserByEmail", "lukas@martin.com", callback);	// llamo a un servicio random... XD
-        //LogIn ("lukas@martin.com", "martin", callback);	// llamo al Login :P
+
+    }
+
+    public static ServerRequests GetInstace() 
+    {
+        if (_instance == null)
+        {
+            _instance = new ServerRequests();
+        }
+        return _instance;
     }
 
     IEnumerator WaitForRequest(WWW www, CallBack callBack)
