@@ -7,7 +7,8 @@ public class ServerRequests : MonoBehaviour
 {
     private static ServerRequests _instance;
 
-    public static string host = "https://localhost:3030";
+    //public static string host = "https://localhost:3030";
+    public static string host = "http://dakimakuws-igna92ts.c9.io/";
 
     public delegate void CallBack(Dictionary<string, System.Object> d);	//declaro el callback :)
 
@@ -36,11 +37,17 @@ public class ServerRequests : MonoBehaviour
 
         if (www.error == null)
         {
+            Debug.Log(www.text);
             Dictionary<string, System.Object> result = Json.Deserialize(www.text) as Dictionary<string, System.Object>;
             callBack(result);
         }
-        else Debug.Log(www.error);
-    }
+        else
+        {
+            Debug.Log(www.error);
+            Debug.Log("WHAT");
+        }
+            
+     }
 
     public void CallService(string serviceName, string dataToSend, CallBack cb)
     {
@@ -49,13 +56,34 @@ public class ServerRequests : MonoBehaviour
         StartCoroutine(WaitForRequest(www, cb));
     }
 
-    public void RequestInventory(long accountID, CallBack callBack)
+    public void SignUp(string name, CallBack callBack)
+    {
+        string url = host + "signup";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerName", name);
+        WWW www = new WWW(url, form);
+
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+    
+    public void RequestInventory(string accountID, CallBack callBack)
     {
         string url = host + "getInventory";
         WWWForm form = new WWWForm();
-        form.AddField("AccountID", accountID.ToString());
+        form.AddField("PlayerId", accountID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
+
+    public void CreateInventory(string accountID, CallBack callback)
+    {
+        string url = host + "createInventory";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callback));
+    }
+
+
 
 }

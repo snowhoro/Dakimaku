@@ -5,10 +5,19 @@ public class Game : MonoBehaviour {
 
     public static Game _game;
     private long _playerId;
+
+    public Account _account;
     
     // Use this for initialization
 	void Start () {
-        Account.Instance().LoadAccount(12345);
+
+        string id = "";
+
+        if (PlayerPrefs.HasKey("accountID"))
+            id = PlayerPrefs.GetString("accountID");
+
+        Debug.Log(id);
+        Account.Instance().LoadAccount(id == "" ? null : id);
 	}
 
     void Awake()

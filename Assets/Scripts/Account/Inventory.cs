@@ -12,19 +12,10 @@ public class Inventory : MonoBehaviour
 
     private const int _maxColumns = 6;
 
-    public void callback(Dictionary<string, System.Object> data)
+    public void LoadInventory(string id)
     {
-        if (data.ContainsKey("error"))
-            Debug.Log(data["error"]);
-        else
-        {
-            LoadInventory(data);
-        }
-    }
-
-    public Inventory(long id)
-    {
-        ServerRequests.GetInstace().RequestInventory(id, callback);
+        ServerRequests.GetInstace().CreateInventory(id, FillInventory);
+        //ServerRequests.GetInstace().RequestInventory(id, FillInventory);
     }
 
     public void AddMaxSlots(int slotsAmount)
@@ -32,17 +23,14 @@ public class Inventory : MonoBehaviour
         _maxSlots += slotsAmount;
     }
 
-    private void LoadInventory(Dictionary<string, System.Object> data)
+    public void FillInventory(Dictionary<string, System.Object> data)
     {
-        /*for (int i = 0; i < data.Count; i++)
+        if (data.ContainsKey("error"))
+            Debug.Log(data["error"]);
+        else
         {
-            GameObject itemGO = Instantiate(_itemPrefab) as GameObject;
-            Item itemClass = itemGO.GetComponent<Item>();
-            //do additional initialization steps here
-            itemClass._character.Load   
-        }*/
-        Debug.Log(data);
+            Debug.Log(data);
+        }
     }
-  
 
 }

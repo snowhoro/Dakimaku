@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Account : MonoBehaviour
 {
@@ -20,8 +21,8 @@ public class Account : MonoBehaviour
     public int _hardCurrency { get; private set; }
     public int _softCurrency { get; private set; }
 
-    public Inventory _inventory { get; private set; }
-    public AccountStats _stats { get; private set; }
+    public Inventory _inventory;
+    public AccountStats _stats; 
     
     private static Account _instance;
 
@@ -29,28 +30,26 @@ public class Account : MonoBehaviour
 
     public static Account Instance()
     {
-        if (_instance == null)
+       /* if (_instance == null)
         {
             _instance = new Account();
         }
-
+        */
         return _instance;
     }
     
-    public void LoadAccount(long _playerId)
+    public void LoadAccount(string playerId)
     {
-        if (_playerId != null)
+        if (playerId != null)
         {
             // LOAD PLAYER ACCOUNT
-            LoadPlayer();
+            LoadPlayer(playerId);
         }
         else
         {
             // CREATE NEW ACCOUNT
             NewPlayer();
         }
-        _inventory = new Inventory(_playerId);
-        _stats = new AccountStats();
     }
 
     void Awake()
@@ -58,14 +57,27 @@ public class Account : MonoBehaviour
         _instance = this;
     }
 
-    private void LoadPlayer()
-    { 
-    
+    private void LoadPlayer(string id)
+    {
+        _inventory.LoadInventory(id);
+        //_stats;
+    }
+
+    public void callback(Dictionary<string, System.Object> data)
+    {
+        if (data.ContainsKey("error"))
+            Debug.Log(data["error"]);
+        else
+        {
+            Debug.Log(data);
+            PlayerPrefs.SetString("accountID", System.Convert.ToString(data["user_id"]));
+            PlayerPrefs.Save();
+        }
     }
 
     private void NewPlayer()
     {
-
+        ServerRequests.GetInstace().SignUp("Lucas", callback);
     }
 
     public void ChangeName(string name)
