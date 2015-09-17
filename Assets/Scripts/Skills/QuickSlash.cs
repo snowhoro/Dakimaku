@@ -11,10 +11,11 @@ public class QuickSlash : BaseSkill
         _power = 10;
         _cooldown = 0;
 
-        _attribute = null;
+        _attribute = Types.Attributes.None;
         _statusEffect = Types.StatusEffects.None;
         _statusChance = 0;
-
+        _isPhysical = true;
+        _isDisplacement = false;
         _isActive = false;
         _activationChance = 10.0f; 
     }
