@@ -30,26 +30,13 @@ public class Account : MonoBehaviour
 
     public static Account Instance()
     {
-       /* if (_instance == null)
-        {
-            _instance = new Account();
-        }
-        */
         return _instance;
     }
     
     public void LoadAccount(string playerId)
     {
-        if (playerId != null)
-        {
-            // LOAD PLAYER ACCOUNT
-            LoadPlayer(playerId);
-        }
-        else
-        {
-            // CREATE NEW ACCOUNT
-            NewPlayer();
-        }
+        // LOAD PLAYER ACCOUNT
+        LoadPlayer(playerId);
     }
 
     void Awake()
@@ -75,9 +62,9 @@ public class Account : MonoBehaviour
         }
     }
 
-    private void NewPlayer()
+    public void NewPlayer(string name)
     {
-        ServerRequests.GetInstace().SignUp("Lucas", callback);
+        ServerRequests.GetInstace().SignUp(name, callback);
     }
 
     public void ChangeName(string name)
