@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MenuController : MonoBehaviour {
 
     private static MenuController _instance;
 
-    State[,] _sm = new State[4,2];
-    public enum State {None, Main, NewPlayer, FirstPick, Confirmation}
+    public enum State { None = -1, Main, Exit, NewPlayer, FirstPick, Confirmation, Loading }
     public enum Actions { Okay, Back }
-
-    public GameObject ExitConfirmation, NewPlayer, FirstPick, Confirmation;
+    private State[,] _sm = new State[5, 2];
     private State _state;
+    
+    public GameObject ExitConfirmation, NewPlayer, FirstPick, Confirmation;
+    public GameObject LoadingScreen;
+    public Image LoadingBar;
+    public Text NameText;
+
+    float loadingProgress;
 
     public static MenuController getInstance()
     {
@@ -20,23 +26,42 @@ public class MenuController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        loadingProgress = 0;
         ExitConfirmation.SetActive(false);
         NewPlayer.SetActive(false);
         _state = State.Main;
+
+        _sm[0, 0] = State.NewPlayer;
+        _sm[1, 1] = State.NewPlayer;
+        _sm[2, 1] = State.Exit;
+        _sm[2, 0] = State.FirstPick;
+        _sm[3, 0] = State.Confirmation;
+        _sm[3, 1] = State.NewPlayer;
+        _sm[4, 0] = State.FirstPick;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (_state != State.Loading)
         {
-            SetAction(Actions.Back);
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SetAction((int)Actions.Back);
+            }
+        }
+        else
+        {
+            LoadingBar.fillAmount = loadingProgress / 100;
         }
     }
 
-    public void SetAction(Actions action)
+    public void SetAction(int action)
     {
-        if (_sm[(int)_state, (int)action] != State.None)
+        if (action != (int)Actions.Back || action != (int)Actions.Okay)
+            return;
+
+        if (_sm[(int)_state, action] != State.None)
         {
             _state = _sm[(int)_state, (int)action];
 
@@ -64,8 +89,20 @@ public class MenuController : MonoBehaviour {
         FirstPick.SetActive(firstPick);
         Confirmation.SetActive(confirmation);
     }
+
     public void NewAccount()
     {
-        Game.Instance.StartGame();
+        if (NameText.text != string.Empty)
+        {
+            Game.Instance.StartGame(NameText.text);
+            SetVisibility(false, false, false, false);
+            LoadingScreen.SetActive(true);
+            _state = State.Loading;
+        }
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }

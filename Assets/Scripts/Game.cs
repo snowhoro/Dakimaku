@@ -21,13 +21,18 @@ public class Game : MonoBehaviour {
         DontDestroyOnLoad(this);
     }
 
-    public void StartGame()
+    public void StartGame(string name)
     {
         if (_playerId != null)
             Account.Instance().LoadAccount(_playerId);
         else
         {
-            MenuController.getInstance().SetAction(MenuController.Actions.Okay);
+            if (string.IsNullOrEmpty(name))
+                MenuController.getInstance().SetAction((int)MenuController.Actions.Okay);
+            else
+            {
+                Account.Instance().NewPlayer(name);
+            }
         }
     }
 
