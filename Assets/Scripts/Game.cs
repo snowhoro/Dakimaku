@@ -23,10 +23,14 @@ public class Game : MonoBehaviour {
 
     public void StartGame(string name)
     {
-        if (_playerId != null)
+        Debug.Log(name);
+        if (!string.IsNullOrEmpty(_playerId))
             Account.Instance().LoadAccount(_playerId);
         else
         {
+
+            Debug.Log(MenuController.getInstance());
+
             if (string.IsNullOrEmpty(name))
                 MenuController.getInstance().SetAction((int)MenuController.Actions.Okay);
             else

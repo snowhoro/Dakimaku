@@ -15,6 +15,7 @@ public class MenuController : MonoBehaviour {
     public GameObject LoadingScreen;
     public Image LoadingBar;
     public Text NameText;
+    public Button StartButton;
 
     float loadingProgress;
 
@@ -26,6 +27,8 @@ public class MenuController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        _instance = this;
+
         loadingProgress = 0;
         ExitConfirmation.SetActive(false);
         NewPlayer.SetActive(false);
@@ -58,7 +61,7 @@ public class MenuController : MonoBehaviour {
 
     public void SetAction(int action)
     {
-        if (action != (int)Actions.Back || action != (int)Actions.Okay)
+        if (action != (int)Actions.Back && action != (int)Actions.Okay)
             return;
 
         if (_sm[(int)_state, action] != State.None)
@@ -104,5 +107,11 @@ public class MenuController : MonoBehaviour {
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void StartGame()
+    {
+        StartButton.gameObject.SetActive(false);
+        Game.Instance.StartGame("");
     }
 }
