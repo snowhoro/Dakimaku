@@ -14,8 +14,12 @@ public class Inventory : MonoBehaviour
 
     public void LoadInventory(string id)
     {
+        ServerRequests.GetInstace().RequestInventory(id, FillInventory);
+    }
+
+    public void CreateInventory(string id)
+    {
         ServerRequests.GetInstace().CreateInventory(id, FillInventory);
-        //ServerRequests.GetInstace().RequestInventory(id, FillInventory);
     }
 
     public void AddMaxSlots(int slotsAmount)

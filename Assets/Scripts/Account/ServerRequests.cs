@@ -10,7 +10,7 @@ public class ServerRequests : MonoBehaviour
     //public static string host = "https://localhost:3030";
     public static string host = "http://dakimakuws-igna92ts.c9.io/";
 
-    public delegate void CallBack(Dictionary<string, System.Object> d);	//declaro el callback :)
+    public delegate void CallBack(Dictionary<string, System.Object> d);
 
     void Awake()
     {

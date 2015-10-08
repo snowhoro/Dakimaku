@@ -17,7 +17,7 @@ public class MenuController : MonoBehaviour {
     public Text NameText;
     public Button StartButton;
 
-    float loadingProgress;
+    public float loadingProgress;
 
     public static MenuController getInstance()
     {
@@ -98,10 +98,15 @@ public class MenuController : MonoBehaviour {
         if (NameText.text != string.Empty)
         {
             Game.Instance.StartGame(NameText.text);
-            SetVisibility(false, false, false, false);
-            LoadingScreen.SetActive(true);
-            _state = State.Loading;
+            LoadAccount();
         }
+    }
+
+    public void LoadAccount()
+    {
+        SetVisibility(false, false, false, false);
+        LoadingScreen.SetActive(true);
+        _state = State.Loading;
     }
 
     public void ExitGame()

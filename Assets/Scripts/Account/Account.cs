@@ -42,6 +42,7 @@ public class Account : MonoBehaviour
     void Awake()
     {
         _instance = this;
+        _inventory = new Inventory();
     }
 
     private void LoadPlayer(string id)
@@ -59,6 +60,8 @@ public class Account : MonoBehaviour
             Debug.Log(data);
             PlayerPrefs.SetString("accountID", System.Convert.ToString(data["user_id"]));
             PlayerPrefs.Save();
+
+            _inventory.CreateInventory(data["user_id"].ToString());
         }
     }
 
