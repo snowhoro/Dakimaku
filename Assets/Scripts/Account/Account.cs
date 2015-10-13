@@ -8,7 +8,7 @@ public class Account : MonoBehaviour
 
     #region Attributes
 
-    public long _playerId { get; private set; }
+    public string _playerId { get; private set; }
     public string _playerName { get; private set; }
     
     public int _playerLevel { get; private set; }
@@ -17,6 +17,7 @@ public class Account : MonoBehaviour
     
     public int _currentStamina { get; private set; }
     public int _maxStamina { get; private set; }
+    public double _rechargeTime { get; private set; }
     
     public int _hardCurrency { get; private set; }
     public int _softCurrency { get; private set; }
@@ -36,38 +37,32 @@ public class Account : MonoBehaviour
     public void LoadAccount(string playerId)
     {
         // LOAD PLAYER ACCOUNT
-        LoadPlayer(playerId);
+        ServerRequests.GetInstace().RequestAccount(playerId, LoadAccount);
+        _inventory.LoadInventory(playerId);
+    }
+    public void NewAccount(string name)
+    {
+        ServerRequests.GetInstace().SignUp(name, CreateCb);
     }
 
     void Awake()
     {
         _instance = this;
-        _inventory = new Inventory();
     }
-
-    private void LoadPlayer(string id)
+    void FixedUpdate()
     {
-        _inventory.LoadInventory(id);
-        //_stats;
-    }
-
-    public void callback(Dictionary<string, System.Object> data)
-    {
-        if (data.ContainsKey("error"))
-            Debug.Log(data["error"]);
-        else
+        if (_currentStamina != _maxStamina)
         {
-            Debug.Log(data);
-            PlayerPrefs.SetString("accountID", System.Convert.ToString(data["user_id"]));
-            PlayerPrefs.Save();
+            _rechargeTime += Time.fixedDeltaTime;
+            if (_rechargeTime >= 300) // cambiar por constante de recharge
+            {
+                _rechargeTime -= 300;
+                _currentExp += 1;
+                if (_currentStamina == _maxStamina)
+                    _rechargeTime = 0;
+            }
 
-            _inventory.CreateInventory(data["user_id"].ToString());
         }
-    }
-
-    public void NewPlayer(string name)
-    {
-        ServerRequests.GetInstace().SignUp(name, callback);
     }
 
     public void ChangeName(string name)
@@ -116,5 +111,57 @@ public class Account : MonoBehaviour
         return false;
     }
 
+    // CallBacks
+    public void CreateCb(string data)
+    {
+        var d = SimpleJSON.JSON.Parse(data);
 
+        if (d["error"] != null)
+            Debug.Log(d["error"]);
+        else
+        {
+            Debug.Log(data);
+            PlayerPrefs.SetString("accountID", d["user_id"].ToString());
+            PlayerPrefs.Save();
+
+            _playerId = d["user_id"].ToString();
+            _playerName = d["PlayerName"].ToString();
+            _playerLevel = int.Parse(d["playerLevel"].ToString());
+            _softCurrency = int.Parse(d["SoftCurrency"].ToString());
+            _hardCurrency = int.Parse(d["HardCurrency"].ToString());
+            _maxStamina = int.Parse(d["MaxStamina"].ToString());
+            _currentStamina = int.Parse(d["CurrentStamina"].ToString());
+            _currentExp = int.Parse(d["CurrentExp"].ToString());
+            _expToNextLevel = int.Parse(d["ExpToNextLevel"].ToString());
+
+            _stats = new AccountStats(DateTime.Parse(d["LastLogDay"].ToString()));
+
+            _inventory.CreateInventory(d["user_id"].ToString());
+        }
+    }
+    public void LoadCb(string data)
+    {
+        var d = SimpleJSON.JSON.Parse(data);
+
+        if (d["error"] != null)
+            Debug.Log(d["error"]);
+        else
+        {
+            Debug.Log(data);
+
+            _playerId = d["user_id"].ToString();
+            _playerName = d["PlayerName"].ToString();
+            _playerLevel = int.Parse(d["playerLevel"].ToString());
+            _softCurrency = int.Parse(d["SoftCurrency"].ToString());
+            _hardCurrency = int.Parse(d["HardCurrency"].ToString());
+            _maxStamina = int.Parse(d["MaxStamina"].ToString());
+            _currentStamina = int.Parse(d["CurrentStamina"].ToString());
+            _currentExp = int.Parse(d["CurrentExp"].ToString());
+            _expToNextLevel = int.Parse(d["ExpToNextLevel"].ToString());
+            _rechargeTime = float.Parse(d["floatTime"].ToString());
+
+            _stats = new AccountStats(int.Parse(d["consecutiveLogDays"].ToString()), int.Parse(d["totalLogDays"].ToString()), DateTime.Parse(d["LastLogDay"].ToString()));
+
+        }
+    }
 }

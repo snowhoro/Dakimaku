@@ -32,8 +32,6 @@ public class Game : MonoBehaviour {
             MenuController.getInstance().LoadAccount();
             // Aca creo un thread para cargar todo
             Account.Instance().LoadAccount(_playerId);
-
-            Application.LoadLevel("Menus");
         }
         else
         {
@@ -43,7 +41,7 @@ public class Game : MonoBehaviour {
                 MenuController.getInstance().SetAction((int)MenuController.Actions.Okay);
             else
             {
-                Account.Instance().NewPlayer(name);
+                Account.Instance().NewAccount(name);
             }
         }
     }

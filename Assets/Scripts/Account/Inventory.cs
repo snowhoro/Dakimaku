@@ -27,14 +27,22 @@ public class Inventory : MonoBehaviour
         _maxSlots += slotsAmount;
     }
 
-    public void FillInventory(Dictionary<string, System.Object> data)
+    public void FillInventory(string data)
     {
-        if (data.ContainsKey("error"))
-            Debug.Log(data["error"]);
-        else
-        {
-            Debug.Log(data);
-        }
+         var d = SimpleJSON.JSON.Parse(data);
+
+         if (d["error"] != null)
+             Debug.Log(d["error"]);
+         else
+         {
+             Debug.Log(data);
+
+             GameObject parent = new GameObject();
+             parent.name = "Items";
+
+             GameObject go = GameObject.Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+             go.transform.parent = parent.transform;
+         }
     }
 
 }

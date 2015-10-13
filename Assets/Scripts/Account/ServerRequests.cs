@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MiniJSON;
+using SimpleJSON;
 
 public class ServerRequests : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class ServerRequests : MonoBehaviour
     //public static string host = "https://localhost:3030";
     public static string host = "http://dakimakuws-igna92ts.c9.io/";
 
-    public delegate void CallBack(Dictionary<string, System.Object> d);
+    public delegate void CallBack(string data);
 
     void Awake()
     {
@@ -38,13 +38,14 @@ public class ServerRequests : MonoBehaviour
         if (www.error == null)
         {
             Debug.Log(www.text);
-            Dictionary<string, System.Object> result = Json.Deserialize(www.text) as Dictionary<string, System.Object>;
+
+            string result = www.text;
+
             callBack(result);
         }
         else
         {
             Debug.Log(www.error);
-            Debug.Log("WHAT");
         }
             
      }
@@ -63,6 +64,15 @@ public class ServerRequests : MonoBehaviour
         form.AddField("PlayerName", name);
         WWW www = new WWW(url, form);
 
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+
+    public void RequestAccount(string accountID, CallBack callBack)
+    {
+        string url = host + "getAccount";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
     
