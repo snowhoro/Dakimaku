@@ -124,6 +124,7 @@ public class Account : MonoBehaviour
 
             _inventory.CreateInventory(d["user_id"].Value);
             Game.Instance._playerId = d["user_id"].Value;
+            this._playerId = d["user_id"].Value;
             Game.Instance.StartGame("");
         }
     }
