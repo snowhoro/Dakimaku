@@ -19,12 +19,25 @@ public class Inventory : MonoBehaviour
 
     public void CreateInventory(string id)
     {
-        ServerRequests.GetInstace().CreateInventory(id, FillInventory);
+        ServerRequests.GetInstace().CreateInventory(id, InventoryCreated);
     }
 
     public void AddMaxSlots(int slotsAmount)
     {
         _maxSlots += slotsAmount;
+    }
+
+    public void InventoryCreated(string data)
+    { 
+        var d = SimpleJSON.JSON.Parse(data);
+
+        if (d["error"] != null)
+            Debug.Log(d["error"]);
+        else
+        {
+            // inventario creado
+            Account.Instance().LoadAccount("");
+        }
     }
 
     public void FillInventory(string data)
@@ -35,10 +48,14 @@ public class Inventory : MonoBehaviour
              Debug.Log(d["error"]);
          else
          {
-             Debug.Log(data);
 
              GameObject parent = new GameObject();
              parent.name = "Items";
+
+             /*for (int i = 0; i < d["Characters"]; i++)
+             {
+                 
+             }*/
 
              GameObject go = GameObject.Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
              go.transform.parent = parent.transform;

@@ -8,7 +8,7 @@ public class Account : MonoBehaviour
 
     #region Attributes
 
-    public string _playerId { get; private set; }
+    public string _playerId { get; set; }
     public string _playerName { get; private set; }
     
     public int _playerLevel { get; private set; }
@@ -37,8 +37,8 @@ public class Account : MonoBehaviour
     public void LoadAccount(string playerId)
     {
         // LOAD PLAYER ACCOUNT
-        ServerRequests.GetInstace().RequestAccount(playerId, LoadAccount);
-        _inventory.LoadInventory(playerId);
+        ServerRequests.GetInstace().RequestAccount(string.IsNullOrEmpty(_playerId) ? _playerId : playerId, LoadCb);
+        _inventory.LoadInventory(string.IsNullOrEmpty(_playerId) ? _playerId : playerId);
     }
     public void NewAccount(string name)
     {
@@ -98,7 +98,6 @@ public class Account : MonoBehaviour
         _expToNextLevel *= 2;
         _maxStamina += 2;
         _inventory.AddMaxSlots(2);
-
     }
 
     public bool ConsumeStamina(int stmAmount)
@@ -120,23 +119,12 @@ public class Account : MonoBehaviour
             Debug.Log(d["error"]);
         else
         {
-            Debug.Log(data);
-            PlayerPrefs.SetString("accountID", d["user_id"].ToString());
+            PlayerPrefs.SetString("accountID", d["user_id"].Value);
             PlayerPrefs.Save();
 
-            _playerId = d["user_id"].ToString();
-            _playerName = d["PlayerName"].ToString();
-            _playerLevel = int.Parse(d["playerLevel"].ToString());
-            _softCurrency = int.Parse(d["SoftCurrency"].ToString());
-            _hardCurrency = int.Parse(d["HardCurrency"].ToString());
-            _maxStamina = int.Parse(d["MaxStamina"].ToString());
-            _currentStamina = int.Parse(d["CurrentStamina"].ToString());
-            _currentExp = int.Parse(d["CurrentExp"].ToString());
-            _expToNextLevel = int.Parse(d["ExpToNextLevel"].ToString());
-
-            _stats = new AccountStats(DateTime.Parse(d["LastLogDay"].ToString()));
-
-            _inventory.CreateInventory(d["user_id"].ToString());
+            _inventory.CreateInventory(d["user_id"].Value);
+            Game.Instance._playerId = d["user_id"].Value;
+            Game.Instance.StartGame("");
         }
     }
     public void LoadCb(string data)
@@ -147,20 +135,17 @@ public class Account : MonoBehaviour
             Debug.Log(d["error"]);
         else
         {
-            Debug.Log(data);
+            _playerName = d["Account"]["PlayerName"].Value;
+            _playerLevel = int.Parse(d["Account"]["Level"].Value);
+            _softCurrency = int.Parse(d["Account"]["SoftCurrency"].Value);
+            _hardCurrency = int.Parse(d["Account"]["HardCurrency"].Value);
+            _maxStamina = int.Parse(d["Account"]["Stamina"].Value);
+            _currentStamina = 0;// int.Parse(d["CurrentStamina"].ToString());
+            _currentExp = int.Parse(d["Account"]["CurrentExp"].Value);
+            _expToNextLevel = 0; //int.Parse(d["ExpToNextLevel"].ToString());
+            _rechargeTime = 0;// float.Parse(d["floatTime"].ToString());
 
-            _playerId = d["user_id"].ToString();
-            _playerName = d["PlayerName"].ToString();
-            _playerLevel = int.Parse(d["playerLevel"].ToString());
-            _softCurrency = int.Parse(d["SoftCurrency"].ToString());
-            _hardCurrency = int.Parse(d["HardCurrency"].ToString());
-            _maxStamina = int.Parse(d["MaxStamina"].ToString());
-            _currentStamina = int.Parse(d["CurrentStamina"].ToString());
-            _currentExp = int.Parse(d["CurrentExp"].ToString());
-            _expToNextLevel = int.Parse(d["ExpToNextLevel"].ToString());
-            _rechargeTime = float.Parse(d["floatTime"].ToString());
-
-            _stats = new AccountStats(int.Parse(d["consecutiveLogDays"].ToString()), int.Parse(d["totalLogDays"].ToString()), DateTime.Parse(d["LastLogDay"].ToString()));
+            _stats = new AccountStats(int.Parse(d["LogDays"].Value), int.Parse(d["TotalLogDays"].Value), d["LastLogDay"] == null ? DateTime.Now : DateTime.Parse(d["LastLogDay"].Value));
 
         }
     }

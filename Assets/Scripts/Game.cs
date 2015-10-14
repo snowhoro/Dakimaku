@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Game : MonoBehaviour {
 
-    private string _playerId;
+    public string _playerId;
 
     public static Game Instance { get; private set; }
 
@@ -32,11 +32,10 @@ public class Game : MonoBehaviour {
             MenuController.getInstance().LoadAccount();
             // Aca creo un thread para cargar todo
             Account.Instance().LoadAccount(_playerId);
+            Account.Instance()._playerId = _playerId;
         }
         else
         {
-            Debug.Log(MenuController.getInstance());
-
             if (string.IsNullOrEmpty(name))
                 MenuController.getInstance().SetAction((int)MenuController.Actions.Okay);
             else
