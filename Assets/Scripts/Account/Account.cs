@@ -128,7 +128,7 @@ public class Account : MonoBehaviour
             _inventory.CreateInventory(_playerId);
             Game.Instance._playerId = _playerId;
             
-            Game.Instance.StartGame("");
+            Game.Instance.StartGame();
         }
     }
     public void LoadCb(string data)

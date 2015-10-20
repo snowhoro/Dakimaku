@@ -36,7 +36,6 @@ public class Inventory : MonoBehaviour
         else
         {
             // inventario creado
-            Account.Instance().LoadAccount("");
         }
     }
 

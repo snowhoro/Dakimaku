@@ -14,6 +14,7 @@ public class Game : MonoBehaviour {
 
         //PlayerPrefs.SetString("accountID", "561566e83bfe76d70988514d");
         //PlayerPrefs.Save();
+		//PlayerPrefs.DeleteAll();
 
         if (PlayerPrefs.HasKey("accountID"))
             _playerId = PlayerPrefs.GetString("accountID");
@@ -30,7 +31,7 @@ public class Game : MonoBehaviour {
         DontDestroyOnLoad(this);
     }
 
-    public void StartGame(string name)
+    public void StartGame()
     {
         if (!string.IsNullOrEmpty(_playerId))
         {
@@ -42,14 +43,14 @@ public class Game : MonoBehaviour {
         }
         else
         {
-            if (string.IsNullOrEmpty(name))
-                MenuController.getInstance().SetAction((int)MenuController.Actions.Okay);
-            else
-            {
-                Account.Instance().NewAccount(name);
-            }
+            MenuController.getInstance().SetAction((int)MenuController.Actions.Okay);
         }
     }
+
+	public void CreateAccount(string name)
+	{
+		Account.Instance().NewAccount(name);
+	}
 
     public void LoadEnd() {
         if (MenuController.getInstance() != null)

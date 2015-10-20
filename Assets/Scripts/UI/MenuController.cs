@@ -97,7 +97,7 @@ public class MenuController : MonoBehaviour {
     {
         if (NameText.text != string.Empty)
         {
-            Game.Instance.StartGame(NameText.text);
+            Game.Instance.CreateAccount(NameText.text);
             LoadAccount();
         }
     }
@@ -115,7 +115,7 @@ public class MenuController : MonoBehaviour {
     public void StartGame()
     {
         StartButton.gameObject.SetActive(false);
-        Game.Instance.StartGame("");
+        Game.Instance.StartGame();
     }
     public void LoadScene() 
     {
