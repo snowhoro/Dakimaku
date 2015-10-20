@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class BaseCharacter : MonoBehaviour 
+public abstract class BaseCharacter : MonoBehaviour
 {   
 
     #region Attributes
@@ -48,7 +48,6 @@ public class BaseCharacter : MonoBehaviour
         _physicalBaseDefense += defenseAmount;
     }
 
-    public virtual void LoadCharacter()
-    { }
+    public abstract void Initialize(int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef);
 
 }

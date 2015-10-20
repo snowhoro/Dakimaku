@@ -94,6 +94,4 @@ public class ServerRequests : MonoBehaviour
         StartCoroutine(WaitForRequest(www, callback));
     }
 
-
-
 }

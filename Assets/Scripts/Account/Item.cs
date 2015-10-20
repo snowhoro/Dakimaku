@@ -10,6 +10,11 @@ public class Item : MonoBehaviour {
     public Character _character { get; private set; }
     public Image _CharImg {get; private set;}
 
+    public void Initialize()
+    {
+        _character = new Character();
+    }
+
     void Awake()
     {
         _selected = false;

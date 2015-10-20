@@ -6,8 +6,8 @@ public class Inventory : MonoBehaviour
 {
 
     public int _maxSlots { get; private set; }
-    private List<GameObject> _items = new List<GameObject>();
-    public List<GameObject> Items { get { return _items; } }
+    private List<Item> _items = new List<Item>();
+    public List<Item> Items { get { return _items; } }
     public GameObject _itemPrefab;
 
     private const int _maxColumns = 6;
@@ -42,23 +42,28 @@ public class Inventory : MonoBehaviour
 
     public void FillInventory(string data)
     {
-         var d = SimpleJSON.JSON.Parse(data);
+         var dataJson = SimpleJSON.JSON.Parse(data);
 
-         if (d["error"] != null)
-             Debug.Log(d["error"]);
+         if (dataJson["error"] != null)
+             Debug.Log(dataJson["error"]);
          else
          {
 
              GameObject parent = new GameObject();
              parent.name = "Items";
+             DontDestroyOnLoad(parent);
 
-             /*for (int i = 0; i < d["Characters"]; i++)
+             Debug.Log(dataJson["inventory"]["Characters"].Count);
+             for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
              {
-                 
-             }*/
+                 GameObject go = GameObject.Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+                 go.transform.SetParent(parent.transform);
+                 Item goComponent = go.GetComponent<Item>();
 
-             GameObject go = GameObject.Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-             go.transform.parent = parent.transform;
+                 _items.Add(goComponent);
+             }
+
+             Game.Instance.LoadEnd();
          }
     }
 

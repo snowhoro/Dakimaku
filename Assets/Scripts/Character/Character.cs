@@ -51,8 +51,14 @@ public class Character : BaseCharacter
             _physicalSpecDefense = _maxMagicSpecDefense;
     }
 
-    public override void LoadCharacter()
+    public override void Initialize(int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef)
     {
-        
+ 	    _maxBaseHP = baseHP;
+        _currentHP = _maxBaseHP;
+        _level = level;
+        _magicBaseAttack = bMagAtt;
+        _magicBaseDefense = bMagDef;
+        _physicalBaseAttack = bPhyAtt;
+        _physicalBaseDefense = bPhyDef;
     }
 }

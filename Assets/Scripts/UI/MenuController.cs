@@ -101,7 +101,6 @@ public class MenuController : MonoBehaviour {
             LoadAccount();
         }
     }
-
     public void LoadAccount()
     {
         SetVisibility(false, false, false, false);
@@ -113,10 +112,13 @@ public class MenuController : MonoBehaviour {
     {
         Application.Quit();
     }
-
     public void StartGame()
     {
         StartButton.gameObject.SetActive(false);
         Game.Instance.StartGame("");
+    }
+    public void LoadScene() 
+    {
+        Application.LoadLevel("Menus");
     }
 }

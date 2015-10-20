@@ -13,9 +13,14 @@ public class Game : MonoBehaviour {
 	void Start () {
 
         //PlayerPrefs.SetString("accountID", "561566e83bfe76d70988514d");
+        //PlayerPrefs.Save();
 
         if (PlayerPrefs.HasKey("accountID"))
             _playerId = PlayerPrefs.GetString("accountID");
+        else
+            _playerId = "";
+
+        Debug.Log(_playerId);
 
 	}
 
@@ -31,8 +36,9 @@ public class Game : MonoBehaviour {
         {
             MenuController.getInstance().LoadAccount();
             // Aca creo un thread para cargar todo
+           
             Account.Instance().LoadAccount(_playerId);
-            Account.Instance()._playerId = _playerId;
+
         }
         else
         {
@@ -42,6 +48,17 @@ public class Game : MonoBehaviour {
             {
                 Account.Instance().NewAccount(name);
             }
+        }
+    }
+
+    public void LoadEnd() {
+        if (MenuController.getInstance() != null)
+        {
+            MenuController.getInstance().LoadScene();
+        }
+        else if (UiController.getInstance() != null)
+        { 
+            //UiController.getInstance()
         }
     }
 

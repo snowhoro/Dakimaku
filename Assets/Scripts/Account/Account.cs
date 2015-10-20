@@ -36,9 +36,10 @@ public class Account : MonoBehaviour
     
     public void LoadAccount(string playerId)
     {
+        if (!string.IsNullOrEmpty(playerId)) 
+            _playerId = playerId;
         // LOAD PLAYER ACCOUNT
-        ServerRequests.GetInstace().RequestAccount(string.IsNullOrEmpty(_playerId) ? _playerId : playerId, LoadCb);
-        _inventory.LoadInventory(string.IsNullOrEmpty(_playerId) ? _playerId : playerId);
+        ServerRequests.GetInstace().RequestAccount(_playerId, LoadCb);
     }
     public void NewAccount(string name)
     {
@@ -119,35 +120,42 @@ public class Account : MonoBehaviour
             Debug.Log(d["error"]);
         else
         {
-            PlayerPrefs.SetString("accountID", d["user_id"].Value);
+            this._playerId = d["user_id"].Value;
+
+            PlayerPrefs.SetString("accountID", _playerId);
             PlayerPrefs.Save();
 
-            _inventory.CreateInventory(d["user_id"].Value);
-            Game.Instance._playerId = d["user_id"].Value;
-            this._playerId = d["user_id"].Value;
+            _inventory.CreateInventory(_playerId);
+            Game.Instance._playerId = _playerId;
+            
             Game.Instance.StartGame("");
         }
     }
     public void LoadCb(string data)
     {
-        var d = SimpleJSON.JSON.Parse(data);
+        var dataJson = SimpleJSON.JSON.Parse(data);
 
-        if (d["error"] != null)
-            Debug.Log(d["error"]);
+        if (dataJson["error"] != null)
+            Debug.Log(dataJson["error"]);
         else
         {
-            _playerName = d["Account"]["PlayerName"].Value;
-            _playerLevel = int.Parse(d["Account"]["Level"].Value);
-            _softCurrency = int.Parse(d["Account"]["SoftCurrency"].Value);
-            _hardCurrency = int.Parse(d["Account"]["HardCurrency"].Value);
-            _maxStamina = int.Parse(d["Account"]["Stamina"].Value);
+            Debug.Log(dataJson["account"]["PlayerName"].Value);
+
+            _playerName = dataJson["account"]["PlayerName"].Value;
+            _playerLevel = int.Parse(dataJson["account"]["Level"].Value);
+            _softCurrency = int.Parse(dataJson["account"]["SoftCurrency"].Value);
+            _hardCurrency = int.Parse(dataJson["account"]["HardCurrency"].Value);
+            _maxStamina = int.Parse(dataJson["account"]["Stamina"].Value);
             _currentStamina = 0;// int.Parse(d["CurrentStamina"].ToString());
-            _currentExp = int.Parse(d["Account"]["CurrentExp"].Value);
+            _currentExp = 0;//int.Parse(dataJson["account"]["CurrentExp"].Value);
             _expToNextLevel = 0; //int.Parse(d["ExpToNextLevel"].ToString());
             _rechargeTime = 0;// float.Parse(d["floatTime"].ToString());
 
-            _stats = new AccountStats(int.Parse(d["LogDays"].Value), int.Parse(d["TotalLogDays"].Value), d["LastLogDay"] == null ? DateTime.Now : DateTime.Parse(d["LastLogDay"].Value));
+            _stats = new AccountStats(int.Parse(dataJson["account"]["LogDays"].Value), 
+                                        int.Parse(dataJson["account"]["TotalLogDays"].Value),
+                                        dataJson["account"]["LastLogDay"] == null ? DateTime.Now : DateTime.Parse(dataJson["account"]["LastLogDay"].Value));
 
+            _inventory.LoadInventory(_playerId);
         }
     }
 }
