@@ -22,6 +22,9 @@ public class Account : MonoBehaviour
     public int _hardCurrency { get; private set; }
     public int _softCurrency { get; private set; }
 
+
+    public int _maxTeams;
+    public List<Item[]> _teams;
     public Inventory _inventory;
     public AccountStats _stats; 
     
@@ -49,6 +52,11 @@ public class Account : MonoBehaviour
     void Awake()
     {
         _instance = this;
+        _teams = new List<Item[]>(_maxTeams);
+        for (int i = 0; i < _maxTeams; i++)
+        {
+            _teams[i] = new Item[6];
+        }
     }
     void FixedUpdate()
     {
@@ -62,7 +70,6 @@ public class Account : MonoBehaviour
                 if (_currentStamina == _maxStamina)
                     _rechargeTime = 0;
             }
-
         }
     }
 
@@ -110,7 +117,7 @@ public class Account : MonoBehaviour
         }
         return false;
     }
-
+ 
     // CallBacks
     public void CreateCb(string data)
     {

@@ -6,15 +6,16 @@ public class UiController : MonoBehaviour {
 
     private static UiController _instance;
 
-    enum InventoryState { None, Sell, Fuse, Look, Evolve, Edit }
+    enum InventoryState { None, Sell, Fuse, SelFuse, Look, Evolve, Edit }
     
     public GameObject _mainPanel, _teamEditPanel, _inventoryPanel, _teamPanel;
     public GameObject _home, _shop, _inventory, _hatcher, _options;
     public Transform InventoryParent, EditTeamParent;
 
-    private InventoryState _menuState = InventoryState.None;
+    private int _maxSelectedItems;
 
-    private List<Item> _selectedItems = new List<Item>();
+    private InventoryState _menuState = InventoryState.None;
+    private Vector3 vector1 = new Vector3(1, 1, 1);
     
     public static UiController getInstance()
     {
@@ -42,11 +43,7 @@ public class UiController : MonoBehaviour {
 
     void Awake()
     {
-        _instance = this;
-        for (int i = 0; i < Inventory.Instance.Items.Count; i++)
-        {
-            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
-        }
+        _instance = this;       
     }
 	
 	// Update is called once per frame
@@ -55,6 +52,7 @@ public class UiController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape) && _menuState != InventoryState.None)
         {
             SetInventoryPanelVisibility(false);
+            _teamEditPanel.SetActive(false);
             _menuState = InventoryState.None;
         }
 	}
@@ -69,6 +67,15 @@ public class UiController : MonoBehaviour {
     {
         SetInventoryPanelVisibility(true);
         _menuState = InventoryState.Fuse;
+
+        for (int i = 0; i < Inventory.Instance.Items.Count; i++)
+        {
+            Debug.Log(InventoryParent.name);
+            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
+            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
+            Inventory.Instance.Items[i]._transform.localScale = vector1;
+            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+        }
     }
 
     public void OpenTeamEdition()
@@ -76,37 +83,78 @@ public class UiController : MonoBehaviour {
         _mainPanel.SetActive(false);
         _teamEditPanel.SetActive(true);
         _menuState = InventoryState.Edit;
+
+        for (int i = 0; i < Inventory.Instance.Items.Count; i++)
+        {
+            Debug.Log(EditTeamParent);
+            Inventory.Instance.Items[i]._transform.SetParent(EditTeamParent);
+            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
+            Inventory.Instance.Items[i]._transform.localScale = vector1;
+            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+        }
     }
 
     public void OpenSellMenu()
     {
         SetInventoryPanelVisibility(true);
         _menuState = InventoryState.Sell;
+
+        for (int i = 0; i < Inventory.Instance.Items.Count; i++)
+        {
+            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
+            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
+            Inventory.Instance.Items[i]._transform.localScale = vector1;
+            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+        }
     }
 
     public void SeeInventory()
     {
         SetInventoryPanelVisibility(true);
         _menuState = InventoryState.Look;
+
+        for (int i = 0; i < Inventory.Instance.Items.Count; i++)
+        {
+            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
+            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
+            Inventory.Instance.Items[i]._transform.localScale = vector1;
+            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+        }
     }
 
     public void ItemClick(Item item)
     {
-        if (!item.Selected)
+        if (_menuState == InventoryState.SelFuse || _menuState == InventoryState.Sell)
         {
-            item.Selected = true;
-            _selectedItems.Add(item);
+            if (!item.Selected)
+            {
+                if (Inventory.Instance.SelectedItems() == _maxSelectedItems)
+                    return;
+            }
+
+            item.Select();
         }
-        else
-        {
-            item.Selected = true;
-            _selectedItems.Remove(item);
+        else if (_menuState == InventoryState.Look)
+        { 
+            // Abrir Detalles personaje
+        }
+        else if (_menuState == InventoryState.Fuse)
+        { 
+            // Select item for fuse
+        }
+        else if (_menuState == InventoryState.Edit)
+        { 
+            // Select item in slot
+            item.Select();
         }
     }
 
     public void MainMenu()
     {
         MenuVisibility(true, false, false, false, false);
+        SetInventoryPanelVisibility(false);
+        _teamEditPanel.SetActive(false);
+        _menuState = InventoryState.None;
     }
 
     public void MenuInventory()
@@ -117,16 +165,25 @@ public class UiController : MonoBehaviour {
     public void Shop()
     {
         MenuVisibility(false, true, false, false, false);
+        SetInventoryPanelVisibility(false);
+        _teamEditPanel.SetActive(false);
+        _menuState = InventoryState.None;
     }
 
     public void Hatcher()
     {
         MenuVisibility(false, false, false, true, false);
+        SetInventoryPanelVisibility(false);
+        _teamEditPanel.SetActive(false);
+        _menuState = InventoryState.None;
     }
 
     public void Options()
     {
         MenuVisibility(false, false, false, false, true);
+        SetInventoryPanelVisibility(false);
+        _teamEditPanel.SetActive(false);
+        _menuState = InventoryState.None;
     }
 
     private void SetInventoryPanelVisibility(bool visibility)

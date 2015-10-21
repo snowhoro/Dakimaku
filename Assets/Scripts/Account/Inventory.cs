@@ -23,7 +23,6 @@ public class Inventory : MonoBehaviour
     {
         ServerRequests.GetInstace().RequestInventory(id, FillInventory);
     }
-
     public void CreateInventory(string id)
     {
         ServerRequests.GetInstace().CreateInventory(id, InventoryCreated);
@@ -45,7 +44,6 @@ public class Inventory : MonoBehaviour
             // inventario creado
         }
     }
-
     public void FillInventory(string data)
     {
          var dataJson = SimpleJSON.JSON.Parse(data);
@@ -71,6 +69,11 @@ public class Inventory : MonoBehaviour
 
              Game.Instance.LoadEnd();
          }
+    }
+
+    public int SelectedItems()
+    {
+        return _items.Count;
     }
 
 }

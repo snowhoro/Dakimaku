@@ -26,4 +26,9 @@ public class Item : MonoBehaviour {
 	void Update () {
 
 	}
+
+    public void Select()
+    {
+        _selected = !_selected;
+    }
 }
