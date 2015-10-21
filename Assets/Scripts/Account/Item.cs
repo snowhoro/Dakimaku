@@ -9,6 +9,7 @@ public class Item : MonoBehaviour {
 
     public Character _character { get; private set; }
     public Image _CharImg {get; private set;}
+    public Transform _transform;
 
     public void Initialize()
     {
@@ -18,6 +19,7 @@ public class Item : MonoBehaviour {
     void Awake()
     {
         _selected = false;
+        _transform = this.transform;
     }
 	
 	// Update is called once per frame

@@ -10,6 +10,7 @@ public class UiController : MonoBehaviour {
     
     public GameObject _mainPanel, _teamEditPanel, _inventoryPanel, _teamPanel;
     public GameObject _home, _shop, _inventory, _hatcher, _options;
+    public Transform InventoryParent, EditTeamParent;
 
     private InventoryState _menuState = InventoryState.None;
 
@@ -42,6 +43,10 @@ public class UiController : MonoBehaviour {
     void Awake()
     {
         _instance = this;
+        for (int i = 0; i < Inventory.Instance.Items.Count; i++)
+        {
+            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
+        }
     }
 	
 	// Update is called once per frame
@@ -104,7 +109,7 @@ public class UiController : MonoBehaviour {
         MenuVisibility(true, false, false, false, false);
     }
 
-    public void Inventory()
+    public void MenuInventory()
     {
         MenuVisibility(false, false, true, false, false);
     }

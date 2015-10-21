@@ -5,12 +5,19 @@ using System.Collections.Generic;
 public class Inventory : MonoBehaviour
 {
 
+    public static Inventory Instance { get; private set; }
+
     public int _maxSlots { get; private set; }
     private List<Item> _items = new List<Item>();
     public List<Item> Items { get { return _items; } }
     public GameObject _itemPrefab;
 
     private const int _maxColumns = 6;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     public void LoadInventory(string id)
     {
