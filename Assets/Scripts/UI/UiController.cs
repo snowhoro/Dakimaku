@@ -13,6 +13,7 @@ public class UiController : MonoBehaviour {
     public Transform InventoryParent, EditTeamParent;
 
     private int _maxSelectedItems;
+    private List<Item> _selectItems = new List<Item>();
 
     private InventoryState _menuState = InventoryState.None;
     private Vector3 vector1 = new Vector3(1, 1, 1);
