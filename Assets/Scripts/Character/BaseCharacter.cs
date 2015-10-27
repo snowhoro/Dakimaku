@@ -4,11 +4,10 @@ using System.Collections;
 
 public abstract class BaseCharacter : MonoBehaviour
 {   
-
     #region Attributes
 
     public int _currentHP { get; set; }
-    public int _maxBaseHP { get; protected set; }
+    public int _maxBaseHP { get; set; }
 
     public int _level { get; protected set; }
     public int _rarity { get; protected set; }
@@ -25,8 +24,9 @@ public abstract class BaseCharacter : MonoBehaviour
     public Types.StatusEffects _status { get; protected set; }
     public BaseAttribute _attribute { get; protected set; }
 
+    public Vector2 _gridPos { get; set; }
     #endregion
-
+    
     public void AddBaseHp(int hpAmount)
     {
         _maxBaseHP += hpAmount;
