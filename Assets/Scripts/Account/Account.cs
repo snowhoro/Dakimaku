@@ -49,6 +49,11 @@ public class Account : MonoBehaviour
         ServerRequests.GetInstace().SignUp(name, CreateCb);
     }
 
+    public void LoadTeams()
+    { 
+        
+    }
+
     void Awake()
     {
         _instance = this;
@@ -134,8 +139,6 @@ public class Account : MonoBehaviour
 
             _inventory.CreateInventory(_playerId);
             Game.Instance._playerId = _playerId;
-            
-            Game.Instance.StartGame();
         }
     }
     public void LoadCb(string data)
@@ -163,6 +166,31 @@ public class Account : MonoBehaviour
                                         dataJson["account"]["LastLogDay"] == null ? DateTime.Now : DateTime.Parse(dataJson["account"]["LastLogDay"].Value));
 
             _inventory.LoadInventory(_playerId);
+        }
+    }
+    public void LoadTeamCb(string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+        if (dataJson["error"] != null)
+            Debug.Log(dataJson["error"]);
+        else
+        {
+
+
+            Game.Instance.LoadEnd();
+        }
+    }
+    public void CreateTeamCb(string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+        if (dataJson["error"] != null)
+            Debug.Log(dataJson["error"]);
+        else
+        {
+            
+            Game.Instance.StartGame();
         }
     }
 }

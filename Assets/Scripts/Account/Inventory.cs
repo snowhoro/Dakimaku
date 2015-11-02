@@ -67,7 +67,8 @@ public class Inventory : MonoBehaviour
                  _items.Add(goComponent);
              }
 
-             Game.Instance.LoadEnd();
+             Account.Instance().LoadTeams();
+
          }
     }
 

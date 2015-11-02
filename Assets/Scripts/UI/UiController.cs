@@ -15,6 +15,8 @@ public class UiController : MonoBehaviour {
     private int _maxSelectedItems;
     private List<Item> _selectItems = new List<Item>();
 
+    public Item[] _hudTeams;
+
     private InventoryState _menuState = InventoryState.None;
     private Vector3 vector1 = new Vector3(1, 1, 1);
     
