@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class Combat : MonoBehaviour
 {
-
     public GameObject dmgNumbers;
-    private static Combat _instance;
 
+    private static Combat _instance;
     public static Combat instance
     {
         get
@@ -37,18 +36,7 @@ public class Combat : MonoBehaviour
                 Destroy(this.gameObject);
         }
     }
-    void Update()
-    {
-        /*if(Input.GetKeyUp(KeyCode.S))
-        {
-            CheckEnemiesAttacked();
-        }
-
-        if (Input.GetKeyUp(KeyCode.X))
-        {
-            CheckHeroesAttacked();
-        }*/
-    }
+    
     public void Hit(BaseCharacter target, BaseCharacter origin)
     {
         target._currentHP -= origin._physicalBaseAttack;
@@ -89,8 +77,49 @@ public class Combat : MonoBehaviour
         if (target._currentHP > target._maxBaseHP)
             target._currentHP = target._maxBaseHP;
     }
+    
+    public void CheckEnemiesAttacked()
+    {
+        CombatCheck combatCheck = new CombatCheck();
+        LinkSystem linksystem = new LinkSystem();
+        List<HitList> hitlist = combatCheck.GetEnemiesAttacked();
+        foreach (HitList item in hitlist)
+        {
+            Debug.Log(item.attackers[0]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[0]).Count);
+            Debug.Log(item.attackers[1]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[1]).Count);
+            ShowDamage(item.victim.gameObject);
+        }
+    }
 
-    public enum NextTo
+    public void CheckHeroesAttacked()
+    {
+        CombatCheck combatCheck = new CombatCheck();
+        List<HitList> hitlist = combatCheck.GetHeroesAttacked();
+        foreach (HitList item in hitlist)
+        {
+            ShowDamage(item.victim.gameObject);
+        }
+    }
+
+    public void ShowDamage(GameObject obj)
+    {
+        GameObject aux = Instantiate(dmgNumbers);
+        aux.transform.SetParent(obj.transform.FindChild("Canvas"));
+        RectTransform rect = aux.GetComponent<RectTransform>();
+        rect.transform.localPosition = dmgNumbers.transform.localPosition;
+        rect.transform.localScale = dmgNumbers.transform.localScale;
+
+        int dmg = Random.Range(50, 70);
+
+        //MEJORAR!!! //////////////////////////////////////
+        obj.GetComponent<BaseCharacter>()._currentHP -= dmg;
+        ///////////////////////////////////////////////////
+
+        aux.GetComponent<Text>().text = dmg.ToString();
+        Destroy(aux, 1f);
+    }
+
+    /*public enum NextTo
     {
         None = 0,
         Friend = 1,
@@ -100,7 +129,7 @@ public class Combat : MonoBehaviour
     public void CheckEnemiesAttacked()
     {
         List<BaseCharacter> enemiesList = BattleList.instance.GetEnemies();
-        foreach (BaseCharacter enemy in enemiesList)
+        foreach (BaseCharacter enemy in enemiesList) 
         {
             if (CheckAttack(enemy))
             {
@@ -218,5 +247,5 @@ public class Combat : MonoBehaviour
         }
 
         return NextTo.None;
-    }
+    }*/
 }

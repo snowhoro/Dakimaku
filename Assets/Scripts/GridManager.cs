@@ -44,6 +44,7 @@ public class GridManager : MonoBehaviour
 
 	void Start () 
     {
+        AddCharacter(new Vector2(0, 4), character);
         AddCharacter(new Vector2(3, 4), character);
         AddCharacter(new Vector2(1, 4), character);
         AddCharacter(new Vector2(2, 4), enemytest);
