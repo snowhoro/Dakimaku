@@ -50,8 +50,11 @@ public class Account : MonoBehaviour
     }
 
     public void LoadTeams()
-    { 
-        
+    {
+        ServerRequests.GetInstace().RequestTeams(_playerId, LoadTeamCb);
+    }
+    public void CreateTeams() {
+        ServerRequests.GetInstace().CreateTeams(_playerId, CreateTeamCb);
     }
 
     void Awake()
@@ -189,7 +192,6 @@ public class Account : MonoBehaviour
             Debug.Log(dataJson["error"]);
         else
         {
-            
             Game.Instance.StartGame();
         }
     }

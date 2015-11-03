@@ -66,7 +66,6 @@ public class ServerRequests : MonoBehaviour
 
         StartCoroutine(WaitForRequest(www, callBack));
     }
-
     public void RequestAccount(string accountID, CallBack callBack)
     {
         string url = host + "getAccount";
@@ -84,7 +83,6 @@ public class ServerRequests : MonoBehaviour
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
-
     public void CreateInventory(string accountID, CallBack callback)
     {
         string url = host + "createInventory";
@@ -92,6 +90,23 @@ public class ServerRequests : MonoBehaviour
         form.AddField("PlayerId", accountID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callback));
+    }
+
+    public void CreateTeams(string accountID, CallBack callBack) 
+    {
+        string url = host + "createTeams";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+    public void RequestTeams(string accountID, CallBack callBack) 
+    {
+        string url = host + "getTeams";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
     }
 
 }
