@@ -179,7 +179,16 @@ public class Account : MonoBehaviour
             Debug.Log(dataJson["error"]);
         else
         {
-
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    if (dataJson["Teams"][i][j] != null)
+                    {
+                        _teams[i][j].setImage(dataJson["Teams"][i][j].Value);
+                    }
+                }
+            }
 
             Game.Instance.LoadEnd();
         }

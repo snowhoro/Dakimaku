@@ -31,4 +31,7 @@ public class Item : MonoBehaviour {
     {
         _selected = !_selected;
     }
+    public void setImage(string image) {
+
+    }
 }
