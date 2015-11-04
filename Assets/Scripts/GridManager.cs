@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     {
         Blocked = 0,
         Floor = 1,
+        Friend = 5,
     }
 
     public static readonly Vector2[] DIRS = new[]
@@ -49,6 +50,12 @@ public class GridManager : MonoBehaviour
         AddCharacter(new Vector2(1, 4), character);
         AddCharacter(new Vector2(2, 4), enemytest);
         AddCharacter(new Vector2(4, 4), enemytest);
+
+        AddCharacter(new Vector2(4, 5), character);
+        AddCharacter(new Vector2(4, 3), character);
+        AddCharacter(new Vector2(5, 4), character);
+
+
 	}
 
     private void AddCharacter(Vector2 position, GameObject _character)
@@ -150,12 +157,20 @@ public class GridManager : MonoBehaviour
         List<BaseCharacter> heroList = BattleList.instance.GetHeroes();
         List<BaseCharacter> enemiesList = BattleList.instance.GetEnemies();
         TileType enemiesType = TileType.Blocked;
-        TileType heroesType = TileType.Floor;
+        TileType heroesType = TileType.Friend;
         
         if(character is Enemy)
         {
-            enemiesType = TileType.Floor;
+            enemiesType = TileType.Friend;
             heroesType = TileType.Blocked;
+        }
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                map[new Vector2(x, y)] = TileType.Floor;
+            }
         }
 
         foreach (BaseCharacter hero in heroList)
@@ -163,5 +178,10 @@ public class GridManager : MonoBehaviour
 
         foreach (BaseCharacter enemy in enemiesList)
             map[enemy._gridPos] = enemiesType;        
+    }
+
+    public void ResetMapAtPosition(Vector2 position)
+    {
+        map[position] = TileType.Floor;
     }
 }

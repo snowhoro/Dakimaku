@@ -20,6 +20,10 @@ public class HealthBarControl : MonoBehaviour {
         healthBar.fillAmount = (float)character._currentHP / (float)character._maxBaseHP;
 
         if (character._currentHP <= 0)
+        {
+            BattleList.instance.Remove(character);
+            GridManager.instance.ResetMapAtPosition(character._gridPos);
             Destroy(gameObject, 0.3f);
+        }
 	}
 }

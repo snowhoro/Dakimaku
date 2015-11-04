@@ -83,11 +83,15 @@ public class Combat : MonoBehaviour
         CombatCheck combatCheck = new CombatCheck();
         LinkSystem linksystem = new LinkSystem();
         List<HitList> hitlist = combatCheck.GetEnemiesAttacked();
+
         foreach (HitList item in hitlist)
         {
-            Debug.Log(item.attackers[0]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[0]).Count);
-            Debug.Log(item.attackers[1]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[1]).Count);
-            ShowDamage(item.victim.gameObject);
+            foreach (BaseCharacter victim in item.GetVictims())
+            {
+                //Debug.Log(item.attackers[0]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[0]).Count);
+                //Debug.Log(item.attackers[1]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[1]).Count);
+                ShowDamage(victim.gameObject);
+            }
         }
     }
 
@@ -97,7 +101,7 @@ public class Combat : MonoBehaviour
         List<HitList> hitlist = combatCheck.GetHeroesAttacked();
         foreach (HitList item in hitlist)
         {
-            ShowDamage(item.victim.gameObject);
+            ShowDamage(item.GetVictim().gameObject);
         }
     }
 
@@ -118,134 +122,4 @@ public class Combat : MonoBehaviour
         aux.GetComponent<Text>().text = dmg.ToString();
         Destroy(aux, 1f);
     }
-
-    /*public enum NextTo
-    {
-        None = 0,
-        Friend = 1,
-        Enemy = 2,
-    }
-
-    public void CheckEnemiesAttacked()
-    {
-        List<BaseCharacter> enemiesList = BattleList.instance.GetEnemies();
-        foreach (BaseCharacter enemy in enemiesList) 
-        {
-            if (CheckAttack(enemy))
-            {
-                ShowDamage(enemy.gameObject);
-            }
-        }
-    }
-
-    public void CheckHeroesAttacked()
-    {
-        List<BaseCharacter> heroList = BattleList.instance.GetHeroes();
-        foreach (BaseCharacter hero in heroList)
-        {
-            if(CheckAttack(hero))
-            {
-                ShowDamage(hero.gameObject);
-            }
-        }
-    }
-
-    public void ShowDamage(GameObject obj)
-    {
-        GameObject aux = Instantiate(dmgNumbers);
-        aux.transform.SetParent(obj.transform.FindChild("Canvas"));
-        RectTransform rect = aux.GetComponent<RectTransform>();
-        rect.transform.localPosition = dmgNumbers.transform.localPosition;
-        rect.transform.localScale = dmgNumbers.transform.localScale;
-
-        int dmg = Random.Range(50, 70);
-        
-        //MEJORAR!!! //////////////////////////////////////
-        obj.GetComponent<BaseCharacter>()._currentHP -= dmg;
-        ///////////////////////////////////////////////////
-
-        aux.GetComponent<Text>().text = dmg.ToString();
-        Destroy(aux, 1f);
-    }
-
-    public bool CheckAttack(BaseCharacter character)
-    {
-        List<BaseCharacter> attackerList = BattleList.instance.GetHeroes();
-        List<BaseCharacter> friendList = BattleList.instance.GetEnemies();
-
-        //Si el atacado es un Hero
-        if(character is Character)
-        {
-            attackerList = BattleList.instance.GetEnemies();
-            friendList = BattleList.instance.GetHeroes();
-        }
-
-        //LEFT RIGHT
-        NextTo nextTo;
-        int auxPos = 0;
-        do
-        {
-            auxPos++;
-            nextTo = CheckDirection(character._gridPos, Vector2.left * auxPos, attackerList, friendList);
-        } while (nextTo == NextTo.Friend);
-
-        if (nextTo == NextTo.Enemy)
-        {
-            auxPos = 0;
-            do
-            {
-                auxPos++;
-                nextTo = CheckDirection(character._gridPos, Vector2.right * auxPos, attackerList, friendList);
-            } while (nextTo == NextTo.Friend);
-
-            if (nextTo == NextTo.Enemy)
-            {
-                //GUARDAR ACA LOS PARTICIPANTES
-                return true;
-            }
-        }
-
-        // UP DOWN
-        auxPos = 0;
-        do
-        {
-            auxPos++;
-            nextTo = CheckDirection(character._gridPos, Vector2.up * auxPos, attackerList, friendList);
-        } while (nextTo == NextTo.Friend);
-
-        if (nextTo == NextTo.Enemy)
-        {
-            auxPos = 0;
-            do
-            {
-                auxPos++;
-                nextTo = CheckDirection(character._gridPos, Vector2.down * auxPos, attackerList, friendList);
-            } while (nextTo == NextTo.Friend);
-
-            if (nextTo == NextTo.Enemy)
-            {
-                //GUARDAR ACA LOS PARTICIPANTES
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public NextTo CheckDirection(Vector2 targetPos, Vector2 direction, List<BaseCharacter> attackerList, List<BaseCharacter> friendList)
-    {
-        foreach(BaseCharacter attacker in attackerList)
-        {
-            if (attacker._gridPos == targetPos + direction)
-                return NextTo.Enemy;
-        }
-
-        foreach (BaseCharacter friend in friendList)
-        {
-            if (friend._gridPos == targetPos + direction)
-                return NextTo.Friend;
-        }
-
-        return NextTo.None;
-    }*/
 }

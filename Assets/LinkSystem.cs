@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class LinkSystem 
 {
-    public List<Dictionary<BaseCharacter, BaseSkill>> linkedList;
+    public Dictionary<BaseCharacter, BaseSkill> linkedList;
 
     public List<BaseCharacter> GetLinked(BaseCharacter character)
     {

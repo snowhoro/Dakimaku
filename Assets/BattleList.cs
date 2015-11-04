@@ -33,4 +33,12 @@ public class BattleList : MonoBehaviour
         return enemiesList;
     }
 
+    public void Remove(BaseCharacter character)
+    {
+        if (character is Enemy)
+            enemiesList.Remove(character);
+        else
+            heroList.Remove(character);
+    }
+
 }

@@ -14,16 +14,14 @@ public class CombatCheck
         Friend = 1,
         Enemy = 2,
     }
-
     public CombatCheck()
     {
         hitList = new List<HitList>();
     }
-
-    private bool CheckAttack(BaseCharacter character)
+    private void CheckAttack(BaseCharacter character)
     {
         hitGroup = new HitList();
-        hitGroup.victim = character;
+        hitGroup.AddVictim(character);
 
         //Si el atacado es un Hero
         if (character is Character)
@@ -59,11 +57,12 @@ public class CombatCheck
             {
                 //GUARDAR ACA LOS PARTICIPANTES
                 hitList.Add(hitGroup);
-                return true;
             }
         }
 
         // UP DOWN
+        hitGroup = new HitList();
+        hitGroup.AddVictim(character);
         auxPos = 0;
         do
         {
@@ -84,19 +83,16 @@ public class CombatCheck
             {
                 //GUARDAR ACA LOS PARTICIPANTES
                 hitList.Add(hitGroup);
-                return true;
             }
         }
-        return false;
     }
-
     private NextTo CheckDirection(Vector2 targetPos, Vector2 direction)
     {
         foreach (BaseCharacter attacker in attackerList)
         {
             if (attacker._gridPos == targetPos + direction)
             {
-                hitGroup.attackers.Add(attacker);
+                hitGroup.AddAttacker(attacker);
                 return NextTo.Enemy;
             }
         }
@@ -109,7 +105,6 @@ public class CombatCheck
 
         return NextTo.None;
     }
-
     public List<HitList> GetEnemiesAttacked()
     {
         hitList.Clear();
@@ -118,9 +113,11 @@ public class CombatCheck
         {
             CheckAttack(enemy);
         }
+        Debug.Log("ANTES: " + hitList.Count);
+        Repaso();
+        Debug.Log("DESPUES: " + hitList.Count);
         return hitList;
     }
-
     public List<HitList> GetHeroesAttacked()
     {
         hitList.Clear();
@@ -129,7 +126,28 @@ public class CombatCheck
         {
             CheckAttack(hero);
         }
+        Debug.Log("ANTES: " + hitList.Count);
+        Repaso();
+        Debug.Log("DESPUES: " + hitList.Count);
         return hitList;
     }
 
+    public List<HitList> Repaso()
+    {
+        for (int i = 0; i < hitList.Count-1; i++)
+        {
+            for (int j = i+1; j < hitList.Count; j++)
+            {
+                Debug.Log("i " + i + " j " + j);
+                if (hitList[i].CheckSameAttackers(hitList[j]))
+                {
+                    Debug.Log("entre " + i + " " + j);
+                    hitList[i].AddVictim(hitList[j].GetVictim());
+                    hitList.RemoveAt(j);
+                }
+            }
+        }
+
+        return hitList;
+    }
 }
