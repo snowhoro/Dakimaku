@@ -46,7 +46,7 @@ public class UiController : MonoBehaviour {
 
     void Awake()
     {
-        _instance = this;       
+        _instance = this;
     }
 	
 	// Update is called once per frame

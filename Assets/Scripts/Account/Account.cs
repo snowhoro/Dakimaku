@@ -60,12 +60,8 @@ public class Account : MonoBehaviour
     void Awake()
     {
         _instance = this;
-        _teams = new List<Item[]>(_maxTeams);
-        for (int i = 0; i < _maxTeams; i++)
-        {
-            _teams[i] = new Item[6];
-        }
     }
+
     void FixedUpdate()
     {
         if (_currentStamina != _maxStamina)
@@ -175,17 +171,26 @@ public class Account : MonoBehaviour
     {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
+
+
         if (dataJson["error"] != null)
             Debug.Log(dataJson["error"]);
         else
         {
+            _teams = new List<Item[]>(_maxTeams);
+            for (int i = 0; i < _maxTeams; i++)
+            {
+                _teams[i] = new Item[6];
+            }
+
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 6; j++)
                 {
                     if (dataJson["Teams"][i][j] != null)
                     {
-                        _teams[i][j].setImage(dataJson["Teams"][i][j].Value);
+                        _teams[i][j].setImage("portraitGRILL");
+                        //dataJson["Teams"][i][j].Value
                     }
                 }
             }
