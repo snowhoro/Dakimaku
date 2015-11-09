@@ -13,9 +13,12 @@ public class UiController : MonoBehaviour {
     public Transform InventoryParent, EditTeamParent;
 
     private int _maxSelectedItems;
-    private List<Item> _selectItems = new List<Item>();
+    private List<Item> _selectedItems = new List<Item>(); // ONLY FOR FUSING AND SELLING
+    private Item _itemShow; // SHOWING ITEM.
+    private Item _itemFuse; // TO FUSE;
 
-    public Item[] _hudTeams;
+    public TeamItem[] _hudTeams;
+    public int _selectedTeam;
 
     private InventoryState _menuState = InventoryState.None;
     private Vector3 vector1 = new Vector3(1, 1, 1);
@@ -33,6 +36,7 @@ public class UiController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         MenuVisibility(true, false, false, false, false);
+        _selectedTeam = 1;
     }
 
     private void MenuVisibility(bool main, bool shop, bool inventory, bool hatcher, bool options)
@@ -48,8 +52,6 @@ public class UiController : MonoBehaviour {
     {
         _instance = this;
     }
-	
-	// Update is called once per frame
 	void Update () {
         
         if (Input.GetKeyDown(KeyCode.Escape) && _menuState != InventoryState.None)
@@ -60,12 +62,13 @@ public class UiController : MonoBehaviour {
         }
 	}
 
+    // Inventory controller -----------------------------------------------------------------------------------------------------
+
     public void BackToTeamMain()
     {
         SetInventoryPanelVisibility(false);
         _menuState = InventoryState.None;
     }
-
     public void OpenImprovementMenu()
     {
         SetInventoryPanelVisibility(true);
@@ -80,7 +83,6 @@ public class UiController : MonoBehaviour {
             Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
         }
     }
-
     public void OpenTeamEdition()
     {
         _mainPanel.SetActive(false);
@@ -96,7 +98,6 @@ public class UiController : MonoBehaviour {
             Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
         }
     }
-
     public void OpenSellMenu()
     {
         SetInventoryPanelVisibility(true);
@@ -110,7 +111,6 @@ public class UiController : MonoBehaviour {
             Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
         }
     }
-
     public void SeeInventory()
     {
         SetInventoryPanelVisibility(true);
@@ -123,6 +123,16 @@ public class UiController : MonoBehaviour {
             Inventory.Instance.Items[i]._transform.localScale = vector1;
             Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
         }
+    }
+
+    private void SetInventoryPanelVisibility(bool visibility)
+    {
+        _selectedItems.Clear();
+        _itemFuse = null;
+        _itemShow = null;
+        _inventoryPanel.SetActive(visibility);
+        _mainPanel.SetActive(!visibility);
+        _teamPanel.SetActive(!visibility);
     }
 
     public void ItemClick(Item item)
@@ -138,19 +148,43 @@ public class UiController : MonoBehaviour {
             item.Select();
         }
         else if (_menuState == InventoryState.Look)
-        { 
+        {
+            _itemShow = item;
             // Abrir Detalles personaje
         }
         else if (_menuState == InventoryState.Fuse)
-        { 
-            // Select item for fuse
+        {
+            _itemFuse = item;
+            // Abrir hud de Fusing;
         }
         else if (_menuState == InventoryState.Edit)
-        { 
-            // Select item in slot
-            item.Select();
+        {
+            if (_selectedItems.Count < 6 && !item.Selected)
+            {
+                item.Select();
+                
+            }
+            else if (item.Selected)
+            {
+                //_hudTeams[0];
+            }
         }
     }
+
+    // --------------------------------------------------------------------------------------------------------------------------
+
+    public void NextTeam()
+    {
+        if (_selectedTeam != 5)
+            _selectedTeam++;
+    }
+    public void PrevTeam()
+    {
+        if (_selectedTeam != 1)
+            _selectedTeam--;
+    }
+
+    // Switch beetween menus. ---------------------------------------------------------------------------------------------------
 
     public void MainMenu()
     {
@@ -159,12 +193,10 @@ public class UiController : MonoBehaviour {
         _teamEditPanel.SetActive(false);
         _menuState = InventoryState.None;
     }
-
     public void MenuInventory()
     {
         MenuVisibility(false, false, true, false, false);
     }
-
     public void Shop()
     {
         MenuVisibility(false, true, false, false, false);
@@ -172,7 +204,6 @@ public class UiController : MonoBehaviour {
         _teamEditPanel.SetActive(false);
         _menuState = InventoryState.None;
     }
-
     public void Hatcher()
     {
         MenuVisibility(false, false, false, true, false);
@@ -180,7 +211,6 @@ public class UiController : MonoBehaviour {
         _teamEditPanel.SetActive(false);
         _menuState = InventoryState.None;
     }
-
     public void Options()
     {
         MenuVisibility(false, false, false, false, true);
@@ -189,11 +219,5 @@ public class UiController : MonoBehaviour {
         _menuState = InventoryState.None;
     }
 
-    private void SetInventoryPanelVisibility(bool visibility)
-    {
-        _inventoryPanel.SetActive(visibility);
-        _mainPanel.SetActive(!visibility);
-        _teamPanel.SetActive(!visibility);
-    }
-
+    // --------------------------------------------------------------------------------------------------------------------------
 }

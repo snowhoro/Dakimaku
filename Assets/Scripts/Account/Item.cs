@@ -21,7 +21,6 @@ public class Item : MonoBehaviour {
         _selected = false;
         _transform = this.transform;
         _CharImg = this.GetComponent<Image>();
-        _CharImg.sprite = Resources.Load<Sprite>("portraitGRILL");
     }
 	
 	// Update is called once per frame
@@ -33,9 +32,10 @@ public class Item : MonoBehaviour {
     {
         _selected = !_selected;
     }
+
     public void setImage(string imagePath) 
     {
-        Debug.Log(Resources.Load<Image>(imagePath));
-        _CharImg = Resources.Load<Image>(imagePath);
+        //_CharImg.sprite = Resources.Load<Sprite>(imagePath);
+        _CharImg.sprite = Resources.Load<Sprite>("portraitGRILL");
     }
 }
