@@ -142,7 +142,6 @@ public class UiController : MonoBehaviour {
 
     public void ItemClick(Item item)
     {
-        Debug.Log(_menuState);
         if (_menuState == InventoryState.SelFuse || _menuState == InventoryState.Sell)
         {
             if (!item.Selected)
@@ -165,6 +164,8 @@ public class UiController : MonoBehaviour {
         }
         else if (_menuState == InventoryState.Edit)
         {
+            Debug.Log(item.Selected);
+
             if (_selectedItems.Count < 6 && !item.Selected)
             {
                 item.Select();
@@ -181,7 +182,8 @@ public class UiController : MonoBehaviour {
             {
                 for (int i = 1; i <= 6; i++)
                 {
-                    if (_hudTeams[(i * _selectedTeam) - 1].RefItem = item)
+                    Debug.Log(_hudTeams[(i * _selectedTeam) - 1].RefItem);
+                    if (_hudTeams[(i * _selectedTeam) - 1].RefItem != null || (_hudTeams[(i * _selectedTeam) - 1].RefItem.GetInstanceID() == item.GetInstanceID()))
                     {
                         _hudTeams[(i * _selectedTeam) - 1].UnSelect();
                         break;
