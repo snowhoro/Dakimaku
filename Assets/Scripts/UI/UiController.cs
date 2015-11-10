@@ -51,6 +51,11 @@ public class UiController : MonoBehaviour {
     void Awake()
     {
         _instance = this;
+        foreach (Item invItem in Inventory.Instance.Items)
+        {
+            invItem.itemButton.onClick.AddListener(() => { ItemClick(invItem); });
+        }
+
     }
 	void Update () {
         
@@ -77,10 +82,7 @@ public class UiController : MonoBehaviour {
         for (int i = 0; i < Inventory.Instance.Items.Count; i++)
         {
             Debug.Log(InventoryParent.name);
-            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
-            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
-            Inventory.Instance.Items[i]._transform.localScale = vector1;
-            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+            setIteminPanel(Inventory.Instance.Items[i], InventoryParent);
         }
     }
     public void OpenTeamEdition()
@@ -91,11 +93,13 @@ public class UiController : MonoBehaviour {
 
         for (int i = 0; i < Inventory.Instance.Items.Count; i++)
         {
-            Debug.Log(EditTeamParent);
-            Inventory.Instance.Items[i]._transform.SetParent(EditTeamParent);
-            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
-            Inventory.Instance.Items[i]._transform.localScale = vector1;
-            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+            setIteminPanel(Inventory.Instance.Items[i], EditTeamParent);
+        }
+
+        for (int i = 1; i <= 6; i++)
+        {
+            if (_hudTeams[(i * _selectedTeam) - 1].RefItem != null)
+                _selectedItems.Add(_hudTeams[(i * _selectedTeam) - 1].RefItem);
         }
     }
     public void OpenSellMenu()
@@ -105,10 +109,7 @@ public class UiController : MonoBehaviour {
 
         for (int i = 0; i < Inventory.Instance.Items.Count; i++)
         {
-            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
-            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
-            Inventory.Instance.Items[i]._transform.localScale = vector1;
-            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+            setIteminPanel(Inventory.Instance.Items[i], InventoryParent);
         }
     }
     public void SeeInventory()
@@ -118,13 +119,17 @@ public class UiController : MonoBehaviour {
 
         for (int i = 0; i < Inventory.Instance.Items.Count; i++)
         {
-            Inventory.Instance.Items[i]._transform.SetParent(InventoryParent);
-            Inventory.Instance.Items[i]._transform.localPosition = Vector3.zero;
-            Inventory.Instance.Items[i]._transform.localScale = vector1;
-            Inventory.Instance.Items[i]._transform.localRotation = Quaternion.identity;
+            setIteminPanel(Inventory.Instance.Items[i], InventoryParent);
         }
     }
 
+    private void setIteminPanel(Item item, Transform parent)
+    {
+        item._transform.SetParent(parent);
+        item._transform.localPosition = Vector3.zero;
+        item._transform.localScale = vector1;
+        item._transform.localRotation = Quaternion.identity;
+    }
     private void SetInventoryPanelVisibility(bool visibility)
     {
         _selectedItems.Clear();
@@ -137,6 +142,7 @@ public class UiController : MonoBehaviour {
 
     public void ItemClick(Item item)
     {
+        Debug.Log(_menuState);
         if (_menuState == InventoryState.SelFuse || _menuState == InventoryState.Sell)
         {
             if (!item.Selected)
@@ -162,10 +168,25 @@ public class UiController : MonoBehaviour {
             if (_selectedItems.Count < 6 && !item.Selected)
             {
                 item.Select();
-                
+                for (int i = 1; i <= 6; i++)
+                {
+                    if (_hudTeams[(i * _selectedTeam) - 1].RefItem == null)
+                    {
+                        _hudTeams[(i * _selectedTeam) - 1].Select(item);
+                        break;
+                    }
+                }
             }
             else if (item.Selected)
             {
+                for (int i = 1; i <= 6; i++)
+                {
+                    if (_hudTeams[(i * _selectedTeam) - 1].RefItem = item)
+                    {
+                        _hudTeams[(i * _selectedTeam) - 1].UnSelect();
+                        break;
+                    }
+                }
                 //_hudTeams[0];
             }
         }

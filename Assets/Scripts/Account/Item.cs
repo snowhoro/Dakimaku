@@ -6,6 +6,7 @@ public class Item : MonoBehaviour {
 
     private bool _selected;
     public bool Selected { get { return _selected; } set { _selected = value; } }
+    public Button itemButton;
 
     public Character _character { get; private set; }
     public Image _CharImg;
@@ -21,6 +22,7 @@ public class Item : MonoBehaviour {
         _selected = false;
         _transform = this.transform;
         _CharImg = this.GetComponent<Image>();
+        itemButton = this.GetComponent<Button>();
     }
 	
 	// Update is called once per frame

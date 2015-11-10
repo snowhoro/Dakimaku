@@ -1,15 +1,27 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class TeamItem : MonoBehaviour {
 
+    public Image SlotImage;
+    public Item RefItem;
+
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+        SlotImage = this.GetComponent<Image>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    public void UnSelect()
+    {
+        RefItem = null;
+        SlotImage.sprite = Resources.Load<Sprite>("gridSlot");
+    }
+
+    public void Select(Item item)
+    {
+        RefItem = item;
+        SlotImage.sprite = item._CharImg.sprite;
+    }
+
 }
