@@ -1,39 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class LinkSystem 
+public static class LinkSystem 
 {
-    public Dictionary<BaseCharacter, BaseSkill> linkedList;
+    private static Vector3[] DIRS = new[]
+    {
+        new Vector3(1, 0, 10),
+        new Vector3(0, -1, 10),
+        new Vector3(-1, 0, 10),
+        new Vector3(0, 1, 10)
+    };
 
-    public List<BaseCharacter> GetLinked(BaseCharacter character)
+    public static List<BaseCharacter> GetLinked(BaseCharacter character)
     {
         List<BaseCharacter> linkedGroup = new List<BaseCharacter>();
-        BaseCharacter linked = null;
 
-        int auxPos = 1;
-        Vector2 direction = Vector2.left * auxPos;
-        bool stopWhile = false;
-        while (GridManager.instance.InBounds(character._gridPos + Vector2.left * auxPos) && !stopWhile)
+        for (int i = 0; i < DIRS.Length; i++)
         {
-            linked = GetLinkedInDirection(character._gridPos, Vector2.left * auxPos);
+            BaseCharacter linked = null;
+            int auxPos = 1;
+            Vector2 direction = DIRS[i] * auxPos;
+            bool stopWhile = false;
 
-            if (linked != null)
+            while (GridManager.instance.InBounds(character._gridPos + direction) && auxPos <= DIRS[i].z && !stopWhile)
             {
-                if (linked is Character)
-                    linkedGroup.Add(linked);
-                else
-                    stopWhile = true;
+                linked = GetLinkedInDirection(character._gridPos, direction);
+                if (linked != null)
+                {
+                    if (linked is Character)
+                        linkedGroup.Add(linked);
+                    else
+                        stopWhile = true;
+                }
+                //SIGUIENTE
+                auxPos++;
+                direction = DIRS[i] * auxPos;
             }
-
-            //SIGUIENTE
-            auxPos++;
-            direction = Vector2.left * auxPos;
         }
-
         return linkedGroup;
     }
-
-    private BaseCharacter GetLinkedInDirection(Vector2 targetPos, Vector2 direction)
+    private static BaseCharacter GetLinkedInDirection(Vector2 targetPos, Vector2 direction)
     {
         List<BaseCharacter> friendList = BattleList.instance.GetHeroes();
         List<BaseCharacter> enemiesList = BattleList.instance.GetEnemies();
@@ -49,7 +55,6 @@ public class LinkSystem
             if (enemy._gridPos == targetPos + direction)
                 return enemy;
         }
-
         return null;
     }
 }

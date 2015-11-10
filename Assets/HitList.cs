@@ -5,21 +5,27 @@ public class HitList
 {
     private List<BaseCharacter> victims;
     private List<BaseCharacter> attackers;
-    private Dictionary<BaseCharacter, BaseSkill> linked;
+    private List<BaseCharacter>[] linked;
 
     public HitList()
     {
         attackers = new List<BaseCharacter>();
         victims = new List<BaseCharacter>();
-        linked = new Dictionary<BaseCharacter, BaseSkill>();
+        linked = new List<BaseCharacter>[2];
     }
     public void AddAttacker(BaseCharacter character)
     {
+        if (character is Character)
+            AddLinked(character);
         attackers.Add(character);
     }
     public void AddVictim(BaseCharacter character)
     {
         victims.Add(character);
+    }
+    private void AddLinked(BaseCharacter character)
+    {
+        linked[attackers.Count] = LinkSystem.GetLinked(character);
     }
     public BaseCharacter GetVictim(int index = 0)
     {

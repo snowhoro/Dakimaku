@@ -22,7 +22,6 @@ public class Combat : MonoBehaviour
             return _instance;
         }
     }
-
     void Awake()
     {
         if (_instance == null)
@@ -36,7 +35,6 @@ public class Combat : MonoBehaviour
                 Destroy(this.gameObject);
         }
     }
-    
     public void Hit(BaseCharacter target, BaseCharacter origin)
     {
         target._currentHP -= origin._physicalBaseAttack;
@@ -81,24 +79,24 @@ public class Combat : MonoBehaviour
     public void CheckEnemiesAttacked()
     {
         CombatCheck combatCheck = new CombatCheck();
-        LinkSystem linksystem = new LinkSystem();
         List<HitList> hitlist = combatCheck.GetEnemiesAttacked();
+        ShowBattle.instance.hitList = hitlist;
 
-        foreach (HitList item in hitlist)
+        StartCoroutine(ShowBattle.instance.StartShowBattle());
+        /*foreach (HitList item in hitlist)
         {
             foreach (BaseCharacter victim in item.GetVictims())
             {
-                //Debug.Log(item.attackers[0]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[0]).Count);
-                //Debug.Log(item.attackers[1]._gridPos + " linkNum " + linksystem.GetLinked(item.attackers[1]).Count);
                 ShowDamage(victim.gameObject);
             }
-        }
+        }*/
     }
 
     public void CheckHeroesAttacked()
     {
         CombatCheck combatCheck = new CombatCheck();
         List<HitList> hitlist = combatCheck.GetHeroesAttacked();
+        ShowBattle.instance.hitList = hitlist;
         foreach (HitList item in hitlist)
         {
             ShowDamage(item.GetVictim().gameObject);
@@ -112,9 +110,7 @@ public class Combat : MonoBehaviour
         RectTransform rect = aux.GetComponent<RectTransform>();
         rect.transform.localPosition = dmgNumbers.transform.localPosition;
         rect.transform.localScale = dmgNumbers.transform.localScale;
-
         int dmg = Random.Range(50, 70);
-
         //MEJORAR!!! //////////////////////////////////////
         obj.GetComponent<BaseCharacter>()._currentHP -= dmg;
         ///////////////////////////////////////////////////
