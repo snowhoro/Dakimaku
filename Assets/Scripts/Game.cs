@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Game : MonoBehaviour {
@@ -12,8 +13,8 @@ public class Game : MonoBehaviour {
     // Use this for initialization
 	void Start () {
 
-        //PlayerPrefs.SetString("accountID", "561566e83bfe76d70988514d");
-        //PlayerPrefs.Save();
+        PlayerPrefs.SetString("accountID", "5639359c0ef0b2a310ab1fa6");
+        PlayerPrefs.Save();
 		//PlayerPrefs.DeleteAll();
 
         if (PlayerPrefs.HasKey("accountID"))

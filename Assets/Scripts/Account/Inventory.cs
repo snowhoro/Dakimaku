@@ -41,6 +41,7 @@ public class Inventory : MonoBehaviour
             Debug.Log(d["error"]);
         else
         {
+            Account.Instance().CreateTeams();
             // inventario creado
         }
     }
@@ -57,7 +58,7 @@ public class Inventory : MonoBehaviour
              parent.name = "Items";
              DontDestroyOnLoad(parent);
 
-             Debug.Log(dataJson["inventory"]["Characters"].Count);
+             Debug.Log("Items in inventory: " + dataJson["inventory"]["Characters"].Count);
              for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
              {
                  GameObject go = GameObject.Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
@@ -67,7 +68,8 @@ public class Inventory : MonoBehaviour
                  _items.Add(goComponent);
              }
 
-             Game.Instance.LoadEnd();
+             Account.Instance().LoadTeams();
+
          }
     }
 

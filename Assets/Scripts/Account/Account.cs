@@ -49,15 +49,19 @@ public class Account : MonoBehaviour
         ServerRequests.GetInstace().SignUp(name, CreateCb);
     }
 
+    public void LoadTeams()
+    {
+        ServerRequests.GetInstace().RequestTeams(_playerId, LoadTeamCb);
+    }
+    public void CreateTeams() {
+        ServerRequests.GetInstace().CreateTeams(_playerId, CreateTeamCb);
+    }
+
     void Awake()
     {
         _instance = this;
-        _teams = new List<Item[]>(_maxTeams);
-        for (int i = 0; i < _maxTeams; i++)
-        {
-            _teams[i] = new Item[6];
-        }
     }
+
     void FixedUpdate()
     {
         if (_currentStamina != _maxStamina)
@@ -134,8 +138,6 @@ public class Account : MonoBehaviour
 
             _inventory.CreateInventory(_playerId);
             Game.Instance._playerId = _playerId;
-            
-            Game.Instance.StartGame();
         }
     }
     public void LoadCb(string data)
@@ -163,6 +165,48 @@ public class Account : MonoBehaviour
                                         dataJson["account"]["LastLogDay"] == null ? DateTime.Now : DateTime.Parse(dataJson["account"]["LastLogDay"].Value));
 
             _inventory.LoadInventory(_playerId);
+        }
+    }
+    public void LoadTeamCb(string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+
+
+        if (dataJson["error"] != null)
+            Debug.Log(dataJson["error"]);
+        else
+        {
+            _teams = new List<Item[]>(_maxTeams);
+            for (int i = 0; i < _maxTeams; i++)
+            {
+                _teams[i] = new Item[6];
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    if (dataJson["Teams"][i][j] != null)
+                    {
+                        _teams[i][j].setImage("portraitGRILL");
+                        //dataJson["Teams"][i][j].Value
+                    }
+                }
+            }
+
+            Game.Instance.LoadEnd();
+        }
+    }
+    public void CreateTeamCb(string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+        if (dataJson["error"] != null)
+            Debug.Log(dataJson["error"]);
+        else
+        {
+            Game.Instance.StartGame();
         }
     }
 }
