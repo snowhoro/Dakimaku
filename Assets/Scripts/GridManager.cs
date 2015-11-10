@@ -1,57 +1,187 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour 
 {
-    public int gridHeight;
-    public int gridWidth;
 
-    public Vector2 startPoint;
+    public static GridManager instance { get; private set; }
 
-    private Dictionary<Vector2, Vector2> grid;
+    public RectTransform gridpanel;
+    public int height;
+    public int width;
+
+    public Dictionary<Vector2, Transform> grid;
 
     public GameObject gridSlot;
     public GameObject character;
     public GameObject enemytest;
 
+    public enum TileType
+    {
+        Blocked = 0,
+        Floor = 1,
+        Friend = 5,
+    }
+
+    public static readonly Vector2[] DIRS = new[]
+        {
+            new Vector2(1, 0),
+            new Vector2(0, -1),
+            new Vector2(-1, 0),
+            new Vector2(0, 1)
+        };
+
+    public Dictionary<Vector2, TileType> map;
+
+    void Awake()
+    {
+        instance = this;
+        grid = new Dictionary<Vector2, Transform>();
+        map = new Dictionary<Vector2,TileType>();
+        DrawGrid();
+    }
+
 	void Start () 
     {
-        grid = new Dictionary<Vector2,Vector2>();
+        AddCharacter(new Vector2(0, 4), character);
+        AddCharacter(new Vector2(3, 4), character);
+        AddCharacter(new Vector2(1, 4), character);
+        AddCharacter(new Vector2(2, 4), enemytest);
+        AddCharacter(new Vector2(4, 4), enemytest);
+
+        AddCharacter(new Vector2(4, 5), character);
+        AddCharacter(new Vector2(4, 3), character);
+        AddCharacter(new Vector2(5, 4), character);
+
+
+	}
+
+    private void AddCharacter(Vector2 position, GameObject _character)
+    {
+        GameObject charac = (GameObject)Instantiate(_character, grid[position].position - Vector3.forward, Quaternion.identity);
+        charac.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
+        BaseCharacter bcharac = charac.GetComponent<BaseCharacter>();
+        bcharac._gridPos = position;
+        BattleList.instance.Add(bcharac);
+    }
+
+    private void DrawGrid()
+    {
+        Vector2 startPoint = (Vector2)gridpanel.transform.position + GetSeparation();
         Vector2 point = startPoint;
-        for (int y = 0; y < gridHeight; y++)
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < gridWidth; x++)
+            for (int x = 0; x < width; x++)
             {
-                Vector2 key = new Vector2(x,y);
-                Vector2 value = point + new Vector2(x,y);
-                grid.Add(key,value);
-                
+                Vector2 key = new Vector2(x, y);
+                Vector3 value = point + new Vector2(x, y);
+
                 GameObject slot = (GameObject)Instantiate(gridSlot, value, Quaternion.identity);
-                //slot.transform.localScale = new Vector3(0.9f, 0.9f, 1f);
                 slot.transform.parent = transform;
+                grid.Add(key, slot.transform);
+                map.Add(key, TileType.Floor);
             }
             point.x = startPoint.x;
         }
 
-        GameObject charac = (GameObject)Instantiate(character, grid[new Vector2(3, 4)], Quaternion.identity);
-        charac.transform.parent = transform;
-
-        charac = (GameObject)Instantiate(enemytest, grid[new Vector2(3, 5)], Quaternion.identity);
-        charac.transform.parent = transform;
-
-        charac = (GameObject)Instantiate(enemytest, grid[new Vector2(3, 3)], Quaternion.identity);
-        charac.transform.parent = transform;
-
-        charac = (GameObject)Instantiate(enemytest, grid[new Vector2(2, 4)], Quaternion.identity);
-        charac.transform.parent = transform;
-
-        charac = (GameObject)Instantiate(enemytest, grid[new Vector2(4, 4)], Quaternion.identity);
-        charac.transform.parent = transform;
-
         transform.localScale = new Vector3(0.9f, 0.9f, 1f);
+    }
 
-	}
-	
-	
+    private Vector2 GetSeparation()
+    {
+        Vector2 aspect = AspectRatio.GetAspectRatio(Screen.width, Screen.height);
+
+        if (aspect == new Vector2(9, 16))
+            return new Vector2(0.3f, 0.3f);
+        return new Vector2(0.3f, 0.3f);
+
+    }
+
+    public bool InBounds(Vector2 loc)
+    {
+        return 0 <= loc.x && loc.x < width
+             && 0 <= loc.y && loc.y < height;
+    }
+
+    public bool Passable(Vector2 loc)
+    {
+        switch (map[loc])
+        {
+            case TileType.Blocked:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    public int Cost(Vector2 loc)
+    {
+        if (map.ContainsKey(loc))
+            return (int)map[loc];
+        else
+            return 1;
+    }
+
+    public IEnumerable<Vector2> Neighbors(Vector2 loc)
+    {
+        foreach (Vector2 dir in DIRS)
+        {
+            Vector2 next = new Vector2(loc.x + dir.x, loc.y + dir.y);
+            if (InBounds(next) && Passable(next))
+            {
+                yield return next;
+            }
+        }
+    }
+
+    public Vector2 GetGridPosition(Vector2 worldpos)
+    {
+        foreach (Vector2 key in grid.Keys)
+        {
+            if((Vector2)grid[key].position == worldpos)
+                return key;
+        }
+
+        return Vector2.zero;
+    }
+    
+    public Vector2 GetWorldPosition(Vector2 gridpos)
+    {
+        return grid[gridpos].position;
+    }
+
+    public void UpdateMapPositions(BaseCharacter character)
+    {
+        List<BaseCharacter> heroList = BattleList.instance.GetHeroes();
+        List<BaseCharacter> enemiesList = BattleList.instance.GetEnemies();
+        TileType enemiesType = TileType.Blocked;
+        TileType heroesType = TileType.Friend;
+        
+        if(character is Enemy)
+        {
+            enemiesType = TileType.Friend;
+            heroesType = TileType.Blocked;
+        }
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                map[new Vector2(x, y)] = TileType.Floor;
+            }
+        }
+
+        foreach (BaseCharacter hero in heroList)
+            map[hero._gridPos] = heroesType;
+
+        foreach (BaseCharacter enemy in enemiesList)
+            map[enemy._gridPos] = enemiesType;        
+    }
+
+    public void ResetMapAtPosition(Vector2 position)
+    {
+        map[position] = TileType.Floor;
+    }
 }

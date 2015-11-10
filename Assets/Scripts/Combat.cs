@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Combat : MonoBehaviour
 {
-
     public GameObject dmgNumbers;
-    private static Combat _instance;
 
+    private static Combat _instance;
     public static Combat instance
     {
         get
@@ -22,7 +22,6 @@ public class Combat : MonoBehaviour
             return _instance;
         }
     }
-
     void Awake()
     {
         if (_instance == null)
@@ -36,7 +35,6 @@ public class Combat : MonoBehaviour
                 Destroy(this.gameObject);
         }
     }
-
     public void Hit(BaseCharacter target, BaseCharacter origin)
     {
         target._currentHP -= origin._physicalBaseAttack;
@@ -76,5 +74,48 @@ public class Combat : MonoBehaviour
         target._currentHP += hitPoints;
         if (target._currentHP > target._maxBaseHP)
             target._currentHP = target._maxBaseHP;
+    }
+    
+    public void CheckEnemiesAttacked()
+    {
+        CombatCheck combatCheck = new CombatCheck();
+        List<HitList> hitlist = combatCheck.GetEnemiesAttacked();
+        ShowBattle.instance.hitList = hitlist;
+
+        StartCoroutine(ShowBattle.instance.StartShowBattle());
+        /*foreach (HitList item in hitlist)
+        {
+            foreach (BaseCharacter victim in item.GetVictims())
+            {
+                ShowDamage(victim.gameObject);
+            }
+        }*/
+    }
+
+    public void CheckHeroesAttacked()
+    {
+        CombatCheck combatCheck = new CombatCheck();
+        List<HitList> hitlist = combatCheck.GetHeroesAttacked();
+        ShowBattle.instance.hitList = hitlist;
+        foreach (HitList item in hitlist)
+        {
+            ShowDamage(item.GetVictim().gameObject);
+        }
+    }
+
+    public void ShowDamage(GameObject obj)
+    {
+        GameObject aux = Instantiate(dmgNumbers);
+        aux.transform.SetParent(obj.transform.FindChild("Canvas"));
+        RectTransform rect = aux.GetComponent<RectTransform>();
+        rect.transform.localPosition = dmgNumbers.transform.localPosition;
+        rect.transform.localScale = dmgNumbers.transform.localScale;
+        int dmg = Random.Range(50, 70);
+        //MEJORAR!!! //////////////////////////////////////
+        obj.GetComponent<BaseCharacter>()._currentHP -= dmg;
+        ///////////////////////////////////////////////////
+
+        aux.GetComponent<Text>().text = dmg.ToString();
+        Destroy(aux, 1f);
     }
 }
