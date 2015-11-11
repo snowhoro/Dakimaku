@@ -14,6 +14,7 @@ public class TeamItem : MonoBehaviour {
 
     public void UnSelect()
     {
+        RefItem.Select();
         RefItem = null;
         SlotImage.sprite = Resources.Load<Sprite>("gridSlot");
     }
@@ -21,6 +22,7 @@ public class TeamItem : MonoBehaviour {
     public void Select(Item item)
     {
         RefItem = item;
+        item.Select();
         SlotImage.sprite = item._CharImg.sprite;
     }
 

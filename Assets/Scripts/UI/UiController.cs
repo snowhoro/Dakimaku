@@ -37,7 +37,7 @@ public class UiController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         MenuVisibility(true, false, false, false, false);
-        _selectedTeam = 1;
+        _selectedTeam = 0;
     }
 
     private void MenuVisibility(bool main, bool shop, bool inventory, bool hatcher, bool options)
@@ -99,8 +99,8 @@ public class UiController : MonoBehaviour {
 
         for (int i = 1; i <= 6; i++)
         {
-            if (_hudTeams[(i * _selectedTeam) - 1].RefItem != null)
-                _selectedItems.Add(_hudTeams[(i * _selectedTeam) - 1].RefItem);
+            if (_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem != null)
+                _selectedItems.Add(_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem);
         }
     }
     public void OpenSellMenu()
@@ -133,6 +133,7 @@ public class UiController : MonoBehaviour {
     }
     private void SetInventoryPanelVisibility(bool visibility)
     {
+        Inventory.Instance.DeselectAll();
         _selectedItems.Clear();
         _itemFuse = null;
         _itemShow = null;
@@ -169,12 +170,12 @@ public class UiController : MonoBehaviour {
 
             if (_selectedItems.Count < 6 && !item.Selected)
             {
-                item.Select();
                 for (int i = 1; i <= 6; i++)
                 {
-                    if (_hudTeams[(i * _selectedTeam) - 1].RefItem == null)
+                    if (_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem == null)
                     {
-                        _hudTeams[(i * _selectedTeam) - 1].Select(item);
+                        _hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].Select(item);
+                        _selectedItems.Add(item);
                         break;
                     }
                 }
@@ -183,9 +184,12 @@ public class UiController : MonoBehaviour {
             {
                 for (int i = 1; i <= 6; i++)
                 {
-                    Debug.Log(_hudTeams[(i * _selectedTeam) - 1].RefItem);
-                    if (_hudTeams[(i * _selectedTeam) - 1].RefItem != null || (_hudTeams[(i * _selectedTeam) - 1].RefItem.GetInstanceID() == item.GetInstanceID()))
+                    if (_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem != null || (_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem.GetInstanceID() == item.GetInstanceID()))
                     {
+
+                        Debug.Log("entre en el if de deseleccion");
+
+                        _selectedItems.Remove(item);
                         _hudTeams[(i * _selectedTeam) - 1].UnSelect();
                         break;
                     }
@@ -199,12 +203,12 @@ public class UiController : MonoBehaviour {
 
     public void NextTeam()
     {
-        if (_selectedTeam != 5)
+        if (_selectedTeam < 4)
             _selectedTeam++;
     }
     public void PrevTeam()
     {
-        if (_selectedTeam != 1)
+        if (_selectedTeam > 0)
             _selectedTeam--;
     }
 

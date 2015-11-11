@@ -77,5 +77,12 @@ public class Inventory : MonoBehaviour
     {
         return _items.Count;
     }
+    public void DeselectAll()
+    {
+        for (int i = 0; i < _items.Count; i++)
+        {
+            _items[i].Selected = false;
+        }
+    }
 
 }
