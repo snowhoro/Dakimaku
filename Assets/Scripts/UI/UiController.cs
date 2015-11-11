@@ -10,6 +10,7 @@ public class UiController : MonoBehaviour {
     
     public GameObject _mainPanel, _teamEditPanel, _inventoryPanel, _teamPanel;
     public GameObject _home, _shop, _inventory, _hatcher, _options;
+	public GameObject _normal, _events, _dungeons;
     public Transform InventoryParent, EditTeamParent;
 
     private int _maxSelectedItems;
@@ -242,5 +243,16 @@ public class UiController : MonoBehaviour {
         _menuState = InventoryState.None;
     }
 
+	public void ShowDungeons()
+	{
+		_events.SetActive (true);
+		_normal.SetActive (true);
+		_dungeons.SetActive (false);
+	}
+
+	public void GoToBattle()
+	{
+		Application.LoadLevel("Battle");
+	}
     // --------------------------------------------------------------------------------------------------------------------------
 }
