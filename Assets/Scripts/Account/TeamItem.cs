@@ -16,7 +16,8 @@ public class TeamItem : MonoBehaviour {
     {
         RefItem.Select();
         RefItem = null;
-        SlotImage.sprite = Resources.Load<Sprite>("gridSlot");
+        Debug.Log(Resources.Load<Sprite>("UI/BattleUI/gridSlot.png"));
+        SlotImage.sprite = Resources.Load<Sprite>("UI/BattleUI/gridSlot.png");
     }
 
     public void Select(Item item)

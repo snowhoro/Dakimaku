@@ -186,11 +186,10 @@ public class UiController : MonoBehaviour {
                 {
                     if (_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem != null || (_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem.GetInstanceID() == item.GetInstanceID()))
                     {
-
-                        Debug.Log("entre en el if de deseleccion");
+                        Debug.Log(_hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].RefItem.GetInstanceID() + " , " + item.GetInstanceID());
 
                         _selectedItems.Remove(item);
-                        _hudTeams[(i * _selectedTeam) - 1].UnSelect();
+                        _hudTeams[(i * System.Convert.ToInt32(Mathf.Pow(6, _selectedTeam))) - 1].UnSelect();
                         break;
                     }
                 }
