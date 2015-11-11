@@ -113,9 +113,9 @@ public class CombatCheck
         {
             CheckAttack(enemy);
         }
-        Debug.Log("ANTES: " + hitList.Count);
+        //Debug.Log("ANTES: " + hitList.Count);
         Repaso();
-        Debug.Log("DESPUES: " + hitList.Count);
+        //Debug.Log("DESPUES: " + hitList.Count);
         return hitList;
     }
     public List<HitList> GetHeroesAttacked()
@@ -126,9 +126,9 @@ public class CombatCheck
         {
             CheckAttack(hero);
         }
-        Debug.Log("ANTES: " + hitList.Count);
+        //Debug.Log("ANTES: " + hitList.Count);
         Repaso();
-        Debug.Log("DESPUES: " + hitList.Count);
+        //Debug.Log("DESPUES: " + hitList.Count);
         return hitList;
     }
 
@@ -138,10 +138,10 @@ public class CombatCheck
         {
             for (int j = i+1; j < hitList.Count; j++)
             {
-                Debug.Log("i " + i + " j " + j);
+                //Debug.Log("i " + i + " j " + j);
                 if (hitList[i].CheckSameAttackers(hitList[j]))
                 {
-                    Debug.Log("entre " + i + " " + j);
+                    //Debug.Log("entre " + i + " " + j);
                     hitList[i].AddVictim(hitList[j].GetVictim());
                     hitList.RemoveAt(j);
                 }

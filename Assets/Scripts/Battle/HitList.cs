@@ -43,6 +43,21 @@ public class HitList
     {
         return attackers.ToArray();
     }
+    public List<BaseCharacter>[] GetLinked()
+    {
+        return linked;
+    }
+    public List<BaseCharacter> GetLinkedTo(BaseCharacter character)
+    {
+        for (int i = 0; i < attackers.Count; i++)
+		{                
+            if(character.GetInstanceID() == attackers[i].GetInstanceID())
+            {
+                return linked[i];
+            }			 
+		}
+        return new List<BaseCharacter>();
+    }
     public bool CheckSameAttackers(HitList hitlist)
     {
         //Debug.Log(attackers[0].GetInstanceID() + " " + hitlist.GetAttacker(0).GetInstanceID());

@@ -45,23 +45,22 @@ public class GridManager : MonoBehaviour
 
 	void Start () 
     {
-        AddCharacter(new Vector2(0, 4), character);
-        AddCharacter(new Vector2(3, 4), character);
-        AddCharacter(new Vector2(1, 4), character);
-        AddCharacter(new Vector2(2, 4), enemytest);
-        AddCharacter(new Vector2(4, 4), enemytest);
+        AddCharacter(new Vector2(0, 4), character, "c1");
+        AddCharacter(new Vector2(3, 4), character, "c2");
+        AddCharacter(new Vector2(1, 4), character, "c3");
+        AddCharacter(new Vector2(2, 4), enemytest, "enemy1");
+        AddCharacter(new Vector2(4, 4), enemytest, "enemy2");
 
-        AddCharacter(new Vector2(4, 5), character);
-        AddCharacter(new Vector2(4, 3), character);
-        AddCharacter(new Vector2(5, 4), character);
-
-
+        AddCharacter(new Vector2(4, 5), character, "c4");
+        AddCharacter(new Vector2(4, 3), character, "c5");
+        AddCharacter(new Vector2(5, 4), character, "c6");
 	}
 
-    private void AddCharacter(Vector2 position, GameObject _character)
+    private void AddCharacter(Vector2 position, GameObject _character, string name = "")
     {
         GameObject charac = (GameObject)Instantiate(_character, grid[position].position - Vector3.forward, Quaternion.identity);
         charac.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
+        charac.name = name;
         BaseCharacter bcharac = charac.GetComponent<BaseCharacter>();
         bcharac._gridPos = position;
         BattleList.instance.Add(bcharac);
