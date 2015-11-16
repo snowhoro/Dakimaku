@@ -4,6 +4,7 @@ using System.Collections;
 
 public class Item : MonoBehaviour {
 
+    public string ItemID;
     private bool _selected;
     public bool Selected { get { return _selected; } set { _selected = value; } }
     public Button itemButton;
@@ -12,9 +13,10 @@ public class Item : MonoBehaviour {
     public Image _CharImg;
     public Transform _transform;
 
-    public void Initialize()
+    public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, Image imageCo)
     {
         _character = new Character();
+        _character.Initialize(name, baseHP, level, rarity, baseMAtt, basePAtt, baseMDef, basePDef, imageCo);
     }
 
     void Awake()
@@ -38,6 +40,6 @@ public class Item : MonoBehaviour {
     public void setImage(string imagePath) 
     {
         //_CharImg.sprite = Resources.Load<Sprite>(imagePath);
-        _CharImg.sprite = Resources.Load<Sprite>("portraitGRILL");
+        _CharImg.sprite = Resources.Load(imagePath, typeof(Sprite)) as Sprite;
     }
 }

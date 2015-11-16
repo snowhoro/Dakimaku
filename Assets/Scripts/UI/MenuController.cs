@@ -93,6 +93,12 @@ public class MenuController : MonoBehaviour {
         Confirmation.SetActive(confirmation);
     }
 
+    public void ChooseStarter(string starterID)
+    {
+        Game.Instance._starterId = starterID;
+        SetAction(0);
+    }
+
     public void NewAccount()
     {
         if (NameText.text != string.Empty)

@@ -5,6 +5,7 @@ using System.Collections;
 public class Game : MonoBehaviour {
 
     public string _playerId;
+    public string _starterId;
 
     public static Game Instance { get; private set; }
 
