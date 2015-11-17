@@ -23,22 +23,62 @@ public class ShowBattle : MonoBehaviour
     private float waitTimeBetweenVictims = 1.0f;
     public GameObject dmgNumbers;
     public List<HitList> hitList;
-
+    public bool showing;
     public IEnumerator StartShowBattle()
     {
+        showing = true;
         foreach(HitList hitGroup in hitList)
         {
+            ShowAttackers(hitGroup.GetAttackers());
+            yield return new WaitForSeconds(1.1f);
+
+            List<BaseCharacter>[] linked = hitGroup.GetLinked();
+            if (hitGroup.GetAttacker() is Character)
+            {
+                for (int i = 0; i < linked.Length; i++)
+                {
+                    for (int j = 0; j < linked[i].Count; j++)
+                    {
+                        Debug.Log(linked[i][j].name);
+                        linked[i][j].GetComponent<Animator>().SetTrigger("Attack");
+                        yield return new WaitForSeconds(1.1f);
+                    }
+                }
+            }
             BaseCharacter[] victims = hitGroup.GetVictims();
-            for (int i = 0; i < victims.Length; i++)
-			{
-                ShowDamage(victims[i].gameObject);
-			}
-            yield return new WaitForSeconds(waitTimeBetweenNumbers);
-            for (int i = 0; i < victims.Length; i++)
-			{
-                ShowDamage(victims[i].gameObject);
-			}
+            int length = 2;
+            if (hitGroup.GetAttacker() is Character)
+                length += linked[0].Count + linked[1].Count;
+
+            for (int j = 0; j < length; j++)
+            {
+                for (int i = 0; i < victims.Length; i++)
+                {
+                    ShowDamage(victims[i].gameObject);
+                }
+                yield return new WaitForSeconds(waitTimeBetweenNumbers);
+            }
             yield return new WaitForSeconds(waitTimeBetweenVictims);
+        }
+        showing = false;
+    }
+
+    public void ShowAttackers(BaseCharacter[] attackers)
+    {
+        attackers[0].GetComponent<Animator>().SetTrigger("Attack");
+        attackers[1].GetComponent<Animator>().SetTrigger("Attack");
+    }
+
+    public IEnumerator ShowLinked(List<BaseCharacter>[] linked)
+    {
+        for (int i = 0; i < linked.Length; i++)
+        {
+            for (int j = 0; j < linked[i].Count; j++)
+            {
+                Debug.Log(linked[i][j].name);
+                linked[i][j].GetComponent<Animator>().SetTrigger("Attack");
+                yield return new WaitForSeconds(1.1f);
+            }
         }
     }
 

@@ -3,9 +3,8 @@ using System.Collections;
 
 public class DisplacementSkill : BaseSkill
 {
-
-	// Use this for initialization
-	void Start () {
+    public DisplacementSkill()
+    {
         _name = "DisplacementTEST";
         _description = "Moves enemies";
 
@@ -18,50 +17,17 @@ public class DisplacementSkill : BaseSkill
         _isPhysical = false;
         _isDisplacement = true;
         _isActive = false;
-        _activationChance = 10.0f; 
-	}
-	
-	// Update is called once per frame
-	void Update () 
-    {        
-	    if(Input.GetKeyUp(KeyCode.D))
-        {
-            Displacement();
-        }
-	}
+        _activationChance = 10.0f;
+    }
 
-    private void Displacement()
+    public override void Displacement()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemy in enemies)
         {
             Debug.Log("asdf displa");
-            enemy.transform.position = newPos(transform.position, enemy.transform.position);
+            //enemy.transform.position = newPos(transform.position, enemy.transform.position);
         }
-    }
-
-    private Vector2 newPos(Vector2 hero, Vector2 enemy)
-    {
-        Vector2 aux = enemy;
-
-        if(hero.x > enemy.x)
-        {
-            aux = new Vector2(enemy.x - 0.9f,enemy.y);
-        }
-        else if (hero.x < enemy.x)
-        {
-            aux = new Vector2(enemy.x + 0.9f, enemy.y);
-        }
-        else if (hero.y > enemy.y)
-        {
-            aux = new Vector2(enemy.x, enemy.y - 0.9f);
-        }
-        else if (hero.y < enemy.y)
-        {
-            aux = new Vector2(enemy.x, enemy.y + 0.9f);
-        }
-
-        return aux;
     }
 }

@@ -113,9 +113,9 @@ public class CombatCheck
         {
             CheckAttack(enemy);
         }
-        Debug.Log("ANTES: " + hitList.Count);
+        //Debug.Log("ANTES: " + hitList.Count);
         Repaso();
-        Debug.Log("DESPUES: " + hitList.Count);
+        //Debug.Log("DESPUES: " + hitList.Count);
         return hitList;
     }
     public List<HitList> GetHeroesAttacked()
@@ -126,10 +126,25 @@ public class CombatCheck
         {
             CheckAttack(hero);
         }
-        Debug.Log("ANTES: " + hitList.Count);
+        //Debug.Log("ANTES: " + hitList.Count);
         Repaso();
-        Debug.Log("DESPUES: " + hitList.Count);
+        //Debug.Log("DESPUES: " + hitList.Count);
         return hitList;
+    }
+
+    public List<HitList> GetHeroesAttackedBy(BaseCharacter enemy)
+    {
+        List<HitList> auxhitList = new List<HitList>();
+        hitList = GetHeroesAttacked();
+        for (int i = 0; i < hitList.Count; i++)
+        {
+            BaseCharacter[] attackers = hitList[i].GetAttackers();
+            if(attackers[0] == enemy || attackers[1] == enemy)
+            {
+                auxhitList.Add(hitList[i]);
+            }
+        }
+        return auxhitList;
     }
 
     public List<HitList> Repaso()
@@ -138,10 +153,10 @@ public class CombatCheck
         {
             for (int j = i+1; j < hitList.Count; j++)
             {
-                Debug.Log("i " + i + " j " + j);
+                //Debug.Log("i " + i + " j " + j);
                 if (hitList[i].CheckSameAttackers(hitList[j]))
                 {
-                    Debug.Log("entre " + i + " " + j);
+                    //Debug.Log("entre " + i + " " + j);
                     hitList[i].AddVictim(hitList[j].GetVictim());
                     hitList.RemoveAt(j);
                 }

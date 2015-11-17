@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BaseSkill : MonoBehaviour
+public class BaseSkill
 {
     public string _name { get; protected set; }
     public string _description { get; protected set; }
@@ -17,4 +17,13 @@ public class BaseSkill : MonoBehaviour
 
     public bool _isActive { get; protected set; }
     public float _activationChance { get; protected set; }
+
+    public virtual void Use() 
+    {
+        Displacement();
+        Damage();
+    }
+
+    public virtual void Displacement() { }
+    public virtual void Damage() { }
 }

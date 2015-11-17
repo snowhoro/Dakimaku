@@ -14,6 +14,8 @@ public class PrepareBattle : State<BattleManager>
     public override void Enter(BattleManager entity_type)
     {
         Debug.Log("PREPARING FOR BATTLE..." + entity_type.name);
+        GridManager.instance.StartChar();
+        WaveManager.instance.SpawnWave();
     }
 
     public override void Execute(BattleManager entity_type)
