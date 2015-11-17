@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Character : BaseCharacter
@@ -50,15 +51,9 @@ public class Character : BaseCharacter
         if (_physicalSpecDefense > _maxPhysicalSpecDefense)
             _physicalSpecDefense = _maxMagicSpecDefense;
     }
-
-    public override void Initialize(int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef)
+    
+    public override void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, Image imageCo)
     {
- 	    _maxBaseHP = baseHP;
-        _currentHP = _maxBaseHP;
-        _level = level;
-        _magicBaseAttack = bMagAtt;
-        _magicBaseDefense = bMagDef;
-        _physicalBaseAttack = bPhyAtt;
-        _physicalBaseDefense = bPhyDef;
+        base.Initialize(name, baseHP, level, rarity, bMagAtt, bPhyAtt, bMagDef, bPhyDef, imageCo);
     }
 }

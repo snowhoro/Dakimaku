@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Game : MonoBehaviour {
 
     public string _playerId;
+    public string _starterId;
 
     public static Game Instance { get; private set; }
+    
+    public List<GachaItem> _gachaItems = new List<GachaItem>();
+    public GameObject _gachaItemPrefab;
 
     public delegate void CallBack(float loading);
    
@@ -64,9 +69,38 @@ public class Game : MonoBehaviour {
         }
     }
 
-    public bool VerifyGameData(CallBack cb)
+    public void LoadGachas()
     {
-        return true;
+        ServerRequests.GetInstace().RequestActiveGachas(_playerId, GachaCb);
+    }
+
+    public void GachaCb(string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+        if (dataJson["error"] != null)
+            Debug.Log(dataJson["error"]);
+        else
+        {
+
+            GameObject parent = new GameObject();
+            parent.name = "Gachas";
+            DontDestroyOnLoad(parent);
+
+            Debug.Log("Number of gachas: " + dataJson.Count);
+            for (int i = 0; i < dataJson.Count; i++)
+            {
+                GameObject go = GameObject.Instantiate(_gachaItemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+                go.transform.SetParent(parent.transform);
+                GachaItem goComponent = go.GetComponent<GachaItem>();
+
+                _gachaItems.Add(goComponent);
+
+                goComponent.Initialize(Resources.Load(dataJson["ImgPath"].Value, typeof(Sprite)) as Sprite, dataJson["_id"].Value);
+            }
+
+            LoadEnd();
+        }
     }
 
 }

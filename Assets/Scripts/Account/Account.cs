@@ -53,9 +53,11 @@ public class Account : MonoBehaviour
     {
         ServerRequests.GetInstace().RequestTeams(_playerId, LoadTeamCb);
     }
-    public void CreateTeams() {
-        ServerRequests.GetInstace().CreateTeams(_playerId, CreateTeamCb);
-    }
+    /*public void CreateTeams() {
+        ServerRequests.GetInstace().CreateTeams(_playerId, Game.Instance._starterId, CreateTeamCb);
+    }*/
+    public void EditTeams()
+    { }
 
     void Awake()
     {
@@ -136,7 +138,7 @@ public class Account : MonoBehaviour
             PlayerPrefs.SetString("accountID", _playerId);
             PlayerPrefs.Save();
 
-            _inventory.CreateInventory(_playerId);
+            _inventory.CreateInventory(_playerId, Game.Instance._starterId);
             Game.Instance._playerId = _playerId;
         }
     }
@@ -177,28 +179,34 @@ public class Account : MonoBehaviour
             Debug.Log(dataJson["error"]);
         else
         {
+
             _teams = new List<Item[]>(_maxTeams);
+
             for (int i = 0; i < _maxTeams; i++)
             {
-                _teams[i] = new Item[6];
+                _teams.Add(new Item[6]);
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 1; i <= 5; i++)
             {
-                for (int j = 0; j < 6; j++)
+                if (dataJson["teams"]["Teams"]["team_" + i.ToString()] != null)
                 {
-                    if (dataJson["Teams"][i][j] != null)
+                    for (int j = 0; j < dataJson["teams"]["Teams"]["team_" + i.ToString()].Count; j++)
                     {
-                        _teams[i][j].setImage("portraitGRILL");
-                        //dataJson["Teams"][i][j].Value
+                        Item iFind = Inventory.Instance.FindItem(dataJson["teams"]["Teams"]["team_" + i.ToString()][j].Value);
+
+                        if (iFind != null)
+                            _teams[i][j] = iFind;
                     }
+                    
+                    //dataJson["Teams"][i][j].Value
                 }
             }
 
-            Game.Instance.LoadEnd();
+            Game.Instance.LoadGachas();
         }
     }
-    public void CreateTeamCb(string data)
+    /*public void CreateTeamCb(string data)
     {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
@@ -208,5 +216,21 @@ public class Account : MonoBehaviour
         {
             Game.Instance.StartGame();
         }
+    }*/
+
+    public void SetLoadedTeam()
+    {
+        
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 6; j++)
+			{
+                //Debug.Log((_teams[i][j] == null) + " iteration: " + i + "," + j);
+
+                if (_teams[i][j] != null)
+                    UiController.getInstance().SetTeam(i, j, _teams[i][j]);
+			}
+		}
+        
     }
 }

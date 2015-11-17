@@ -23,11 +23,22 @@ public class Inventory : MonoBehaviour
     {
         ServerRequests.GetInstace().RequestInventory(id, FillInventory);
     }
-    public void CreateInventory(string id)
+    public void CreateInventory(string id, string starterID)
     {
-        ServerRequests.GetInstace().CreateInventory(id, InventoryCreated);
+        ServerRequests.GetInstace().CreateInventory(id, starterID, InventoryCreated);
     }
 
+    public Item FindItem(string itemID) 
+    {
+        for (int i = 0; i < _items.Count; i++)
+        {
+            if (_items[i].ItemID == itemID)
+            {
+                return _items[i];
+            }
+        }
+        return null;
+    }
     public void AddMaxSlots(int slotsAmount)
     {
         _maxSlots += slotsAmount;
@@ -41,7 +52,8 @@ public class Inventory : MonoBehaviour
             Debug.Log(d["error"]);
         else
         {
-            Account.Instance().CreateTeams();
+            Game.Instance.StartGame();
+            //Account.Instance().CreateTeams();
             // inventario creado
         }
     }
@@ -66,6 +78,10 @@ public class Inventory : MonoBehaviour
                  Item goComponent = go.GetComponent<Item>();
 
                  _items.Add(goComponent);
+
+                 string name = dataJson["inventory"]["Characters"]["Name"].Value;
+
+                 goComponent.Initialize(name, 1, 1, 20, 20, 20, 20, 20, goComponent._CharImg);
              }
 
              Account.Instance().LoadTeams();

@@ -6,6 +6,8 @@ public abstract class BaseCharacter : MonoBehaviour
 {   
     #region Attributes
 
+    public string _name { get; protected set; }
+
     public int _currentHP { get; set; }
     public int _maxBaseHP { get; set; }
 
@@ -48,6 +50,20 @@ public abstract class BaseCharacter : MonoBehaviour
         _physicalBaseDefense += defenseAmount;
     }
 
-    public abstract void Initialize(int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef);
+    public virtual void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, Image imageCo)
+    {
+        _sprite = imageCo;
+
+        _name = name;
+        _maxBaseHP = baseHP;
+        _currentHP = _maxBaseHP;
+        _level = level;
+        _magicBaseAttack = bMagAtt;
+        _magicBaseDefense = bMagDef;
+        _physicalBaseAttack = bPhyAtt;
+        _physicalBaseDefense = bPhyDef;
+
+        _sprite.sprite = Resources.Load("UI/BattleUI/" + _name, typeof(Sprite)) as Sprite;
+    }
 
 }
