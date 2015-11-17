@@ -12,6 +12,8 @@ public class Game : MonoBehaviour {
     
     public List<GachaItem> _gachaItems = new List<GachaItem>();
     public GameObject _gachaItemPrefab;
+	public List<DungeonItem> _dungeonItems = new List<DungeonItem>();
+	public GameObject _dungeonItemPrefab;
 
     public delegate void CallBack(float loading);
    
@@ -88,6 +90,7 @@ public class Game : MonoBehaviour {
             DontDestroyOnLoad(parent);
 
             Debug.Log("Number of gachas: " + dataJson.Count);
+
             for (int i = 0; i < dataJson.Count; i++)
             {
                 GameObject go = GameObject.Instantiate(_gachaItemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
@@ -96,11 +99,44 @@ public class Game : MonoBehaviour {
 
                 _gachaItems.Add(goComponent);
 
-                goComponent.Initialize(Resources.Load(dataJson["ImgPath"].Value, typeof(Sprite)) as Sprite, dataJson["_id"].Value);
+				Debug.Log(dataJson[i]["_id"].Value);
+
+                goComponent.Initialize(Resources.Load(dataJson[i]["ImgPath"].Value, typeof(Sprite)) as Sprite, dataJson[i]["_id"].Value);
             }
 
-            LoadEnd();
+			LoadAllDungeons();
         }
     }
 
+	public void LoadAllDungeons()
+	{
+		ServerRequests.GetInstace ().RequestAllDungeons (_playerId, AllDungeonsCb);
+	}
+
+	public void AllDungeonsCb(string data)
+	{
+		var dataJson = SimpleJSON.JSON.Parse(data);
+		
+		if (dataJson ["error"] != null)
+			Debug.Log (dataJson ["error"]);
+		else {
+
+			GameObject parent = new GameObject ();
+			parent.name = "Dungeons";
+			DontDestroyOnLoad (parent);
+			
+			Debug.Log ("Number of Dungeons: " + dataJson.Count);
+			for (int i = 0; i < dataJson.Count; i++) {
+				GameObject go = GameObject.Instantiate (_dungeonItemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+				go.transform.SetParent (parent.transform);
+				DungeonItem goComponent = go.GetComponent<DungeonItem> ();
+				
+				_dungeonItems.Add (goComponent);
+				
+				goComponent.Initialize(dataJson[0]["_id"].Value, dataJson[0]["DungeonName"].Value);
+
+			}
+			LoadEnd ();
+		}
+	}
 }

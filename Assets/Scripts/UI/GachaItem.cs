@@ -16,6 +16,7 @@ public class GachaItem : MonoBehaviour {
     public void Initialize(Sprite image, string gachaID)
     {
         GachaImage.sprite = image;
+		GachaID = gachaID;
     }
 
     public void Hatch()

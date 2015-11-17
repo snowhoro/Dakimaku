@@ -133,4 +133,23 @@ public class ServerRequests : MonoBehaviour
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
+
+	public void RequestAllDungeons(string accountID, CallBack callBack)
+	{
+		string url = host + "getAllDungeons";
+		WWWForm form = new WWWForm();
+		form.AddField("PlayerId", accountID.ToString());
+		WWW www = new WWW(url, form);
+		StartCoroutine(WaitForRequest(www, callBack));
+	}
+
+	public void RequestDungeonById(string accountID,string dungeonID, CallBack callBack)
+	{
+		string url = host + "getDungeon";
+		WWWForm form = new WWWForm();
+		form.AddField("PlayerId", accountID.ToString());
+		form.AddField("DungeonId", dungeonID.ToString());
+		WWW www = new WWW(url, form);
+		StartCoroutine(WaitForRequest(www, callBack));
+	}
 }
