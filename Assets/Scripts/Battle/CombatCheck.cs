@@ -132,6 +132,21 @@ public class CombatCheck
         return hitList;
     }
 
+    public List<HitList> GetHeroesAttackedBy(BaseCharacter enemy)
+    {
+        List<HitList> auxhitList = new List<HitList>();
+        hitList = GetHeroesAttacked();
+        for (int i = 0; i < hitList.Count; i++)
+        {
+            BaseCharacter[] attackers = hitList[i].GetAttackers();
+            if(attackers[0] == enemy || attackers[1] == enemy)
+            {
+                auxhitList.Add(hitList[i]);
+            }
+        }
+        return auxhitList;
+    }
+
     public List<HitList> Repaso()
     {
         for (int i = 0; i < hitList.Count-1; i++)

@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Enemy : BaseCharacter 
 {
+    public int _initTurnNumber;
+    public int _turnNumber;
+    public int _turn;
 
     public override void Initialize(int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef)
     {

@@ -14,6 +14,9 @@ public class BattleCalcs : State<BattleManager>
     public override void Enter(BattleManager entity_type)
     {
         Debug.Log("ENTER BATTLE CALCS..." + entity_type.name);
+
+        if (entity_type.stateMachine.wasInState(PlayerTurn.instance))
+            Combat.instance.CheckEnemiesAttacked();
     }
 
     public override void Execute(BattleManager entity_type)
@@ -26,11 +29,28 @@ public class BattleCalcs : State<BattleManager>
         //entity_type.ChangeState(NextBattle.instance);
         //if all char dead
         //entity_type.ChangeState(Lose.instance);
-        //else
-        if(entity_type.stateMachine.wasInState(PlayerTurn.instance))
-            entity_type.ChangeState(EnemyTurn.instance);
+
+        if (entity_type.stateMachine.wasInState(PlayerTurn.instance))
+        {
+            if (!ShowBattle.instance.showing)
+            {
+                //NEXTBATTLE
+                if (BattleList.instance.GetEnemies().Count == 0)
+                    entity_type.ChangeState(NextBattle.instance);
+                //ENEMYTURN
+                else
+                    entity_type.ChangeState(EnemyTurn.instance);
+            }
+        }
         else
-            entity_type.ChangeState(PlayerTurn.instance);
+        {
+            //LOSE
+            if (BattleList.instance.GetHeroes().Count == 0)
+                entity_type.ChangeState(Lose.instance);
+            //PLAYERTURN
+            else
+                entity_type.ChangeState(PlayerTurn.instance);
+        }
     }
 
     public override void Exit(BattleManager entity_type)

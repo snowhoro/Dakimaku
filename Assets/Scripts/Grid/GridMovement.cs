@@ -8,7 +8,7 @@ public class GridMovement : MonoBehaviour
     public Stack<Vector2> path;
     private Vector2 nextStep;
     private Vector2 nextStepGrid;
-    private bool moving;
+    public bool moving;
     private BaseCharacter bCharac;
 
 	void Start () 
@@ -23,11 +23,11 @@ public class GridMovement : MonoBehaviour
             Move();
 	}
 
-    public void SetPath(Stack<Vector2> _path)
+    public void SetPath(Stack<Vector2> _path, bool _moving = true)
     {
         path = _path;
         nextStep = GridManager.instance.GetWorldPosition(path.Pop());
-        moving = true;
+        moving = _moving;
     }
 
     public void Move()
@@ -41,7 +41,11 @@ public class GridMovement : MonoBehaviour
                 nextStep = GridManager.instance.GetWorldPosition(nextStepGrid);
             }
             else
+            {
                 moving = false;
+                if(bCharac is Character)
+                    PlayerTurn.instance.endTurn = true;
+            }
         }
         transform.position = Vector2.MoveTowards(transform.position, nextStep, Time.deltaTime * speed);
     }

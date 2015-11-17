@@ -83,24 +83,15 @@ public class Combat : MonoBehaviour
         ShowBattle.instance.hitList = hitlist;
 
         StartCoroutine(ShowBattle.instance.StartShowBattle());
-        /*foreach (HitList item in hitlist)
-        {
-            foreach (BaseCharacter victim in item.GetVictims())
-            {
-                ShowDamage(victim.gameObject);
-            }
-        }*/
     }
 
-    public void CheckHeroesAttacked()
+    public void CheckHeroesAttacked(BaseCharacter enemy)
     {
         CombatCheck combatCheck = new CombatCheck();
-        List<HitList> hitlist = combatCheck.GetHeroesAttacked();
+        List<HitList> hitlist = combatCheck.GetHeroesAttackedBy(enemy);
         ShowBattle.instance.hitList = hitlist;
-        foreach (HitList item in hitlist)
-        {
-            ShowDamage(item.GetVictim().gameObject);
-        }
+
+        StartCoroutine(ShowBattle.instance.StartShowBattle());
     }
 
     public void ShowDamage(GameObject obj)
