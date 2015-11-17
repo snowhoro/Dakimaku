@@ -203,7 +203,7 @@ public class Account : MonoBehaviour
                 }
             }
 
-            Game.Instance.LoadEnd();
+            Game.Instance.LoadGachas();
         }
     }
     /*public void CreateTeamCb(string data)
@@ -225,7 +225,7 @@ public class Account : MonoBehaviour
         {
             for (int j = 0; j < 6; j++)
 			{
-                Debug.Log((_teams[i][j] == null) + " iteration: " + i + "," + j);
+                //Debug.Log((_teams[i][j] == null) + " iteration: " + i + "," + j);
 
                 if (_teams[i][j] != null)
                     UiController.getInstance().SetTeam(i, j, _teams[i][j]);

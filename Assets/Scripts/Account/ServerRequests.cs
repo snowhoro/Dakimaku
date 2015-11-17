@@ -116,4 +116,21 @@ public class ServerRequests : MonoBehaviour
         //callBack(value);
     }
 
+    public void RequestActiveGachas(string accountID, CallBack callBack)
+    {
+        string url = host + "getGachas";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+    public void Hatch(string accountID, string gachaID, CallBack callBack)
+    {
+        string url = host + "roll";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        form.AddField("GachaId", gachaID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
 }
