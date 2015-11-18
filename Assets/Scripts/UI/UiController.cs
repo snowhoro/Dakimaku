@@ -11,7 +11,7 @@ public class UiController : MonoBehaviour {
     
     public GameObject _mainPanel, _teamEditPanel, _inventoryPanel, _teamPanel;
     public GameObject _home, _shop, _inventory, _hatcher, _options;
-	public GameObject _normal, _events, _dungeons;
+
     public Transform InventoryParent, EditTeamParent;
     public Transform TeamSlider;
     public float teamSlideVelocity = 50;
@@ -23,7 +23,7 @@ public class UiController : MonoBehaviour {
 
     public TeamItem[] _hudTeams;
     public int _selectedTeam;
-    private const int MAXC_INTEAM = 6;
+    public const int MAXC_INTEAM = 6;
     private bool TeamChanging = false;
     private bool teamSlided = false;
 
@@ -74,15 +74,17 @@ public class UiController : MonoBehaviour {
     }
 	void Update () {
         
-        if (Input.GetKeyDown(KeyCode.Escape) && _inventoryState != InventoryState.None)
+        if (Input.GetKeyDown(KeyCode.Escape) )
         {
+            if (_inventoryState != InventoryState.None)
+            {
+                if (_inventoryState == InventoryState.Edit)
+                    Account.Instance().EditTeams();
 
-            if (_inventoryState == InventoryState.Edit)
-                Account.Instance().EditTeams();
-
-            SetInventoryPanelVisibility(false);
-            _teamEditPanel.SetActive(false);
-            _inventoryState = InventoryState.None;
+                SetInventoryPanelVisibility(false);
+                _teamEditPanel.SetActive(false);
+                _inventoryState = InventoryState.None;
+            }
         }
 
         if (TeamChanging)
@@ -118,6 +120,7 @@ public class UiController : MonoBehaviour {
                         if (distanceFromOther > distanceFromSame)
                         {
                             _selectedTeam++;
+                            Account.Instance()._selectedTeam = _selectedTeam;
                         }
 
                         SetTeamTarget();
@@ -132,6 +135,7 @@ public class UiController : MonoBehaviour {
                         if (distanceFromOther < distanceFromSame)
                         {
                             //_selectedTeam--;
+                            Account.Instance()._selectedTeam = _selectedTeam;
                         }
 
                         SetTeamTarget();
@@ -279,6 +283,7 @@ public class UiController : MonoBehaviour {
         if (_selectedTeam < 4)
         {
             _selectedTeam++;
+            Account.Instance()._selectedTeam = _selectedTeam;
             ChangeTeam();
             SetTeamTarget();
         }
@@ -289,6 +294,7 @@ public class UiController : MonoBehaviour {
         if (_selectedTeam > 0)
         {
             _selectedTeam--;
+            Account.Instance()._selectedTeam = _selectedTeam;
             ChangeTeam();
             SetTeamTarget();
         }
@@ -374,17 +380,5 @@ public class UiController : MonoBehaviour {
         _teamEditPanel.SetActive(false);
         _inventoryState = InventoryState.None;
     }
-
-	public void ShowDungeons()
-	{
-		_events.SetActive (true);
-		_normal.SetActive (true);
-		_dungeons.SetActive (false);
-	}
-
-	public void GoToBattle()
-	{
-		Application.LoadLevel("Battle");
-	}
     // --------------------------------------------------------------------------------------------------------------------------
 }

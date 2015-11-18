@@ -133,7 +133,7 @@ public class Game : MonoBehaviour {
 				
 				_dungeonItems.Add (goComponent);
 				
-				goComponent.Initialize(dataJson[0]["_id"].Value, dataJson[0]["DungeonName"].Value);
+				goComponent.Initialize(dataJson[i]["DungeonName"].Value, dataJson[i]["_id"].Value);
 
 			}
 			LoadEnd ();

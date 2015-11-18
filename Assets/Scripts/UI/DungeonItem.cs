@@ -2,29 +2,30 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class GachaItem : MonoBehaviour {
+public class DungeonItem : MonoBehaviour {
 
-    string GachaID;
-    Image GachaImage;
+	string DungeonID;
+    Text dungeonText;
+    
     public Transform _transform { get; private set; }
 
 	void Awake () {
-        GachaImage = this.GetComponent<Image>();
+        dungeonText = this.GetComponentInChildren<Text>();
         _transform = this.GetComponent<Transform>();
 	}
 
-    public void Initialize(Sprite image, string gachaID)
+    public void Initialize(string dungeonName, string gachaID)
     {
-        GachaImage.sprite = image;
-		GachaID = gachaID;
+        dungeonText.text = dungeonName;
+		DungeonID = gachaID;
     }
 
-    public void Hatch()
+    public void GetDungeonByID()
     {
-        ServerRequests.GetInstace().Hatch(Account.Instance()._playerId, GachaID, HatchCb);
+        ServerRequests.GetInstace().Hatch(Account.Instance()._playerId, DungeonID, DungeonCb);
     }
 
-    public void HatchCb(string data)
+    public void DungeonCb(string data)
     {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
@@ -32,8 +33,8 @@ public class GachaItem : MonoBehaviour {
             Debug.Log(dataJson["error"]);
         else
         {
+            DungeonController.Instance.GoToBattle();
 
-            Debug.Log(dataJson);
             /*
             for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
             {
