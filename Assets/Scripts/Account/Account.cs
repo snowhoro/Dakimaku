@@ -22,8 +22,9 @@ public class Account : MonoBehaviour
     public int _hardCurrency { get; private set; }
     public int _softCurrency { get; private set; }
 
-
+    public int _selectedTeam;
     public int _maxTeams;
+    public Character[] _teamsParaLuchoPelotudo = new Character[6];
     public List<Item[]> _teams;
     public Inventory _inventory;
     public AccountStats _stats; 
@@ -57,11 +58,33 @@ public class Account : MonoBehaviour
         ServerRequests.GetInstace().CreateTeams(_playerId, Game.Instance._starterId, CreateTeamCb);
     }*/
     public void EditTeams()
-    { }
+    {
+        string teamJson = "{'Teams': { 'team_1': [ '5647f25d1f0c1f1b12a33195']";
+
+        for (int i = 0; i < _teams.Count; i++)
+        {
+            for (int j = 0; j < _teams[i].Length; j++)
+            {
+                _teams[i][j] = UiController.getInstance()._hudTeams[(i + System.Convert.ToInt32(UiController.MAXC_INTEAM * _selectedTeam))].RefItem;
+
+                if (i == _selectedTeam)
+                {
+                    if (_teams[i][j] != null)
+                        _teamsParaLuchoPelotudo[j] = (_teams[i][j]._character);
+                }
+                //teamJson.add
+            }
+        }
+       
+        //teamJson        
+
+        //ServerRequests.GetInstace().UpdateTeams(_playerId, teamJson, EditTeamCb);
+    }
 
     void Awake()
     {
         _instance = this;
+        _selectedTeam = 0;
     }
 
     void FixedUpdate()
@@ -217,6 +240,17 @@ public class Account : MonoBehaviour
             Game.Instance.StartGame();
         }
     }*/
+    public void EditTeamCb(string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+        if (dataJson["error"] != null)
+            Debug.Log(dataJson["error"]);
+        else
+        {
+
+        }
+    }
 
     public void SetLoadedTeam()
     {
