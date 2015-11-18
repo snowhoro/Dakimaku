@@ -18,14 +18,14 @@ public class EndScreen : State<BattleManager>
 
     public override void Execute(BattleManager entity_type)
     {
-        Debug.Log("...ENDSCREEN...  " + entity_type.name);
-        
+        //Debug.Log("...ENDSCREEN...  " + entity_type.name);
+        Application.LoadLevel("Menus");
         //entity_type.ChangeState(Mining.instance);
         //CHANGE SCENE?
     }
 
     public override void Exit(BattleManager entity_type)
     {
-        Debug.Log("...EXIT ENDSCREEN  " + entity_type.name);
+        //Debug.Log("...EXIT ENDSCREEN  " + entity_type.name);
     }
 }

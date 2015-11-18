@@ -18,16 +18,19 @@ public class NextBattle : State<BattleManager>
 
     public override void Execute(BattleManager entity_type)
     {
-        Debug.Log("...NEXT BATTLE..." + entity_type.name);
-
-        //if enemyzerocd
-        //entity_type.ChangeState(EnemyTurn.instance);
-        //else
-        entity_type.ChangeState(PlayerTurn.instance);        
+        //Debug.Log("...NEXT BATTLE..." + entity_type.name);
+        
+        if (DungeonManager.instance.wasLastStage())
+            entity_type.ChangeState(Win.instance);
+        else
+        {
+            DungeonManager.instance.SpawnStage();
+            entity_type.ChangeState(PlayerTurn.instance);
+        }
     }
 
     public override void Exit(BattleManager entity_type)
     {
-        Debug.Log("...EXIT NEXT BATTLE PREPARATIONS" + entity_type.name);
+        //Debug.Log("...EXIT NEXT BATTLE PREPARATIONS" + entity_type.name);
     }
 }

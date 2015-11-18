@@ -17,12 +17,12 @@ public class Win : State<BattleManager>
 
     public override void Execute(BattleManager entity_type)
     {
-        Debug.Log("...PREPARING..." + entity_type.name);
+        //Debug.Log("...PREPARING..." + entity_type.name);
         entity_type.ChangeState(EndScreen.instance);
     }
 
     public override void Exit(BattleManager entity_type)
     {
-        Debug.Log("...EXIT BATTLE PREPARATIONS" + entity_type.name);
+        //Debug.Log("...EXIT BATTLE PREPARATIONS" + entity_type.name);
     }
 }

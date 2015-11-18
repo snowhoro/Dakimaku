@@ -25,12 +25,12 @@ public class PlayerTurn : State<BattleManager>
     {
         if(endTurn)
             entity_type.ChangeState(BattleCalcs.instance);
-        Debug.Log("...PLAYER TURN..." + entity_type.name);
+        //Debug.Log("...PLAYER TURN..." + entity_type.name);
     }
 
     public override void Exit(BattleManager entity_type)
     {
         gridSelect.enabled = false;
-        Debug.Log("...EXIT PLAYER TURN" + entity_type.name);
+        //Debug.Log("...EXIT PLAYER TURN" + entity_type.name);
     }
 }

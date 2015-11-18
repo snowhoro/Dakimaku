@@ -10,20 +10,12 @@ public class HealthBarControl : MonoBehaviour {
 	void Start () 
     {
         character = GetComponent<BaseCharacter>();
-        character._currentHP = character._maxBaseHP = 200000;
+        character._currentHP = character._maxBaseHP = 20;
         healthBar = transform.FindChild("Canvas").FindChild("HealthBack").FindChild("Health").GetComponent<Image>();
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
         healthBar.fillAmount = (float)character._currentHP / (float)character._maxBaseHP;
-
-        if (character._currentHP <= 0)
-        {
-            BattleList.instance.Remove(character);
-            GridManager.instance.ResetMapAtPosition(character._gridPos);
-            Destroy(gameObject, 0.3f);
-        }
 	}
 }

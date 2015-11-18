@@ -43,8 +43,9 @@ public class GridManager : MonoBehaviour
         DrawGrid();
     }
 
-	public void StartChar () 
+	public void StartChar()
     {
+        Debug.Log("CHARACTERS");
         AddCharacter(new Vector2(0, 4), character, "c1");
         AddCharacter(new Vector2(3, 4), character, "c2");
         AddCharacter(new Vector2(1, 4), character, "c3");

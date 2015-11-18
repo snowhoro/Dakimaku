@@ -4,7 +4,8 @@ using System.Collections;
 public class PrepareNextTurn : BTLeaf
 {
     private int turnNumber;
-    private int turn;
+    private Enemy enemy;
+
 
     public PrepareNextTurn(string _name = "PrepareNextTurn", BTNode _parent = null)
         : base(_name, _parent)
@@ -14,14 +15,14 @@ public class PrepareNextTurn : BTLeaf
     public override void InternalSpawn()
     {
         turnNumber = (int)GetBlackboard().GetObject("turnNumber");
-        turn = (int)GetBlackboard().GetObject("turn");
+        enemy = (Enemy)GetBlackboard().GetObject("enemy");
     }
 
     public override Status InternalTick()
     {
-        if (turn == 0)
+        if (enemy._turn == 0)
         {
-            turn = turnNumber;
+            enemy._turn = turnNumber;
             return Status.SUCCESS;
         }
         return Status.FAILURE;

@@ -21,7 +21,7 @@ public class BattleCalcs : State<BattleManager>
 
     public override void Execute(BattleManager entity_type)
     {
-        Debug.Log("...BATTLE CALCS..." + entity_type.name);
+        //Debug.Log("...BATTLE CALCS..." + entity_type.name);
 
         //if all enemies dead + last battle
         //entity_type.ChangeState(Win.instance);
@@ -55,6 +55,6 @@ public class BattleCalcs : State<BattleManager>
 
     public override void Exit(BattleManager entity_type)
     {
-        Debug.Log("...EXIT BATTLE CALCS" + entity_type.name);
+        //Debug.Log("...EXIT BATTLE CALCS" + entity_type.name);
     }
 }

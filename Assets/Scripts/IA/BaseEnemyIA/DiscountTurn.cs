@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DiscountTurn : BTLeaf 
 {
-    private int turn;
+    private Enemy enemy;
 
     public DiscountTurn(string _name = "DiscountTurn", BTNode _parent = null)
         : base(_name, _parent)
@@ -12,14 +12,14 @@ public class DiscountTurn : BTLeaf
 
     public override void InternalSpawn()
     {
-        turn = (int)GetBlackboard().GetObject("turn");
+        enemy = (Enemy)GetBlackboard().GetObject("enemy");
     }
 
     public override Status InternalTick()
     {
-        if (turn != 0)
+        if (enemy._turn != 0)
         {
-            turn--;
+            enemy._turn--;
             return Status.SUCCESS;
         }
         return Status.FAILURE;

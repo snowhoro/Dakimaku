@@ -13,23 +13,27 @@ public class PrepareBattle : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("PREPARING FOR BATTLE..." + entity_type.name);
-        GridManager.instance.StartChar();
-        WaveManager.instance.SpawnWave();
+        //Debug.Log("PREPARING FOR BATTLE..." + entity_type.name);
+        DungeonManager.instance.StartDungeon();
     }
 
     public override void Execute(BattleManager entity_type)
     {
-        Debug.Log("...PREPARING..." + entity_type.name);
-
+        //Debug.Log("...PREPARING..." + entity_type.name);
         //if enemyzerocd
         //entity_type.ChangeState(EnemyTurn.instance);
         //else
-        entity_type.ChangeState(PlayerTurn.instance);
+        //Debug.Log("Requesting: " + DungeonManager.instance.isRequesting());
+        if (!DungeonManager.instance.isRequesting())
+        {
+            entity_type.ChangeState(PlayerTurn.instance);
+        }
     }
 
     public override void Exit(BattleManager entity_type)
     {
-        Debug.Log("...EXIT BATTLE PREPARATIONS" + entity_type.name);
+        //Debug.Log("...EXIT BATTLE PREPARATIONS" + entity_type.name);
+        GridManager.instance.StartChar();
+        DungeonManager.instance.SpawnStage();
     }
 }

@@ -42,6 +42,19 @@ public class WhereToGo : BTLeaf
                 return Status.SUCCESS;
             }
         }
+
+        for (int heroIndex = 0; heroIndex < heroList.Count; heroIndex++)
+        {
+            //heroList[heroIndex]._gridPos
+            position = GetPositionOfClosestHero(heroList[heroIndex]);
+            Debug.Log(position);
+            if (position != new Vector2(-1, -1))
+            {
+                GridManager.instance.UpdateMapPositions(enemy.GetComponent<BaseCharacter>());
+                enemy.GetComponent<GridMovement>().SetPath(AStar.AStarSearch(enemy._gridPos, position), false);
+                return Status.SUCCESS;
+            }
+        }
         return Status.FAILURE;
     }
 
@@ -98,7 +111,23 @@ public class WhereToGo : BTLeaf
         }
         return new Vector2(-1,-1);
     }
-
+    public Vector2 GetPositionOfClosestHero(BaseCharacter hero)
+    {
+        Vector2 position = hero._gridPos + DIRS[Random.Range(0, 4)];
+        if (IsPassablePath(position) && (CheckHeroAtPosition(position) || CheckEnemyAtPosition(position)) )
+        {
+            for (int i = 0; i < DIRS.Length; i++)
+            {
+                position = hero._gridPos + DIRS[i];
+                if (IsPassablePath(position) && (!CheckHeroAtPosition(position) || !CheckEnemyAtPosition(position)))
+                {
+                    return position;
+                }
+            }
+            return new Vector2(-1, -1);
+        }
+        return position;
+    }
     public bool CheckHeroAtPosition(Vector2 pos)
     {
         for (int heroIndex = 0; heroIndex < heroList.Count; heroIndex++)

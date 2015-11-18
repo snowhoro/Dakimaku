@@ -59,6 +59,8 @@ public class ShowBattle : MonoBehaviour
                 yield return new WaitForSeconds(waitTimeBetweenNumbers);
             }
             yield return new WaitForSeconds(waitTimeBetweenVictims);
+            //SI EL HP ES 0 O MENOR LO BORRO
+            HpZeroKill(victims);
         }
         showing = false;
     }
@@ -91,10 +93,25 @@ public class ShowBattle : MonoBehaviour
         rect.transform.localScale = dmgNumbers.transform.localScale;
         int dmg = Random.Range(20, 50);
         //MEJORAR!!! //////////////////////////////////////
-        obj.GetComponent<BaseCharacter>()._currentHP -= dmg;
+        BaseCharacter character = obj.GetComponent<BaseCharacter>();
+        character._currentHP -= dmg;
         ///////////////////////////////////////////////////
-
+        
         aux.GetComponent<Text>().text = dmg.ToString();
         Destroy(aux, 1f);
+    }
+
+    public void HpZeroKill(BaseCharacter[] characters)
+    {
+        for (int i = 0; i < characters.Length; i++)
+        {
+            if (characters[i]._currentHP <= 0)
+            {
+                BattleList.instance.Remove(characters[i]);
+                GridManager.instance.ResetMapAtPosition(characters[i]._gridPos);
+                Destroy(characters[i].gameObject, 0.3f);
+            }
+        }
+
     }
 }

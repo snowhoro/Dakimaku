@@ -152,4 +152,13 @@ public class ServerRequests : MonoBehaviour
 		WWW www = new WWW(url, form);
 		StartCoroutine(WaitForRequest(www, callBack));
 	}
+
+    public void RequestAllEnemies(string accountID, CallBack callBack)
+    {
+        string url = host + "getEnemies";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
 }

@@ -19,13 +19,17 @@ public class GridSelection : MonoBehaviour {
             if(hit.collider != null)
             {
                 //Debug.Log(hit.collider.tag);
-                if (hit.collider.tag == "Hero" || hit.collider.tag == "Enemy")
+                if (hit.collider.tag == "Hero")
                 {
                     if(selected != null)
                         selected.GetComponent<Animator>().SetTrigger("Selected");
 
                     selected = hit.transform.gameObject;
                     selected.GetComponent<Animator>().SetTrigger("Selected");
+                }
+                else if(hit.collider.tag == "Enemy")
+                {
+
                 }
                 else
                 {

@@ -18,16 +18,17 @@ public class Lose : State<BattleManager>
 
     public override void Execute(BattleManager entity_type)
     {
-        Debug.Log("...LOSE..." + entity_type.name);
+        //Debug.Log("...LOSE..." + entity_type.name);
 
         //if continue
-        entity_type.ChangeState(PlayerTurn.instance);
+        //entity_type.ChangeState(PlayerTurn.instance);
         //else
         //entity_type.ChangeState(EndScreen.instance);
+        Application.LoadLevel("Menus");
     }
 
     public override void Exit(BattleManager entity_type)
     {
-        Debug.Log("...EXIT LOSE" + entity_type.name);
+        //Debug.Log("...EXIT LOSE" + entity_type.name);
     }
 }

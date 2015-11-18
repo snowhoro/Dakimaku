@@ -24,6 +24,11 @@ public class BattleList : MonoBehaviour
             heroList.Add(character);
     }
 
+    public BaseCharacter GetHero(int index)
+    {
+        return heroList[index];
+    }
+
     public List<BaseCharacter> GetHeroes()
     {
         return heroList;

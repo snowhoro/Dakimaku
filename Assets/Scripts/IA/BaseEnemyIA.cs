@@ -13,10 +13,12 @@ public class BaseEnemyIA : BTExecuter
         BTSelector selector2 = new BTSelector();
         BTSequence sequencer2 = new BTSequence();
         BTInverter inverter1 = new BTInverter();
+        BTInverter inverter2 = new BTInverter();
 
         repeater.AddChild(selector1);
         selector1.AddChild(sequencer1);
-        selector1.AddChild(new DiscountTurn());
+        selector1.AddChild(inverter2);
+        inverter2.AddChild(new DiscountTurn());
         selector1.AddChild(new NextTurn());
 
         sequencer1.AddChild(new CheckTurn());
@@ -51,6 +53,7 @@ public class BaseEnemyIA : BTExecuter
 
     public override void BTUpdate()
     {
-        GetComponent<Enemy>()._turn = (int)bb.GetObject("turn");
+        bb.SetObject("turn", GetComponent<Enemy>()._turn);
+        //GetComponent<Enemy>()._turn = (int)bb.GetObject("turn");
     }
 }

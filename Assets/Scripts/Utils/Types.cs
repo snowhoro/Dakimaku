@@ -39,6 +39,18 @@ public static class Types
         Heal
     }
 
+    public static Attributes StringToAttribute(string name)
+    {
+        switch(name)
+        {
+            case "Fire": return Attributes.Fire;
+            case "Water": return Attributes.Water;
+            case "Wood": return Attributes.Wood;
+            case "Light": return Attributes.None;
+            case "Dark": return Attributes.Dark;
+            default: return Attributes.None;
+        }
+    }
     /*
     public enum Stats
     {

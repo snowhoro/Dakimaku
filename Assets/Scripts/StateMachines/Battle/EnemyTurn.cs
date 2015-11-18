@@ -21,7 +21,7 @@ public class EnemyTurn : State<BattleManager>
 
     public override void Execute(BattleManager entity_type)
     {
-        Debug.Log("...ENEMY TURN...  " + entity_type.name);
+        //Debug.Log("...ENEMY TURN...  " + entity_type.name);
 
         //end of turn -> battle calculations
         if(endTurn)
@@ -30,6 +30,6 @@ public class EnemyTurn : State<BattleManager>
 
     public override void Exit(BattleManager entity_type)
     {
-        Debug.Log("...EXIT ENEMY TURN  " + entity_type.name);
+        //Debug.Log("...EXIT ENEMY TURN  " + entity_type.name);
     }
 }
