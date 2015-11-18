@@ -55,10 +55,6 @@ public class UiController : MonoBehaviour {
     void Awake()
     {
         Instance = this;
-        foreach (Item invItem in Inventory.Instance.Items)
-        {
-            invItem.itemButton.onClick.AddListener(() => { ItemClick(invItem); });
-        }
 
         _selectedTeam = Account.Instance()._selectedTeam;
         Account.Instance().SetLoadedTeam();

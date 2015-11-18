@@ -43,4 +43,9 @@ public class Item : MonoBehaviour {
         //_CharImg.sprite = Resources.Load<Sprite>(imagePath);
         _CharImg.sprite = Resources.Load(imagePath, typeof(Sprite)) as Sprite;
     }
+
+    public void ItemClick()
+    {
+        UiController.Instance.ItemClick(this);
+    }
 }
