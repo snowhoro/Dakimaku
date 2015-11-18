@@ -33,7 +33,7 @@ public class GachaItem : MonoBehaviour {
         else
         {
 
-            Debug.Log(dataJson);
+            //Debug.Log(dataJson);
             /*
             for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
             {

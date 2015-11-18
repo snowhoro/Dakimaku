@@ -84,6 +84,7 @@ public class Account : MonoBehaviour
     void Awake()
     {
         _instance = this;
+        _selectedTeam = 0;
     }
 
     void FixedUpdate()

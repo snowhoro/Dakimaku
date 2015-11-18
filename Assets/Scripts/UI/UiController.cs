@@ -70,6 +70,7 @@ public class UiController : MonoBehaviour {
             invItem.itemButton.onClick.AddListener(() => { ItemClick(invItem); });
         }
 
+        _selectedTeam = Account.Instance()._selectedTeam;
         Account.Instance().SetLoadedTeam();
     }
 	void Update () {
@@ -245,6 +246,8 @@ public class UiController : MonoBehaviour {
             {
                 for (int i = 0; i < MAXC_INTEAM; i++)
                 {
+                    Debug.Log("i:" + i + ", + " + (MAXC_INTEAM * _selectedTeam));
+
                     if (_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem == null)
                     {
                         _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].Select(item);
