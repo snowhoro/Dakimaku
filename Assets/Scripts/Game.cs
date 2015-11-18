@@ -12,7 +12,7 @@ public class Game : MonoBehaviour {
     
     public List<GachaItem> _gachaItems = new List<GachaItem>();
     public GameObject _gachaItemPrefab;
-	//public List<DungeonItem> _dungeonItems = new List<DungeonItem>();
+	public List<DungeonItem> _dungeonItems = new List<DungeonItem>();
 	public GameObject _dungeonItemPrefab;
 
     public delegate void CallBack(float loading);
@@ -117,7 +117,7 @@ public class Game : MonoBehaviour {
 	{
 		var dataJson = SimpleJSON.JSON.Parse(data);
 		
-		/*if (dataJson ["error"] != null)
+		if (dataJson ["error"] != null)
 			Debug.Log (dataJson ["error"]);
 		else {
 
@@ -129,14 +129,14 @@ public class Game : MonoBehaviour {
 			for (int i = 0; i < dataJson.Count; i++) {
 				GameObject go = GameObject.Instantiate (_dungeonItemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 				go.transform.SetParent (parent.transform);
-				//DungeonItem goComponent = go.GetComponent<DungeonItem> ();
+				DungeonItem goComponent = go.GetComponent<DungeonItem> ();
 				
-				//_dungeonItems.Add (goComponent);
+				_dungeonItems.Add (goComponent);
 				
-				//goComponent.Initialize(dataJson[0]["_id"].Value, dataJson[0]["DungeonName"].Value);
+				goComponent.Initialize(dataJson[i]["DungeonName"].Value, dataJson[i]["_id"].Value);
 
 			}
 			LoadEnd ();
-		}*/
+		}
 	}
 }

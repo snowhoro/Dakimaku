@@ -113,8 +113,8 @@ public class DungeonManager : MonoBehaviour
 
     public void RequestStages()
     {
-        ServerRequests.GetInstace().RequestDungeonById("5639359c0ef0b2a310ab1fa6", "564ca2a0b801d3a659fd87b8", LoadStages);
-        ServerRequests.GetInstace().RequestAllEnemies("5639359c0ef0b2a310ab1fa6", LoadEnemiesDictionary);
+        ServerRequests.Instance.RequestDungeonById("5639359c0ef0b2a310ab1fa6", "564ca2a0b801d3a659fd87b8", LoadStages);
+        ServerRequests.Instance.RequestAllEnemies("5639359c0ef0b2a310ab1fa6", LoadEnemiesDictionary);
     }
 
     public void LoadStages(string data)

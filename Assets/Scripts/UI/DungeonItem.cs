@@ -22,7 +22,7 @@ public class DungeonItem : MonoBehaviour {
 
     public void GetDungeonByID()
     {
-        ServerRequests.Instance.Hatch(Account.Instance()._playerId, DungeonID, DungeonCb);
+        ServerRequests.Instance.RequestDungeonById(Account.Instance()._playerId, DungeonID, DungeonCb);
     }
 
     public void DungeonCb(string data)

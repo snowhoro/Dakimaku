@@ -136,7 +136,6 @@ public class ServerRequests : MonoBehaviour
 		WWW www = new WWW(url, form);
 		StartCoroutine(WaitForRequest(www, callBack));
 	}
-
 	public void RequestDungeonById(string accountID,string dungeonID, CallBack callBack)
 	{
 		string url = host + "getDungeon";
