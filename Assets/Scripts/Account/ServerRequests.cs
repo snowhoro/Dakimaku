@@ -5,7 +5,7 @@ using SimpleJSON;
 
 public class ServerRequests : MonoBehaviour
 {
-    private static ServerRequests _instance;
+    public static ServerRequests Instance;
 
     //public static string host = "https://localhost:3030";
     public static string host = "http://dakimakuws-igna92ts.c9.io/";
@@ -14,21 +14,7 @@ public class ServerRequests : MonoBehaviour
 
     void Awake()
     {
-        _instance = this;
-    }
-
-    void Start()
-    {
-
-    }
-
-    public static ServerRequests GetInstace() 
-    {
-        if (_instance == null)
-        {
-            _instance = new ServerRequests();
-        }
-        return _instance;
+        Instance = this;
     }
 
     IEnumerator WaitForRequest(WWW www, CallBack callBack)

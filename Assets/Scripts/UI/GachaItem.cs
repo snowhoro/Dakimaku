@@ -21,7 +21,7 @@ public class GachaItem : MonoBehaviour {
 
     public void Hatch()
     {
-        ServerRequests.GetInstace().Hatch(Account.Instance()._playerId, GachaID, HatchCb);
+        ServerRequests.Instance.Hatch(Account.Instance()._playerId, GachaID, HatchCb);
     }
 
     public void HatchCb(string data)

@@ -21,11 +21,11 @@ public class Inventory : MonoBehaviour
 
     public void LoadInventory(string id)
     {
-        ServerRequests.GetInstace().RequestInventory(id, FillInventory);
+        ServerRequests.Instance.RequestInventory(id, FillInventory);
     }
     public void CreateInventory(string id, string starterID)
     {
-        ServerRequests.GetInstace().CreateInventory(id, starterID, InventoryCreated);
+        ServerRequests.Instance.CreateInventory(id, starterID, InventoryCreated);
     }
 
     public Item FindItem(string itemID) 
@@ -79,9 +79,18 @@ public class Inventory : MonoBehaviour
 
                  _items.Add(goComponent);
 
-                 string name = dataJson["inventory"]["Characters"]["Name"].Value;
+                 string name = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Name"].Value;
+                 string id =   dataJson["inventory"]["Characters"][i]["_id"].Value;
 
-                 goComponent.Initialize(name, 1, 1, 20, 20, 20, 20, 20, goComponent._CharImg);
+                 int baseHp = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["HP"].Value);
+                 int phyAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["PhysicalAttack"].Value);
+                 int magAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicAttack"].Value);
+                 int phyDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["PhysicalDefense"].Value);
+                 int magDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicDefense"].Value);
+                 int level =  int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Level"].Value);
+                 int rarity = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Rarity"].Value);
+
+                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, goComponent._CharImg, id);
              }
 
              Account.Instance().LoadTeams();

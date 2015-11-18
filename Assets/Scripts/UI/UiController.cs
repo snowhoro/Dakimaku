@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class UiController : MonoBehaviour {
 
-    private static UiController _instance;
+    public static UiController Instance { get; private set; }
 
     enum MenuState { Main, Inventory, Shop, Friends, Options }
     enum InventoryState { None, Sell, Fuse, SelFuse, Look, Evolve, Edit }
@@ -36,16 +36,6 @@ public class UiController : MonoBehaviour {
     private Vector3 teamVec4 = new Vector3(78.5f, 260.9f, 200f);
     private Vector3 teamVec5 = new Vector3(22.4f, 260.9f, 200f);
     private Vector3 teamTarget;
-    
-    public static UiController getInstance()
-    {
-        if (_instance != null)
-        {
-            _instance = new UiController();
-        }
-
-        return _instance;
-    }
 
 	// Use this for initialization
 	void Start () {
@@ -64,7 +54,7 @@ public class UiController : MonoBehaviour {
 
     void Awake()
     {
-        _instance = this;
+        Instance = this;
         foreach (Item invItem in Inventory.Instance.Items)
         {
             invItem.itemButton.onClick.AddListener(() => { ItemClick(invItem); });

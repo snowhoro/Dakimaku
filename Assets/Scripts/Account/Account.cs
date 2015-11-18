@@ -43,16 +43,16 @@ public class Account : MonoBehaviour
         if (!string.IsNullOrEmpty(playerId)) 
             _playerId = playerId;
         // LOAD PLAYER ACCOUNT
-        ServerRequests.GetInstace().RequestAccount(_playerId, LoadCb);
+        ServerRequests.Instance.RequestAccount(_playerId, LoadCb);
     }
     public void NewAccount(string name)
     {
-        ServerRequests.GetInstace().SignUp(name, CreateCb);
+        ServerRequests.Instance.SignUp(name, CreateCb);
     }
 
     public void LoadTeams()
     {
-        ServerRequests.GetInstace().RequestTeams(_playerId, LoadTeamCb);
+        ServerRequests.Instance.RequestTeams(_playerId, LoadTeamCb);
     }
     /*public void CreateTeams() {
         ServerRequests.GetInstace().CreateTeams(_playerId, Game.Instance._starterId, CreateTeamCb);
@@ -65,7 +65,7 @@ public class Account : MonoBehaviour
         {
             for (int j = 0; j < _teams[i].Length; j++)
             {
-                _teams[i][j] = UiController.getInstance()._hudTeams[(i + System.Convert.ToInt32(UiController.MAXC_INTEAM * _selectedTeam))].RefItem;
+                _teams[i][j] = UiController.Instance._hudTeams[(j + System.Convert.ToInt32(UiController.MAXC_INTEAM * _selectedTeam))].RefItem;
 
                 if (i == _selectedTeam)
                 {
@@ -262,7 +262,7 @@ public class Account : MonoBehaviour
                 //Debug.Log((_teams[i][j] == null) + " iteration: " + i + "," + j);
 
                 if (_teams[i][j] != null)
-                    UiController.getInstance().SetTeam(i, j, _teams[i][j]);
+                    UiController.Instance.SetTeam(i, j, _teams[i][j]);
 			}
 		}
         

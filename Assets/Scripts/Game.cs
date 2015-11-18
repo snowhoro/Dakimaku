@@ -65,7 +65,7 @@ public class Game : MonoBehaviour {
         {
             MenuController.getInstance().LoadScene();
         }
-        else if (UiController.getInstance() != null)
+        else if (UiController.Instance != null)
         { 
             //UiController.getInstance()
         }
@@ -73,7 +73,7 @@ public class Game : MonoBehaviour {
 
     public void LoadGachas()
     {
-        ServerRequests.GetInstace().RequestActiveGachas(_playerId, GachaCb);
+        ServerRequests.Instance.RequestActiveGachas(_playerId, GachaCb);
     }
 
     public void GachaCb(string data)
@@ -110,7 +110,7 @@ public class Game : MonoBehaviour {
 
 	public void LoadAllDungeons()
 	{
-		ServerRequests.GetInstace ().RequestAllDungeons (_playerId, AllDungeonsCb);
+		ServerRequests.Instance.RequestAllDungeons (_playerId, AllDungeonsCb);
 	}
 
 	public void AllDungeonsCb(string data)

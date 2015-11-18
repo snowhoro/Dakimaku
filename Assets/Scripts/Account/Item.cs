@@ -13,10 +13,11 @@ public class Item : MonoBehaviour {
     public Image _CharImg;
     public Transform _transform;
 
-    public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, Image imageCo)
+    public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, Image imageCo, string itemID)
     {
         _character = new Character();
         _character.Initialize(name, baseHP, level, rarity, baseMAtt, basePAtt, baseMDef, basePDef, imageCo);
+        ItemID = itemID;
     }
 
     void Awake()
