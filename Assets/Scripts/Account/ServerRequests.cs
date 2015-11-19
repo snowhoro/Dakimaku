@@ -103,9 +103,10 @@ public class ServerRequests : MonoBehaviour
     }
     public void UpdateTeams(string accountID, string jsonTeams, CallBack callBack)
     {
-        string url = host + "setTeams";
+        string url = host + "EditTeams";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
+        form.AddField("ModTeams", jsonTeams);
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }

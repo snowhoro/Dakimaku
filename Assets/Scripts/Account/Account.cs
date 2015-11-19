@@ -59,10 +59,14 @@ public class Account : MonoBehaviour
     }*/
     public void EditTeams()
     {
-        string teamJson = "{'Teams': { 'team_1': [ '5647f25d1f0c1f1b12a33195']";
+
+        string cm = "\"";
+        string teamJson = "{";
 
         for (int i = 0; i < _teams.Count; i++)
         {
+            teamJson += " " + cm + "team_" + (i+1) + cm + ": [ ";
+
             for (int j = 0; j < _teams[i].Length; j++)
             {
                 _teams[i][j] = UiController.Instance._hudTeams[(j + System.Convert.ToInt32(UiController.MAXC_INTEAM * _selectedTeam))].RefItem;
@@ -70,15 +74,25 @@ public class Account : MonoBehaviour
                 if (i == _selectedTeam)
                 {
                     if (_teams[i][j] != null)
+                    {
                         _teamsParaLuchoPelotudo[j] = (_teams[i][j]._character);
+                        teamJson += cm + _teams[i][j].ItemID.ToString() + cm + ",";
+                    }
                 }
                 //teamJson.add
             }
-        }
-       
-        //teamJson        
 
-        //ServerRequests.GetInstace().UpdateTeams(_playerId, teamJson, EditTeamCb);
+            teamJson = teamJson.Substring(0, teamJson.Length - 1);
+            teamJson += " ]";
+            if (i != 4)
+                teamJson += ",";
+        }
+
+        teamJson += "}";
+
+        Debug.Log(teamJson);
+
+        ServerRequests.Instance.UpdateTeams(_playerId, teamJson, EditTeamCb);
     }
 
     void Awake()
@@ -219,7 +233,7 @@ public class Account : MonoBehaviour
                         Item iFind = Inventory.Instance.FindItem(dataJson["teams"]["Teams"]["team_" + i.ToString()][j].Value);
 
                         if (iFind != null)
-                            _teams[i][j] = iFind;
+                            _teams[i-1][j] = iFind;
                     }
                     
                     //dataJson["Teams"][i][j].Value

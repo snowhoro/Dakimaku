@@ -40,7 +40,7 @@ public class UiController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         MenuVisibility(true, false, false, false, false);
-        _selectedTeam = 0;
+        Account.Instance().SetLoadedTeam();
     }
 
     private void MenuVisibility(bool main, bool shop, bool inventory, bool hatcher, bool options)
@@ -57,7 +57,6 @@ public class UiController : MonoBehaviour {
         Instance = this;
 
         _selectedTeam = Account.Instance()._selectedTeam;
-        Account.Instance().SetLoadedTeam();
     }
 	void Update () {
         
@@ -226,13 +225,13 @@ public class UiController : MonoBehaviour {
         }
         else if (_inventoryState == InventoryState.Edit)
         {
-            Debug.Log(item.Selected);
+            //Debug.Log(item.Selected);
 
             if (_selectedItems.Count < MAXC_INTEAM && !item.Selected)
             {
                 for (int i = 0; i < MAXC_INTEAM; i++)
                 {
-                    Debug.Log("i:" + i + ", + " + (MAXC_INTEAM * _selectedTeam));
+                    //Debug.Log("i:" + i + ", + " + (MAXC_INTEAM * _selectedTeam));
 
                     if (_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem == null)
                     {
@@ -263,6 +262,7 @@ public class UiController : MonoBehaviour {
     // --------------------------------------------------------------------------------------------------------------------------
     /// <summary>Teams 0-4, nPosition 0-5</summary>
     public void SetTeam(int nTeam, int nPosition, Item item) {
+        Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage); 
         _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem = item;
         _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage.sprite = item._CharImg.sprite;
     }
