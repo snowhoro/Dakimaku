@@ -259,10 +259,12 @@ public class Account : MonoBehaviour
         var dataJson = SimpleJSON.JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+        }
         else
         {
-
+            UiController.Instance.TeamUpdated();
         }
     }
 

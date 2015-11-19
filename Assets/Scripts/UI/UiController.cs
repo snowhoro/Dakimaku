@@ -11,6 +11,7 @@ public class UiController : MonoBehaviour {
     
     public GameObject _mainPanel, _teamEditPanel, _inventoryPanel, _teamPanel;
     public GameObject _home, _shop, _inventory, _hatcher, _options;
+    public GameObject _loadingPanel;
 
     public Transform InventoryParent, EditTeamParent;
     public Transform TeamSlider;
@@ -19,7 +20,6 @@ public class UiController : MonoBehaviour {
     private int _maxSelectedItems;
     private List<Item> _selectedItems = new List<Item>(); // ONLY FOR FUSING AND SELLING
     private Item _itemShow; // SHOWING ITEM.
-    private Item _itemFuse; // TO FUSE;
 
     public TeamItem[] _hudTeams;
     public int _selectedTeam;
@@ -62,14 +62,19 @@ public class UiController : MonoBehaviour {
         
         if (Input.GetKeyDown(KeyCode.Escape) )
         {
-            if (_inventoryState != InventoryState.None)
+            if (_inventoryState != InventoryState.None && _inventoryState != InventoryState.Fuse)
             {
                 if (_inventoryState == InventoryState.Edit)
+                {
                     Account.Instance().EditTeams();
-
-                SetInventoryPanelVisibility(false);
-                _teamEditPanel.SetActive(false);
-                _inventoryState = InventoryState.None;
+                    _loadingPanel.SetActive(true);
+                }
+                else
+                {
+                    SetInventoryPanelVisibility(false);
+                    _teamEditPanel.SetActive(false);
+                    _inventoryState = InventoryState.None;
+                }
             }
         }
 
@@ -149,6 +154,11 @@ public class UiController : MonoBehaviour {
             setIteminPanel(Inventory.Instance.Items[i], InventoryParent);
         }
     }
+    public void OpenSelFuseMenu()
+    {
+        SetInventoryPanelVisibility(true);
+        _inventoryState = InventoryState.SelFuse;
+    }
     public void OpenTeamEdition()
     {
         _mainPanel.SetActive(false);
@@ -194,34 +204,77 @@ public class UiController : MonoBehaviour {
     {
         Inventory.Instance.DeselectAll();
         _selectedItems.Clear();
-        _itemFuse = null;
         _itemShow = null;
         _inventoryPanel.SetActive(visibility);
         _mainPanel.SetActive(!visibility);
         _teamPanel.SetActive(!visibility);
     }
 
+    public void BeginLoad()
+    {
+        _loadingPanel.SetActive(true);
+    }
+    private void LoadSucces()
+    {
+       _loadingPanel.SetActive(false);
+    }
+    private void LoadFail()
+    { }
+    private void ReLoad()
+    { }
+
+    public void TeamUpdated()
+    {
+        SetInventoryPanelVisibility(false);
+        _teamEditPanel.SetActive(false);
+        _inventoryState = InventoryState.None;
+        LoadSucces();
+    }
+    public void GachaSucces()
+    {
+        LoadSucces();
+    }
+
     public void ItemClick(Item item)
     {
-        if (_inventoryState == InventoryState.SelFuse || _inventoryState == InventoryState.Sell)
-        {
-            if (!item.Selected)
-            {
-                if (Inventory.Instance.SelectedItems() == _maxSelectedItems)
-                    return;
-            }
+        //Debug.Log(_inventoryState);
 
-            item.Select();
-        }
-        else if (_inventoryState == InventoryState.Look)
+        //if (_inventoryState == InventoryState.SelFuse || _inventoryState == InventoryState.Sell)
+        //{
+        //    if (!item.Selected)
+        //    {
+        //        if (Inventory.Instance.SelectedItems() == _maxSelectedItems)
+        //            return;
+        //    }
+
+        //    item.Select();
+        //}
+        if (_inventoryState == InventoryState.Look)
         {
             _itemShow = item;
             // Abrir Detalles personaje
         }
         else if (_inventoryState == InventoryState.Fuse)
         {
-            _itemFuse = item;
+            FusionUIController.Instance.SetFuseItem(item);
+            _inventoryPanel.SetActive(false);
             // Abrir hud de Fusing;
+        }
+        else if (_inventoryState == InventoryState.SelFuse) 
+        {
+            //Debug.Log(_selectedItems.Count);
+
+            if (_selectedItems.Count < 10 && !item.Selected)
+            {
+                if(FusionUIController.Instance.AddFuseItem(item))
+                    _selectedItems.Add(item);
+            }
+            else if (item.Selected)
+            {
+                _selectedItems.Remove(item);
+                FusionUIController.Instance.RemoveFuseItem(item);
+                //_hudTeams[0];
+            }
         }
         else if (_inventoryState == InventoryState.Edit)
         {
@@ -262,7 +315,7 @@ public class UiController : MonoBehaviour {
     // --------------------------------------------------------------------------------------------------------------------------
     /// <summary>Teams 0-4, nPosition 0-5</summary>
     public void SetTeam(int nTeam, int nPosition, Item item) {
-        Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage); 
+        //Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage); 
         _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem = item;
         _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage.sprite = item._CharImg.sprite;
     }

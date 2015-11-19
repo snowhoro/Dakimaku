@@ -21,6 +21,7 @@ public class GachaItem : MonoBehaviour {
 
     public void Hatch()
     {
+        UiController.Instance.BeginLoad();
         ServerRequests.Instance.Hatch(Account.Instance()._playerId, GachaID, HatchCb);
     }
 
@@ -32,21 +33,7 @@ public class GachaItem : MonoBehaviour {
             Debug.Log(dataJson["error"]);
         else
         {
-
-            //Debug.Log(dataJson);
-            /*
-            for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
-            {
-                GameObject go = GameObject.Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-                go.transform.SetParent(parent.transform);
-                Item goComponent = go.GetComponent<Item>();
-
-                _items.Add(goComponent);
-
-                string name = dataJson["inventory"]["Characters"]["Name"].Value;
-
-                goComponent.Initialize(name, 1, 1, 20, 20, 20, 20, 20, goComponent._CharImg);
-            }*/
+            UiController.Instance.GachaSucces();
         }
     }
 }

@@ -90,7 +90,7 @@ public class Inventory : MonoBehaviour
                  int level =  int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Level"].Value);
                  int rarity = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Rarity"].Value);
 
-                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, goComponent._CharImg, id);
+                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id);
              }
 
              Account.Instance().LoadTeams();
