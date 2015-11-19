@@ -35,14 +35,14 @@ public class Combat : MonoBehaviour
                 Destroy(this.gameObject);
         }
     }
-    public void Hit(BaseCharacter target, BaseCharacter origin)
+    /*public void Hit(BaseCharacter target, BaseCharacter origin)
     {
         target._currentHP -= origin._physicalBaseAttack;
 
         if (target._currentHP <= 0)
         {
             target._currentHP = 0;
-            if (target.tag == "Enemy")
+            if (target == "Enemy")
             {
                 Destroy(target.gameObject, 0.5f);
                 //BattleList.Remove(target.gameObject);
@@ -67,7 +67,7 @@ public class Combat : MonoBehaviour
         TextMesh textmesh = ((GameObject)Instantiate(dmgNumbers, target.transform.position + new Vector3(0f, 0.5f, -3f), Quaternion.identity)).GetComponent<TextMesh>();
         textmesh.text = "MISS";
         textmesh.color = Color.cyan;
-    }
+    }*/
 
     public void Heal(BaseCharacter target, int hitPoints)
     {

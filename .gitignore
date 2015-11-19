@@ -244,3 +244,4 @@ Temp
 *.sln
 *.userprefs
 
+Assets/Scripts/Priority Queue/Priority Queue.csproj.meta

@@ -8,26 +8,25 @@ public abstract class BaseCharacter : MonoBehaviour
 
     public string _name;
     public string _id;
-    public int _currentHP { get; set; }
-    public int _maxBaseHP { get; set; }
+    public int _currentHP;
+    public int _maxBaseHP;
+    public int _level;
+    public int _rarity;
 
-    public int _level { get;  set; }
-    public int _rarity { get;  set; }
-    
-    public int _magicBaseAttack { get;  set; }
-    public int _physicalBaseAttack { get;  set; }
+    public int _magicBaseAttack;
+    public int _physicalBaseAttack;
 
-    public int _magicBaseDefense { get;  set; }
-    public int _physicalBaseDefense { get;  set; }
+    public int _magicBaseDefense;
+    public int _physicalBaseDefense;
 
-    public Image _sprite { get;  set; }
+    public Image _sprite;
     public string _portrait;
-    public AudioSource _battleRoar { get;  set; }
+    public AudioSource _battleRoar;
 
-    public Types.StatusEffects _status { get;  set; }
-    public Types.Attributes _attribute { get; set; }
+    public Types.StatusEffects _status;
+    public Types.Attributes _attribute;
 
-    public Vector2 _gridPos { get; set; }
+    public Vector2 _gridPos;
 
     public List<BaseSkill> _skillList;
     #endregion
