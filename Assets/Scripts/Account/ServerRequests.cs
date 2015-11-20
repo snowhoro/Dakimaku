@@ -8,7 +8,7 @@ public class ServerRequests : MonoBehaviour
     public static ServerRequests Instance;
 
     //public static string host = "https://localhost:3030";
-    public static string host = "http://dakimakuws-igna92ts.c9.io/";
+    public static string host = "https://dakimakuws-igna92ts.c9.io/";
 
     public delegate void CallBack(string data);
 

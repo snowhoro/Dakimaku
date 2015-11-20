@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
 
-public class DisplacementSkill : BaseSkill
+public class ThunderHitTopDown : BaseSkill
 {
-    public DisplacementSkill()
+    public ThunderHitTopDown()
     {
-        _name = "Displacement";
-        _description = "Moves enemies";
+        _name = "ThunderHitTopDown";
+        _description = "TopDown thunder";
 
         _power = 0;
         _cooldown = 0;
 
         _isPhysical = false;
-        _isDisplacement = true;
+        _isDisplacement = false;
         _isActive = false;
         _isAOE = true;
 
@@ -25,9 +25,7 @@ public class DisplacementSkill : BaseSkill
 
         _AOE = new[]
         {
-            new Vector2(1, 0), 
             new Vector2(0, -1),
-            new Vector2(-1, 0),
             new Vector2(0, 1),  
         };
     }

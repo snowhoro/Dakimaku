@@ -12,6 +12,7 @@ public class BaseEnemyIA : BTExecuter
         BTSequence sequencer1 = new BTSequence();
         BTSelector selector2 = new BTSelector();
         BTSequence sequencer2 = new BTSequence();
+        BTSequence sequencer3 = new BTSequence();
         BTInverter inverter1 = new BTInverter();
         BTInverter inverter2 = new BTInverter();
 
@@ -26,13 +27,16 @@ public class BaseEnemyIA : BTExecuter
         sequencer1.AddChild(new PrepareNextTurn());
         sequencer1.AddChild(new NextTurn());
 
+        selector2.AddChild(sequencer3);
         selector2.AddChild(sequencer2);
         //selector2.AddChild(new BTSucceeder());
-
         sequencer2.AddChild(inverter1);
         sequencer2.AddChild(new WhereToGo());
         sequencer2.AddChild(new Move());
         sequencer2.AddChild(new EnemyAttack());
+
+        sequencer3.AddChild(new CheckSkillHit());
+        sequencer3.AddChild(new UseSkill());
 
         inverter1.AddChild(new Surrounded());
 
@@ -48,6 +52,7 @@ public class BaseEnemyIA : BTExecuter
         bb.SetObject("turnNumber", GetComponent<Enemy>()._turnNumber);
         bb.SetObject("turn", GetComponent<Enemy>()._turn);
         bb.SetObject("enemy", GetComponent<BaseCharacter>());
+        bb.SetObject("indexSkill", 0);
         return bb;
     }
 

@@ -26,7 +26,8 @@ public class GridMovement : MonoBehaviour
     public void SetPath(Stack<Vector2> _path, bool _moving = true)
     {
         path = _path;
-        nextStep = GridManager.instance.GetWorldPosition(path.Pop());
+        nextStepGrid = path.Pop();
+        nextStep = GridManager.instance.GetWorldPosition(nextStepGrid);
         moving = _moving;
     }
 

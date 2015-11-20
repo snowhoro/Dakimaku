@@ -33,7 +33,7 @@ public class PrepareBattle : State<BattleManager>
     public override void Exit(BattleManager entity_type)
     {
         //Debug.Log("...EXIT BATTLE PREPARATIONS" + entity_type.name);
-        GridManager.instance.StartChar();
+        DungeonManager.instance.SpawnCharacters();
         DungeonManager.instance.SpawnStage();
     }
 }

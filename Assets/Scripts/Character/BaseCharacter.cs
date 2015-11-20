@@ -35,6 +35,8 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         _skillList = new List<BaseSkill>();
         _skillList.Add(AddSkill("QuickSlash"));
+        _skillList.Add(AddSkill("DisplacementSkill"));
+        _skillList.Add(AddSkill("ThunderHitTopDown"));
         //Debug.Log("Name: " + _skillList[0]._name + " | Skills: " + _skillList.Count);
     }
 
