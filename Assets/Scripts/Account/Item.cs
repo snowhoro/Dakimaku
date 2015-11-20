@@ -13,10 +13,13 @@ public class Item : MonoBehaviour {
     public Image _CharImg;
     public Transform _transform;
 
-    public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, Image imageCo, string itemID)
+    public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, string itemID)
     {
+        Image imageCo = this.GetComponent<Image>();
+        imageCo.sprite = LoadAsset.Portrait("portraitGRILL");
         _character = new Character();
         _character.Initialize(name, baseHP, level, rarity, baseMAtt, basePAtt, baseMDef, basePDef, imageCo);
+        _CharImg = imageCo;
         ItemID = itemID;
     }
 
@@ -24,7 +27,6 @@ public class Item : MonoBehaviour {
     {
         _selected = false;
         _transform = this.transform;
-        _CharImg = this.GetComponent<Image>();
         itemButton = this.GetComponent<Button>();
     }
 	

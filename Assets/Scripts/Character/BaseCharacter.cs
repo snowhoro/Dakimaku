@@ -78,8 +78,6 @@ public abstract class BaseCharacter : MonoBehaviour
         _magicBaseDefense = bMagDef;
         _physicalBaseAttack = bPhyAtt;
         _physicalBaseDefense = bPhyDef;
-
-        _sprite.sprite = Resources.Load("UI/BattleUI/" + _name, typeof(Sprite)) as Sprite;
     }
 
 }
