@@ -20,6 +20,9 @@ public class Character : BaseCharacter
     public int _physicalSpecDefense { get; protected set; }
     public int _maxPhysicalSpecDefense { get; protected set; }
 
+    public int _currentExp { get; protected set; }
+    public int _expToNextLevel { get; protected set; }
+
     #endregion
 
     public void AddSpecHp(int hpAmount)
@@ -56,5 +59,29 @@ public class Character : BaseCharacter
     public override void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, Image imageCo)
     {
         base.Initialize(name, baseHP, level, rarity, bMagAtt, bPhyAtt, bMagDef, bPhyDef, imageCo);
+    }
+
+    private void LevelUp()
+    { 
+        AddBaseHp(100);
+        AddMagicAttack(10);
+        AddMagicDefense(10);
+        AddPhysicalAttack(10);
+        AddphysicalDefense(10);
+        _level++;
+
+        _expToNextLevel += 1000;
+    }
+    public void AddExperience(int ammount)
+    {
+        for (int i = 0; i < System.Convert.ToInt32(ammount / 1000); i++)
+        {
+            if (_level == 99)
+                break;
+
+            LevelUp();
+        }
+
+        _currentExp += ammount;
     }
 }

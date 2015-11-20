@@ -167,7 +167,9 @@ public class Account : MonoBehaviour
         var d = SimpleJSON.JSON.Parse(data);
 
         if (d["error"] != null)
+        {
             Debug.Log(d["error"]);
+        }
         else
         {
             this._playerId = d["user_id"].Value;
@@ -184,7 +186,11 @@ public class Account : MonoBehaviour
         var dataJson = SimpleJSON.JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+
+            MenuController.getInstance().retryPanel.SetActive(true);
+        }
         else
         {
             Debug.Log(dataJson["account"]["PlayerName"].Value);
@@ -199,7 +205,7 @@ public class Account : MonoBehaviour
             _expToNextLevel = 0; //int.Parse(d["ExpToNextLevel"].ToString());
             _rechargeTime = 0;// float.Parse(d["floatTime"].ToString());
 
-            _stats = new AccountStats(int.Parse(dataJson["account"]["LogDays"].Value), 
+            _stats = new AccountStats(int.Parse(dataJson["account"]["LogDays"].Value),
                                         int.Parse(dataJson["account"]["TotalLogDays"].Value),
                                         dataJson["account"]["LastLogDay"] == null ? DateTime.Now : DateTime.Parse(dataJson["account"]["LastLogDay"].Value));
 

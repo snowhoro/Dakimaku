@@ -139,4 +139,10 @@ public class Game : MonoBehaviour {
 			LoadEnd ();
 		}
 	}
+
+    public void Reconnect()
+    {
+        ServerRequests.Instance.RetryRequest();
+        MenuController.getInstance().retryPanel.SetActive(false);
+    }
 }

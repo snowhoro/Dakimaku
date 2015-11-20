@@ -11,7 +11,7 @@ public class UiController : MonoBehaviour {
     
     public GameObject _mainPanel, _teamEditPanel, _inventoryPanel, _teamPanel;
     public GameObject _home, _shop, _inventory, _hatcher, _options;
-    public GameObject _loadingPanel;
+    public GameObject _loadingPanel, _retryPanel;
 
     public Transform InventoryParent, EditTeamParent;
     public Transform TeamSlider;
@@ -218,10 +218,15 @@ public class UiController : MonoBehaviour {
     {
        _loadingPanel.SetActive(false);
     }
-    private void LoadFail()
-    { }
-    private void ReLoad()
-    { }
+    public void LoadFail()
+    {
+        _retryPanel.SetActive(true);
+    }
+    public void Reconnect()
+    {
+        _retryPanel.SetActive(false);
+        ServerRequests.Instance.RetryRequest();
+    }
 
     public void TeamUpdated()
     {
@@ -232,6 +237,9 @@ public class UiController : MonoBehaviour {
     }
     public void GachaSucces()
     {
+        LoadSucces();
+    }
+    public void FuseSucces() {
         LoadSucces();
     }
 
