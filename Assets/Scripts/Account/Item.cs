@@ -17,7 +17,7 @@ public class Item : MonoBehaviour {
     {
         Image imageCo = this.GetComponent<Image>();
         imageCo.sprite = LoadAsset.Portrait("portraitGRILL");
-        _character = new Character();
+        _character = gameObject.AddComponent<Character>();
         _character.Initialize(name, baseHP, level, rarity, baseMAtt, basePAtt, baseMDef, basePDef, imageCo);
         _CharImg = imageCo;
         ItemID = itemID;

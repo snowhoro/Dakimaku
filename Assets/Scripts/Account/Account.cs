@@ -24,7 +24,7 @@ public class Account : MonoBehaviour
 
     public int _selectedTeam;
     public int _maxTeams;
-    public Character[] _teamsParaLuchoPelotudo = new Character[6];
+    public Character[] _selectedTeamList = new Character[6];
     public List<Item[]> _teams;
     public Inventory _inventory;
     public AccountStats _stats; 
@@ -75,7 +75,7 @@ public class Account : MonoBehaviour
                 {
                     if (_teams[i][j] != null)
                     {
-                        _teamsParaLuchoPelotudo[j] = (_teams[i][j]._character);
+                        _selectedTeamList[j] = (_teams[i][j]._character);
                         teamJson += cm + _teams[i][j].ItemID.ToString() + cm + ",";
                     }
                 }
