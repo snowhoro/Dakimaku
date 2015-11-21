@@ -68,7 +68,7 @@ public class FusionUIController : MonoBehaviour {
 
         string cm = "\"";
 
-        string jsonFodders = "{ " + cm + "FodderIds" + cm + ": [}";
+        string jsonFodders = "{ " + cm + "FodderIds" + cm + ": [";
 
         for (int i = 0; i < _fuseItems.Length; i++)
         {
@@ -100,6 +100,7 @@ public class FusionUIController : MonoBehaviour {
         jsonCharacter += "} } }";
 
         Debug.Log(jsonCharacter);
+        Debug.Log(jsonFodders);
 
         ServerRequests.Instance.FuseCharacter(Account.Instance._playerId, jsonCharacter, jsonFodders, FuseCb);
     }

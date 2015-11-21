@@ -25,7 +25,7 @@ public class TeamItem : MonoBehaviour {
     {
         RefItem = item;
         item.Select();
-        Debug.Log(SlotImage);
+        //Debug.Log(SlotImage);
         SlotImage.sprite = item._CharImg.sprite;
     }
 
