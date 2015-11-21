@@ -15,14 +15,15 @@ public class EnemyTurn : State<BattleManager>
     public override void Enter(BattleManager entity_type)
     {
         Debug.Log("ENTER ENEMY TURN...  " + entity_type.name);
-        BattleList.instance.GetEnemy().GetComponent<BaseEnemyIA>().enabled = true;
+        //BattleList.instance.GetEnemy().GetComponent<BaseEnemyIA>().enabled = true;
+        BattleUIController.instance.UIEnemyTurn.SetActive(true);
         endTurn = false;
     }
 
     public override void Execute(BattleManager entity_type)
     {
         //Debug.Log("...ENEMY TURN...  " + entity_type.name);
-
+        BattleUIController.instance.CheckUIEnemyTurn();
         //end of turn -> battle calculations
         if(endTurn)
             entity_type.ChangeState(BattleCalcs.instance);

@@ -23,7 +23,9 @@ public abstract class BaseCharacter : MonoBehaviour
     public string _portrait;
     public AudioSource _battleRoar;
 
+    [EnumFlag]
     public Types.StatusEffects _status;
+    [EnumFlag]
     public Types.Attributes _attribute;
 
     public Vector2 _gridPos;

@@ -49,7 +49,7 @@ public class ShowBattle : MonoBehaviour
             {
                 for (int i = 0; i < victims.Length; i++)
                 {
-                    ShowDamage(victims[i].gameObject);
+                    ShowDamage(victims[i].gameObject, Combat.Damage(hitGroup.GetAttackers()[j], victims[i]));
                 }
                 //WAIT NUMBERS
                 yield return new WaitForSeconds(waitTimeBetweenNumbers);
@@ -83,7 +83,7 @@ public class ShowBattle : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenVictims);
             
             //SI EL HP ES 0 O MENOR LO BORRO
-            HpZeroKill(victims);
+            BattleList.instance.CheckDead();
         }
         showing = false;
     }
@@ -104,20 +104,15 @@ public class ShowBattle : MonoBehaviour
             }
         }
     }
-    public void ShowDamage(GameObject obj)
+    public void ShowDamage(GameObject obj, int damage)
     {
         GameObject aux = Instantiate(dmgNumbers);
         aux.transform.SetParent(obj.transform.FindChild("Canvas"));
         RectTransform rect = aux.GetComponent<RectTransform>();
         rect.transform.localPosition = dmgNumbers.transform.localPosition;
         rect.transform.localScale = dmgNumbers.transform.localScale;
-        int dmg = Random.Range(20, 50);
-        //MEJORAR!!! //////////////////////////////////////
-        BaseCharacter character = obj.GetComponent<BaseCharacter>();
-        character._currentHP -= dmg;
-        ///////////////////////////////////////////////////
-        
-        aux.GetComponent<Text>().text = dmg.ToString();
+
+        aux.GetComponent<Text>().text = damage.ToString();
         Destroy(aux, 1f);
     }
     public void HpZeroKill(BaseCharacter[] characters)
@@ -149,6 +144,7 @@ public class ShowBattle : MonoBehaviour
     {
         showing = true;
         skill.Use(null, attacker);
+        BattleList.instance.CheckDead();
         yield return new WaitForSeconds(waitTimeBetweenVictims);
         showing = false;
     }
@@ -156,10 +152,4 @@ public class ShowBattle : MonoBehaviour
     {
         StartCoroutine(ShowSkill(skill, attacker));
     }
-    /*public IEnumerator SelectSkill(BaseCharacter attacker, BaseCharacter[] victims)
-    {
-        SkillPanelController.instance.GetSkillSelected(attacker);
-        yield return _sync();
-        attacker._skillList[selected].Use(victims, attacker);
-    }*/
 }

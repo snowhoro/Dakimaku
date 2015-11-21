@@ -6,7 +6,7 @@ public class SortingLayerChanger : MonoBehaviour {
     public string SortingLayerName;
 	void Start () 
     {
-        Debug.Log("sorting");
-        this.GetComponent<Canvas>().sortingLayerName = SortingLayerName;
+        //Debug.Log("sorting");
+        //this.GetComponent<Canvas>().sortingLayerName = SortingLayerName;
 	}
 }

@@ -8,7 +8,7 @@ public class QuickSlash : BaseSkill
         _name = "QuickSlash";
         _description = "Slashes quickly";
 
-        _power = 10;
+        _power = 30;
         _cooldown = 0;
 
         _isPhysical = true;
@@ -17,7 +17,7 @@ public class QuickSlash : BaseSkill
         _isAOE = false;
 
         _attribute = Types.Attributes.None;
-        _statusEffect = Types.StatusEffects.None;
+        _statusEffect = Types.StatusEffects.Poison;
         _statusChance = 0;
        
         _activationChance = 10.0f;

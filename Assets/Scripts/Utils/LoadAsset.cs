@@ -23,6 +23,11 @@ public static class LoadAsset
         return Resources.Load<Sprite>(uiBattlePath + name);
     }
 
+    public static Sprite Numbers(string name, int number)
+    {
+        return Resources.LoadAll<Sprite>(uiBattlePath + name)[number];
+    }
+
     public static GameObject FX(string name)
     {
         return Resources.Load<GameObject>(fxPath + name);

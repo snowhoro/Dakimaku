@@ -104,7 +104,7 @@ public class BaseSkill : ScriptableObject
     {
         for (int i = 0; i < victims.Length; i++)
         {
-            ShowBattle.instance.ShowDamage(victims[i].gameObject);
+            ShowBattle.instance.ShowDamage(victims[i].gameObject, Combat.Damage(attacker,victims[i], this));
         }
     }
     public virtual void RunFX(BaseCharacter target)
