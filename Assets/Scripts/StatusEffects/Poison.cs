@@ -15,7 +15,7 @@ public class Poison : BaseStatusEffect
 
     public override void Damage(BaseCharacter affected)
     {
-        int damage = (int)(affected._maxBaseHP * _power);
+        int damage = (int)(affected._maxHP * _power);
         affected._currentHP -= damage;
         ShowBattle.instance.ShowDamage(affected.gameObject, damage);
     }

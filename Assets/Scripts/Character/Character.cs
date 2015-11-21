@@ -55,10 +55,9 @@ public class Character : BaseCharacter
         if (_physicalSpecDefense > _maxPhysicalSpecDefense)
             _physicalSpecDefense = _maxMagicSpecDefense;
     }
-    
     public override void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, int exp, Sprite imageCo)
     {
-        base.Initialize(name, baseHP, level, rarity, bMagAtt, bPhyAtt, bMagDef, bPhyDef, imageCo);
+        base.Initialize(name, baseHP, level, rarity, bMagAtt, bPhyAtt, bMagDef, bPhyDef, exp, imageCo);
 
         _currentExp = exp;
     }
