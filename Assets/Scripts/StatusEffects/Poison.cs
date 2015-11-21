@@ -19,4 +19,13 @@ public class Poison : BaseStatusEffect
         affected._currentHP -= damage;
         ShowBattle.instance.ShowDamage(affected.gameObject, damage);
     }
+    public override void AddEffect(BaseCharacter affected)
+    {
+        for (int i = 0; i < affected._statusEffects.Count; i++)
+		{
+            if (affected._statusEffects[i] is Poison)
+                return;
+		}
+        affected._statusEffects.Add(new Poison());
+    }
 }
