@@ -47,7 +47,7 @@ public class WhereToGo : BTLeaf
         {
             //heroList[heroIndex]._gridPos
             position = GetPositionOfClosestHero(heroList[heroIndex]);
-            Debug.Log(position);
+            //Debug.Log(position);
             if (position != new Vector2(-1, -1))
             {
                 GridManager.instance.UpdateMapPositions(enemy.GetComponent<BaseCharacter>());

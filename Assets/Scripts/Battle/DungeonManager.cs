@@ -91,18 +91,28 @@ public class DungeonManager : MonoBehaviour
         cEnemy._turn = cEnemy._turnNumber = enemyStats._turnNumber;
         cEnemy._portrait = enemyStats._portrait;
         cEnemy._attribute = enemyStats._attribute;
-        cEnemy._physicalBaseDefense = enemyStats._physicalBaseDefense;
-        cEnemy._physicalBaseAttack = enemyStats._physicalBaseAttack;
-        cEnemy._magicBaseDefense = enemyStats._magicBaseDefense;
-        cEnemy._magicBaseAttack = enemyStats._magicBaseAttack;
-        cEnemy._currentHP = cEnemy._maxBaseHP = enemyStats._maxBaseHP;
+        cEnemy._pBaseDefense = enemyStats._pBaseDefense;
+        cEnemy._pBaseAttack = enemyStats._pBaseAttack;
+        cEnemy._mBaseDefense = enemyStats._mBaseDefense;
+        cEnemy._mBaseAttack = enemyStats._mBaseAttack;
+        cEnemy._baseHP = enemyStats._baseHP;
+
+        //calculate stats
+        cEnemy._currentHP = cEnemy._maxHP = cEnemy.CalculateStats(cEnemy._baseHP, true);
+        cEnemy._mAttack = cEnemy.CalculateStats(cEnemy._mBaseAttack);
+        cEnemy._mDefense = cEnemy.CalculateStats(cEnemy._mBaseDefense);
+        cEnemy._pAttack = cEnemy.CalculateStats(cEnemy._pBaseAttack);
+        cEnemy._pDefense = cEnemy.CalculateStats(cEnemy._pBaseDefense);
+
+        //CARGO SKILLS
         cEnemy._skillList = enemyStats._skillList;
-        BattleList.instance.Add(cEnemy);
 
         cEnemy._skillList = new List<BaseSkill>();
         cEnemy._skillList.Add(new ThunderHitTopDown());
         //Cargo el Portrait.
         //objEnemy.GetComponent<SpriteRenderer>().sprite = LoadAsset.Portrait(cEnemy._portrait);
+        BattleList.instance.Add(cEnemy);
+
     }
     private void RequestStages()
     {
@@ -183,11 +193,11 @@ public class DungeonManager : MonoBehaviour
                     enemy._turnNumber = dataEnemy["Turns"].AsInt;
                     enemy._portrait = dataEnemy["Portrait"];
                     enemy._attribute = Types.StringToAttribute(dataEnemy["Attribute"]);
-                    enemy._physicalBaseDefense = dataEnemy["PhysicalDefense"].AsInt;
-                    enemy._physicalBaseAttack = dataEnemy["PhysicalAttack"].AsInt;
-                    enemy._magicBaseDefense = dataEnemy["MagicDefense"].AsInt;
-                    enemy._magicBaseAttack = dataEnemy["MagicAttack"].AsInt;
-                    enemy._maxBaseHP = dataEnemy["HP"].AsInt;
+                    enemy._pDefense = dataEnemy["PhysicalDefense"].AsInt;
+                    enemy._pAttack = dataEnemy["PhysicalAttack"].AsInt;
+                    enemy._mDefense = dataEnemy["MagicDefense"].AsInt;
+                    enemy._mAttack = dataEnemy["MagicAttack"].AsInt;
+                    enemy._baseHP = dataEnemy["HP"].AsInt;
 
                     //skills
                     enemy._skillList = new List<BaseSkill>();

@@ -40,7 +40,7 @@ public class UiController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         MenuVisibility(true, false, false, false, false);
-        Account.Instance().SetLoadedTeam();
+        Account.Instance.SetLoadedTeam();
     }
 
     private void MenuVisibility(bool main, bool shop, bool inventory, bool hatcher, bool options)
@@ -56,7 +56,7 @@ public class UiController : MonoBehaviour {
     {
         Instance = this;
 
-        _selectedTeam = Account.Instance()._selectedTeam;
+        _selectedTeam = Account.Instance._selectedTeam;
     }
 	void Update () {
         
@@ -66,7 +66,7 @@ public class UiController : MonoBehaviour {
             {
                 if (_inventoryState == InventoryState.Edit)
                 {
-                    Account.Instance().EditTeams();
+                    Account.Instance.EditTeams();
                     _loadingPanel.SetActive(true);
                 }
                 else
@@ -111,7 +111,7 @@ public class UiController : MonoBehaviour {
                         if (distanceFromOther > distanceFromSame)
                         {
                             _selectedTeam++;
-                            Account.Instance()._selectedTeam = _selectedTeam;
+                            Account.Instance._selectedTeam = _selectedTeam;
                         }
 
                         SetTeamTarget();
@@ -126,7 +126,7 @@ public class UiController : MonoBehaviour {
                         if (distanceFromOther < distanceFromSame)
                         {
                             //_selectedTeam--;
-                            Account.Instance()._selectedTeam = _selectedTeam;
+                            Account.Instance._selectedTeam = _selectedTeam;
                         }
 
                         SetTeamTarget();
@@ -333,7 +333,7 @@ public class UiController : MonoBehaviour {
         if (_selectedTeam < 4)
         {
             _selectedTeam++;
-            Account.Instance()._selectedTeam = _selectedTeam;
+            Account.Instance._selectedTeam = _selectedTeam;
             ChangeTeam();
             SetTeamTarget();
         }
@@ -344,7 +344,7 @@ public class UiController : MonoBehaviour {
         if (_selectedTeam > 0)
         {
             _selectedTeam--;
-            Account.Instance()._selectedTeam = _selectedTeam;
+            Account.Instance._selectedTeam = _selectedTeam;
             ChangeTeam();
             SetTeamTarget();
         }

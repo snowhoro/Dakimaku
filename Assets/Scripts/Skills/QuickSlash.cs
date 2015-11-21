@@ -17,10 +17,15 @@ public class QuickSlash : BaseSkill
         _isAOE = false;
 
         _attribute = Types.Attributes.None;
-        _statusEffect = Types.StatusEffects.Poison;
-        _statusChance = 0;
+        //_statusEffect = Types.StatusEffects.Poison;
+        _statusEffect = true;
+        _statusChance = 100;
        
         _activationChance = 10.0f;
         _prefabFX = LoadAsset.FX("QuickSlash");
+    }
+    public override BaseStatusEffect EffectToApply()
+    {
+        return new Poison();
     }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class MenuController : MonoBehaviour {
 
-    private static MenuController _instance;
+    public static MenuController Instance { get; private set; }
 
     public enum State { None = -1, Main, Exit, NewPlayer, FirstPick, Confirmation, Loading }
     public enum Actions { Okay, Back }
@@ -19,17 +19,13 @@ public class MenuController : MonoBehaviour {
 
     public float loadingProgress;
 
-    public static MenuController getInstance()
-    {
-        return _instance;
-    }
-
     // Use this for initialization
     void Start()
     {
-        _instance = this;
+        Instance = this;
 
         loadingProgress = 0;
+        LoadingBar.fillAmount = 0;
         ExitConfirmation.SetActive(false);
         NewPlayer.SetActive(false);
         _state = State.Main;
@@ -55,7 +51,7 @@ public class MenuController : MonoBehaviour {
         }
         else
         {
-            LoadingBar.fillAmount = loadingProgress / 100;
+            //LoadingBar.fillAmount = loadingProgress / 100;
         }
     }
 

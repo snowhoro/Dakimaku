@@ -10,12 +10,12 @@ public class HealthBarControl : MonoBehaviour {
 	void Start () 
     {
         character = GetComponent<BaseCharacter>();
-        character._currentHP = character._maxBaseHP = 10;
+        character._currentHP = character._maxHP = 10;
         healthBar = transform.FindChild("Canvas").FindChild("HealthBack").FindChild("Health").GetComponent<Image>();
 	}
 	
 	void Update () 
     {
-        healthBar.fillAmount = (float)character._currentHP / (float)character._maxBaseHP;
+        healthBar.fillAmount = (float)character._currentHP / (float)character._maxHP;
 	}
 }

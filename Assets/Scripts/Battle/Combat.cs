@@ -39,8 +39,8 @@ public class Combat : MonoBehaviour
         if(skill == null)
             skill = new Hit();
 
-        int attack = (skill._isPhysical) ? attacker._physicalBaseAttack : attacker._magicBaseAttack;
-        int defense = (skill._isPhysical) ? defender._physicalBaseDefense : defender._magicBaseDefense;
+        int attack = (skill._isPhysical) ? attacker._pAttack : attacker._mAttack;
+        int defense = (skill._isPhysical) ? defender._pDefense : defender._mDefense;
         float modifier = Modifier(attacker._attribute, defender._attribute, skill._attribute);
         int damage = DamageFormula(attacker._level, attack, defense, skill._power, modifier);
         defender._currentHP -= damage;
@@ -104,7 +104,7 @@ public class Combat : MonoBehaviour
         CombatCheck combatCheck = new CombatCheck();
         List<HitList> hitlist = combatCheck.GetEnemiesAttacked();
         ShowBattle.instance.hitList = hitlist;
-        StartCoroutine(ShowBattle.instance.StartShowBattle());
+        StartCoroutine(ShowBattle.instance.StartShowBattle(true));
     }
 
     public void CheckHeroesAttacked(BaseCharacter enemy)
@@ -112,6 +112,6 @@ public class Combat : MonoBehaviour
         CombatCheck combatCheck = new CombatCheck();
         List<HitList> hitlist = combatCheck.GetHeroesAttackedBy(enemy);
         ShowBattle.instance.hitList = hitlist;
-        StartCoroutine(ShowBattle.instance.StartShowBattle());
+        StartCoroutine(ShowBattle.instance.StartShowBattle(false));
     }
 }

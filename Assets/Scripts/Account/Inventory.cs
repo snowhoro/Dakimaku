@@ -69,6 +69,7 @@ public class Inventory : MonoBehaviour
              GameObject parent = new GameObject();
              parent.name = "Items";
              DontDestroyOnLoad(parent);
+             Game.Instance._parents.Add(parent.transform);
 
              Debug.Log("Items in inventory: " + dataJson["inventory"]["Characters"].Count);
              for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
@@ -89,11 +90,14 @@ public class Inventory : MonoBehaviour
                  int magDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicDefense"].Value);
                  int level =  int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Level"].Value);
                  int rarity = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Rarity"].Value);
+                 int experience = 0;
 
-                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id);
+                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience);
              }
 
-             Account.Instance().LoadTeams();
+             MenuController.Instance.LoadingBar.fillAmount = 0.4f;
+
+             Account.Instance.LoadTeams();
 
          }
     }

@@ -26,7 +26,7 @@ public class ShowBattle : MonoBehaviour
     public bool showing;
     public bool pause = false;
 
-    public IEnumerator StartShowBattle()
+    public IEnumerator StartShowBattle(bool playerTurn)
     {
         showing = true;
         foreach(HitList hitGroup in hitList)
@@ -42,8 +42,6 @@ public class ShowBattle : MonoBehaviour
 
             //SHOW DAMAGE
             int length = 2;
-            /*if (hitGroup.GetAttacker() is Character)
-                length += linked[0].Count + linked[1].Count;*/
 
             for (int j = 0; j < length; j++)
             {
@@ -85,7 +83,11 @@ public class ShowBattle : MonoBehaviour
             //SI EL HP ES 0 O MENOR LO BORRO
             BattleList.instance.CheckDead();
         }
-        showing = false;
+
+        if(playerTurn)
+            StartCoroutine(ShowStatusEffects());
+        else
+            showing = false;
     }
     public void ShowAttackers(BaseCharacter[] attackers)
     {
@@ -151,5 +153,43 @@ public class ShowBattle : MonoBehaviour
     public void UseSkill(BaseSkill skill, BaseCharacter attacker)
     {
         StartCoroutine(ShowSkill(skill, attacker));
+    }
+    public IEnumerator ShowStatusEffects()
+    {
+        List<BaseCharacter> characterList = BattleList.instance.GetHeroes();
+
+        for (int i = 0; i < characterList.Count; i++)
+        {
+            if (characterList[i]._statusEffects.Count > 0)
+            {
+                for (int j = 0; j < characterList[i]._statusEffects.Count; j++)
+                {
+                    characterList[i]._statusEffects[j].Effect(characterList[i]);
+                    yield return new WaitForSeconds(waitTimeBetweenNumbers);
+                }
+                yield return new WaitForSeconds(waitTimeBetweenVictims);
+            }
+        }
+        BattleList.instance.CheckDead();
+        showing = false;
+    }
+    public void UseStatusEffect(BaseCharacter affected)
+    {
+        StartCoroutine(ShowStatusEffects(affected));
+    }
+    public IEnumerator ShowStatusEffects(BaseCharacter affected)
+    {
+        showing = true;
+        if (affected._statusEffects.Count > 0)
+        {
+            for (int j = 0; j < affected._statusEffects.Count; j++)
+            {
+                affected._statusEffects[j].Effect(affected);
+                yield return new WaitForSeconds(waitTimeBetweenNumbers);
+            }
+            yield return new WaitForSeconds(waitTimeBetweenVictims);
+            BattleList.instance.CheckDead();
+        }
+        showing = false;
     }
 }

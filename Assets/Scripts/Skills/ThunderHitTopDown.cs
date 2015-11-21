@@ -16,11 +16,12 @@ public class ThunderHitTopDown : BaseSkill
         _isActive = false;
         _isAOE = true;
 
-        _attribute = Types.Attributes.None;
-        _statusEffect = Types.StatusEffects.None;
-        _statusChance = 0;
+        _attribute = Types.Attributes.Light;
+        //_statusEffect = Types.StatusEffects.None;
+        _statusEffect = true;
+        _statusChance = 100;
 
-        _activationChance = 10.0f;
+        _activationChance = 100.0f;
         _prefabFX = LoadAsset.FX("ThunderHit");
 
         _AOE = new[]
@@ -28,5 +29,10 @@ public class ThunderHitTopDown : BaseSkill
             new Vector2(0, -1),
             new Vector2(0, 1),  
         };
+    }
+
+    public override BaseStatusEffect EffectToApply()
+    {
+        return new Poison();
     }
 }

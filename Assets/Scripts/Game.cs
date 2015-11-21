@@ -14,6 +14,8 @@ public class Game : MonoBehaviour {
     public GameObject _gachaItemPrefab;
 	public List<DungeonItem> _dungeonItems = new List<DungeonItem>();
 	public GameObject _dungeonItemPrefab;
+    public List<Transform> _parents = new List<Transform>();
+    public string _selectedDungeonID;
 
     public delegate void CallBack(float loading);
    
@@ -43,27 +45,25 @@ public class Game : MonoBehaviour {
     {
         if (!string.IsNullOrEmpty(_playerId))
         {
-            MenuController.getInstance().LoadAccount();
+            MenuController.Instance.LoadAccount();
             // Aca creo un thread para cargar todo
            
-            Account.Instance().LoadAccount(_playerId);
+            Account.Instance.LoadAccount(_playerId);
 
         }
         else
         {
-            MenuController.getInstance().SetAction((int)MenuController.Actions.Okay);
+            MenuController.Instance.SetAction((int)MenuController.Actions.Okay);
         }
     }
-
 	public void CreateAccount(string name)
 	{
-		Account.Instance().NewAccount(name);
+		Account.Instance.NewAccount(name);
 	}
-
     public void LoadEnd() {
-        if (MenuController.getInstance() != null)
+        if (MenuController.Instance != null)
         {
-            MenuController.getInstance().LoadScene();
+            MenuController.Instance.LoadScene();
         }
         else if (UiController.Instance != null)
         { 
@@ -75,7 +75,6 @@ public class Game : MonoBehaviour {
     {
         ServerRequests.Instance.RequestActiveGachas(_playerId, GachaCb);
     }
-
     public void GachaCb(string data)
     {
         var dataJson = SimpleJSON.JSON.Parse(data);
@@ -104,6 +103,8 @@ public class Game : MonoBehaviour {
                 goComponent.Initialize(Resources.Load(dataJson[i]["ImgPath"].Value, typeof(Sprite)) as Sprite, dataJson[i]["_id"].Value);
             }
 
+            MenuController.Instance.LoadingBar.fillAmount = 0.8f;
+
 			LoadAllDungeons();
         }
     }
@@ -112,7 +113,6 @@ public class Game : MonoBehaviour {
 	{
 		ServerRequests.Instance.RequestAllDungeons (_playerId, AllDungeonsCb);
 	}
-
 	public void AllDungeonsCb(string data)
 	{
 		var dataJson = SimpleJSON.JSON.Parse(data);
@@ -136,6 +136,9 @@ public class Game : MonoBehaviour {
 				goComponent.Initialize(dataJson[i]["DungeonName"].Value, dataJson[i]["_id"].Value);
 
 			}
+
+            MenuController.Instance.LoadingBar.fillAmount = 1f;
+
 			LoadEnd ();
 		}
 	}
@@ -143,6 +146,6 @@ public class Game : MonoBehaviour {
     public void Reconnect()
     {
         ServerRequests.Instance.RetryRequest();
-        MenuController.getInstance().retryPanel.SetActive(false);
+        MenuController.Instance.retryPanel.SetActive(false);
     }
 }

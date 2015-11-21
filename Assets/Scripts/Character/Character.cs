@@ -7,21 +7,21 @@ public class Character : BaseCharacter
 {
     #region Attributes
 
-    public int _SpecHp { get; protected set; }
-    public int _maxSpecHp { get; protected set; }
+    public int _SpecHp;
+    public int _maxSpecHp;
 
-    public int _magicSpecAttack { get; protected set; }
-    public int _maxMagicSpecAttack { get; protected set; }
-    public int _physicalSpecAttack { get; protected set; }
-    public int _maxPhysicalSpecAttack { get; protected set; }
+    public int _magicSpecAttack;
+    public int _maxMagicSpecAttack;
+    public int _physicalSpecAttack;
+    public int _maxPhysicalSpecAttack;
 
-    public int _magicSpecDefense { get; protected set; }
-    public int _maxMagicSpecDefense { get; protected set; }
-    public int _physicalSpecDefense { get; protected set; }
-    public int _maxPhysicalSpecDefense { get; protected set; }
+    public int _magicSpecDefense;
+    public int _maxMagicSpecDefense;
+    public int _physicalSpecDefense;
+    public int _maxPhysicalSpecDefense;
 
-    public int _currentExp { get; protected set; }
-    public int _expToNextLevel { get; protected set; }
+    public int _currentExp;
+    public int _expToNextLevel;
 
     #endregion
 
@@ -55,33 +55,78 @@ public class Character : BaseCharacter
         if (_physicalSpecDefense > _maxPhysicalSpecDefense)
             _physicalSpecDefense = _maxMagicSpecDefense;
     }
-    
-    public override void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, Image imageCo)
+    public override void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, int exp, Sprite imageCo)
     {
-        base.Initialize(name, baseHP, level, rarity, bMagAtt, bPhyAtt, bMagDef, bPhyDef, imageCo);
+        base.Initialize(name, baseHP, level, rarity, bMagAtt, bPhyAtt, bMagDef, bPhyDef, exp, imageCo);
+
+        _currentExp = exp;
+        _expToNextLevel = CalculateExpToNxtLv(level);
     }
 
     private void LevelUp()
-    { 
-        AddBaseHp(100);
-        AddMagicAttack(10);
-        AddMagicDefense(10);
-        AddPhysicalAttack(10);
-        AddphysicalDefense(10);
+    {
         _level++;
 
-        _expToNextLevel += 1000;
+        _expToNextLevel = CalculateExpToNxtLv(_level);
     }
     public void AddExperience(int ammount)
     {
-        for (int i = 0; i < System.Convert.ToInt32(ammount / 1000); i++)
-        {
-            if (_level == 99)
-                break;
+        int exp = ammount;
 
-            LevelUp();
+        while (exp > 0) 
+        {
+            if (exp > (_expToNextLevel - _currentExp))
+            {
+                _currentExp += (_expToNextLevel - _currentExp);
+                LevelUp();
+                exp -= (_expToNextLevel - _currentExp);
+            }
+            else
+            {
+                _currentExp += exp;
+                exp = 0;
+            }
+
+            if (MaxLevelCheck())
+                break;
+        } 
+    }
+    public int CalculateExpToNxtLv(int level)
+    {
+        return (int)(4 * Mathf.Pow((float)level, 3f) / 5);
+    }
+    public bool MaxLevelCheck()
+    {
+        bool retVal = false;
+
+        switch (_rarity)
+        { 
+            case 1:
+                if (_level == 10)
+                    retVal = true;
+                break;
+            case 2:
+                if (_level == 20)
+                    retVal = true;
+                break;
+            case 3:
+                if (_level == 40)
+                    retVal = true;
+                break;
+            case 4:
+                if (_level == 60)
+                    retVal = true;
+                break;
+            case 5:
+                if (_level == 80)
+                    retVal = true;
+                break;
+            case 6:
+                if (_level == 100)
+                    retVal = true;
+                break;
         }
 
-        _currentExp += ammount;
+        return retVal;
     }
 }

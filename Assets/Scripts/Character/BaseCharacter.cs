@@ -9,17 +9,22 @@ public abstract class BaseCharacter : MonoBehaviour
     public string _name;
     public string _id;
     public int _currentHP;
-    public int _maxBaseHP;
+    public int _maxHP;
+    public int _baseHP;
     public int _level;
     public int _rarity;
 
-    public int _magicBaseAttack;
-    public int _physicalBaseAttack;
+    public int _mBaseAttack;
+    public int _mAttack;
+    public int _mBaseDefense;
+    public int _mDefense;
 
-    public int _magicBaseDefense;
-    public int _physicalBaseDefense;
+    public int _pBaseAttack;
+    public int _pAttack;
+    public int _pBaseDefense;
+    public int _pDefense;
 
-    public Image _sprite;
+    public Sprite _sprite;
     public string _portrait;
     public AudioSource _battleRoar;
 
@@ -31,10 +36,14 @@ public abstract class BaseCharacter : MonoBehaviour
     public Vector2 _gridPos;
 
     public List<BaseSkill> _skillList;
+
+    public List<BaseStatusEffect> _statusEffects;
     #endregion
     
     void Awake()
     {
+        _statusEffects = new List<BaseStatusEffect>();
+        _statusEffects.Add(new Poison());
         _skillList = new List<BaseSkill>();
         _skillList.Add(AddSkill("QuickSlash"));
         _skillList.Add(AddSkill("DisplacementSkill"));
@@ -47,39 +56,33 @@ public abstract class BaseCharacter : MonoBehaviour
         return (BaseSkill)System.Activator.CreateInstance(System.Type.GetType(skillClass));
     }
 
-    public void AddBaseHp(int hpAmount)
-    {
-        _maxBaseHP += hpAmount;
-    }
-    public void AddMagicAttack(int attackAmount)
-    {
-        _magicBaseAttack += attackAmount;
-    }
-    public void AddPhysicalAttack(int attackAmount)
-    {
-        _physicalBaseAttack += attackAmount;
-    }
-    public void AddMagicDefense(int defenseAmount)
-    {
-        _magicBaseDefense += defenseAmount;
-    }
-    public void AddphysicalDefense(int defenseAmount)
-    {
-        _physicalBaseDefense += defenseAmount;
-    }
-
-    public virtual void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, Image imageCo)
+    public virtual void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, int exp, Sprite imageCo)
     {
         _sprite = imageCo;
 
-        _name = name;
-        _maxBaseHP = baseHP;
-        _currentHP = _maxBaseHP;
         _level = level;
-        _magicBaseAttack = bMagAtt;
-        _magicBaseDefense = bMagDef;
-        _physicalBaseAttack = bPhyAtt;
-        _physicalBaseDefense = bPhyDef;
+
+        _name = name;
+        _baseHP = baseHP;
+        _currentHP = _maxHP = CalculateStats(_baseHP, true);
+        _mBaseAttack = bMagAtt;
+        _mBaseDefense = bMagDef;
+        _pBaseAttack = bPhyAtt;
+        _pBaseDefense = bPhyDef;
+
+        _mAttack = CalculateStats(bMagAtt);
+        _mDefense = CalculateStats(bMagDef);
+        _pAttack = CalculateStats(bPhyAtt);
+        _pDefense = CalculateStats(bPhyDef);
+
+    }
+
+    public int CalculateStats(float baseStat, bool hp = false, float iv = 31, float ev = 4)
+    {
+        if (hp)
+            return System.Convert.ToInt32((((2 * baseStat + iv + ev/4) * _level) / 100) + _level + 10);
+        else
+            return System.Convert.ToInt32((((2 * baseStat + iv + ev / 4) * _level) / 100) + _level + 5);
     }
 
 }
