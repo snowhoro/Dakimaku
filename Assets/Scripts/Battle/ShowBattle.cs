@@ -154,25 +154,6 @@ public class ShowBattle : MonoBehaviour
     {
         StartCoroutine(ShowSkill(skill, attacker));
     }
-    public IEnumerator ShowStatusEffects()
-    {
-        List<BaseCharacter> characterList = BattleList.instance.GetHeroes();
-
-        for (int i = 0; i < characterList.Count; i++)
-        {
-            if (characterList[i]._statusEffects.Count > 0)
-            {
-                for (int j = 0; j < characterList[i]._statusEffects.Count; j++)
-                {
-                    characterList[i]._statusEffects[j].Effect(characterList[i]);
-                    yield return new WaitForSeconds(waitTimeBetweenNumbers);
-                }
-                yield return new WaitForSeconds(waitTimeBetweenVictims);
-            }
-        }
-        BattleList.instance.CheckDead();
-        showing = false;
-    }
     public void UseStatusEffect(BaseCharacter affected)
     {
         StartCoroutine(ShowStatusEffects(affected));
@@ -187,9 +168,30 @@ public class ShowBattle : MonoBehaviour
                 affected._statusEffects[j].Effect(affected);
                 yield return new WaitForSeconds(waitTimeBetweenNumbers);
             }
-            yield return new WaitForSeconds(waitTimeBetweenVictims);
+            //yield return new WaitForSeconds(waitTimeBetweenVictims);
             BattleList.instance.CheckDead();
         }
         showing = false;
     }
+    public IEnumerator ShowStatusEffects()
+    {
+        List<BaseCharacter> characterList = BattleList.instance.GetHeroes();
+
+        for (int i = 0; i < characterList.Count; i++)
+        {
+            if (characterList[i]._statusEffects.Count > 0)
+            {
+                for (int j = 0; j < characterList[i]._statusEffects.Count; j++)
+                {
+                    characterList[i]._statusEffects[j].Effect(characterList[i]);
+                    yield return new WaitForSeconds(waitTimeBetweenNumbers);
+                }
+                //yield return new WaitForSeconds(waitTimeBetweenVictims);
+            }
+        }
+        yield return new WaitForSeconds(waitTimeBetweenVictims);
+        BattleList.instance.CheckDead();
+        showing = false;
+    }
+
 }

@@ -39,4 +39,8 @@ public class BaseStatusEffect : ScriptableObject
     {
         affected._statusEffects.Remove(this);
     }
+    public virtual void AddEffect(BaseCharacter affected)
+    {
+
+    }
 }

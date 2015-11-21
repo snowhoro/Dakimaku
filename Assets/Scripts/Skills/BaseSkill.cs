@@ -148,7 +148,7 @@ public class BaseSkill : ScriptableObject
         {
             BaseStatusEffect effect = EffectToApply();
             if (effect != null)
-                victim._statusEffects.Add(effect);
+                effect.AddEffect(victim);
         }
     }
     public virtual BaseStatusEffect EffectToApply()
