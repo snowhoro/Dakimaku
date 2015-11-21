@@ -101,7 +101,7 @@ public class FusionUIController : MonoBehaviour {
 
         Debug.Log(jsonCharacter);
 
-        ServerRequests.Instance.FuseCharacter(Account.Instance()._playerId, jsonCharacter, jsonFodders, FuseCb);
+        ServerRequests.Instance.FuseCharacter(Account.Instance._playerId, jsonCharacter, jsonFodders, FuseCb);
     }
     public void FuseCb(string data)
     {

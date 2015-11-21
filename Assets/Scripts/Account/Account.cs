@@ -29,14 +29,9 @@ public class Account : MonoBehaviour
     public Inventory _inventory;
     public AccountStats _stats; 
     
-    private static Account _instance;
+    public static Account Instance { get; private set; }
 
     #endregion 
-
-    public static Account Instance()
-    {
-        return _instance;
-    }
     
     public void LoadAccount(string playerId)
     {
@@ -97,8 +92,13 @@ public class Account : MonoBehaviour
 
     void Awake()
     {
-        _instance = this;
+        Instance = this;
         _selectedTeam = 0;
+        _teams = new List<Item[]>(_maxTeams);
+        for (int i = 0; i < _maxTeams; i++)
+        {
+            _teams.Add(new Item[6]);
+        }
     }
 
     void FixedUpdate()
@@ -189,7 +189,7 @@ public class Account : MonoBehaviour
         {
             Debug.Log(dataJson["error"]);
 
-            MenuController.getInstance().retryPanel.SetActive(true);
+            MenuController.Instance.retryPanel.SetActive(true);
         }
         else
         {
@@ -209,27 +209,20 @@ public class Account : MonoBehaviour
                                         int.Parse(dataJson["account"]["TotalLogDays"].Value),
                                         dataJson["account"]["LastLogDay"] == null ? DateTime.Now : DateTime.Parse(dataJson["account"]["LastLogDay"].Value));
 
+            MenuController.Instance.LoadingBar.fillAmount = 0.2f;
+
             _inventory.LoadInventory(_playerId);
+
         }
     }
     public void LoadTeamCb(string data)
     {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
-
-
         if (dataJson["error"] != null)
             Debug.Log(dataJson["error"]);
         else
         {
-
-            _teams = new List<Item[]>(_maxTeams);
-
-            for (int i = 0; i < _maxTeams; i++)
-            {
-                _teams.Add(new Item[6]);
-            }
-
             for (int i = 1; i <= 5; i++)
             {
                 if (dataJson["teams"]["Teams"]["team_" + i.ToString()] != null)
@@ -245,6 +238,8 @@ public class Account : MonoBehaviour
                     //dataJson["Teams"][i][j].Value
                 }
             }
+
+            MenuController.Instance.LoadingBar.fillAmount = 0.6f;
 
             Game.Instance.LoadGachas();
         }
@@ -288,5 +283,14 @@ public class Account : MonoBehaviour
 			}
 		}
         
+    }
+    public void SelectDungeonTeam()
+    {
+        for (int i = 0; i < _selectedTeamList.Length; i++)
+        {
+            _selectedTeamList[i] = _teams[_selectedTeam][i]._character;
+            if (_selectedTeamList[i] != null)
+                _selectedTeamList[i].gameObject.transform.SetParent(Game.Instance._parents[0]);
+        }
     }
 }

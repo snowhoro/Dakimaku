@@ -22,32 +22,12 @@ public class DungeonItem : MonoBehaviour {
 
     public void GetDungeonByID()
     {
-        ServerRequests.Instance.RequestDungeonById(Account.Instance()._playerId, DungeonID, DungeonCb);
-    }
+        // validar que team correcto y eso
 
-    public void DungeonCb(string data)
-    {
-        var dataJson = SimpleJSON.JSON.Parse(data);
+        Account.Instance.SelectDungeonTeam();
+        Game.Instance._selectedDungeonID = DungeonID;
+        DungeonController.Instance.GoToBattle();
 
-        if (dataJson["error"] != null)
-            Debug.Log(dataJson["error"]);
-        else
-        {
-            DungeonController.Instance.GoToBattle();
-
-            /*
-            for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
-            {
-                GameObject go = GameObject.Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-                go.transform.SetParent(parent.transform);
-                Item goComponent = go.GetComponent<Item>();
-
-                _items.Add(goComponent);
-
-                string name = dataJson["inventory"]["Characters"]["Name"].Value;
-
-                goComponent.Initialize(name, 1, 1, 20, 20, 20, 20, 20, goComponent._CharImg);
-            }*/
-        }
+        //ServerRequests.Instance.RequestDungeonById(Account.Instance()._playerId, DungeonID, DungeonCb);
     }
 }
