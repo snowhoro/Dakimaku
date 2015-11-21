@@ -68,7 +68,7 @@ public class FusionUIController : MonoBehaviour {
 
         string cm = "\"";
 
-        string jsonFodders = "{ [";
+        string jsonFodders = "[";
 
         for (int i = 0; i < _fuseItems.Length; i++)
         {
@@ -80,11 +80,11 @@ public class FusionUIController : MonoBehaviour {
 		}
 
         jsonFodders = jsonFodders.Substring(0, jsonFodders.Length - 1);
-        jsonFodders += "] }";
+        jsonFodders += "]";
 
         _selectedFuseItem.RefItem._character.AddExperience(fusedItems * 100);
 
-        string jsonCharacter = "{ " + cm + "_id" + cm + ": " + cm + _selectedFuseItem.RefItem.ItemID + cm + ", " + cm + "PlayerChar" + cm + ": { " + cm + "MaxChar" + cm + ":" + cm + cm + ",";
+        string jsonCharacter = "{ " + cm + "_id" + cm + ": " + cm + _selectedFuseItem.RefItem.ItemID + cm + ", " + cm + "PlayerChar" + cm + ": { " + cm + "MaxChar" + cm + ":" + cm + _selectedFuseItem.RefItem.CharacterMaxID + cm + ",";
         jsonCharacter += cm + "SpecPhysicalDefense" + cm + ": 0,";
         jsonCharacter += cm + "PhysicalDefense" + cm + ": " + _selectedFuseItem.RefItem._character._pDefense + ",";
         jsonCharacter += cm + "SpecPhysicalAttack" + cm + ": 0,";
