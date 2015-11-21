@@ -90,9 +90,10 @@ public class Inventory : MonoBehaviour
                  int magDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicDefense"].Value);
                  int level =  int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Level"].Value);
                  int rarity = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Rarity"].Value);
-                 int experience = 0;
+                 int experience = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Experience"].Value);
+                 string maxCharID = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["_id"].Value;
 
-                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience);
+                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID);
              }
 
              MenuController.Instance.LoadingBar.fillAmount = 0.4f;
