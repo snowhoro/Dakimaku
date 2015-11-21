@@ -86,14 +86,14 @@ public class FusionUIController : MonoBehaviour {
 
         string jsonCharacter = "{ " + cm + "Character" + cm + ": { " + cm + "_id" + cm + ": " + cm + _selectedFuseItem.RefItem.ItemID + cm + ", " + cm + "PlayerChar" + cm + ": { " + cm + "MaxChar" + cm + ":" + cm + cm + ",";
         jsonCharacter += cm + "SpecPhysicalDefense" + cm + ": 0,";
-        jsonCharacter += cm + "PhysicalDefense" + cm + ": " + _selectedFuseItem.RefItem._character._physicalBaseDefense + ",";
+        jsonCharacter += cm + "PhysicalDefense" + cm + ": " + _selectedFuseItem.RefItem._character._pDefense + ",";
         jsonCharacter += cm + "SpecPhysicalAttack" + cm + ": 0,";
-        jsonCharacter += cm + "PhysicalAttack" + cm + ": " + _selectedFuseItem.RefItem._character._physicalBaseAttack + ",";
+        jsonCharacter += cm + "PhysicalAttack" + cm + ": " + _selectedFuseItem.RefItem._character._pAttack+ ",";
         jsonCharacter += cm + "SpecMagicDefense" + cm + ": 0,";
         jsonCharacter += cm + "SpecMagicAttack" + cm + ": 0,";
-        jsonCharacter += cm + "MagicDefense" + cm + ": " + _selectedFuseItem.RefItem._character._magicBaseDefense + ",";
-        jsonCharacter += cm + "MagicAttack" + cm + ": " + _selectedFuseItem.RefItem._character._magicBaseAttack + ",";
-        jsonCharacter += cm + "HP" + cm + ": " + _selectedFuseItem.RefItem._character._maxBaseHP + ",";
+        jsonCharacter += cm + "MagicDefense" + cm + ": " + _selectedFuseItem.RefItem._character._mDefense + ",";
+        jsonCharacter += cm + "MagicAttack" + cm + ": " + _selectedFuseItem.RefItem._character._mAttack + ",";
+        jsonCharacter += cm + "HP" + cm + ": " + _selectedFuseItem.RefItem._character._maxHP + ",";
         jsonCharacter += cm + "Experience" + cm + ": " + _selectedFuseItem.RefItem._character._currentExp + ",";
         jsonCharacter += cm + "Level" + cm + ": " + _selectedFuseItem.RefItem._character._level;
 

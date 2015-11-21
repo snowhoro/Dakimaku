@@ -60,13 +60,14 @@ public class Character : BaseCharacter
         base.Initialize(name, baseHP, level, rarity, bMagAtt, bPhyAtt, bMagDef, bPhyDef, exp, imageCo);
 
         _currentExp = exp;
+        _expToNextLevel = CalculateExpToNxtLv(level);
     }
 
     private void LevelUp()
     {
         _level++;
 
-        _expToNextLevel += 1000;
+        _expToNextLevel = CalculateExpToNxtLv(_level);
     }
     public void AddExperience(int ammount)
     {
@@ -90,7 +91,10 @@ public class Character : BaseCharacter
                 break;
         } 
     }
-
+    public int CalculateExpToNxtLv(int level)
+    {
+        return (int)(4 * Mathf.Pow((float)level, 3f) / 5);
+    }
     public bool MaxLevelCheck()
     {
         bool retVal = false;
