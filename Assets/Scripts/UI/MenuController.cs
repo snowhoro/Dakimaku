@@ -12,7 +12,7 @@ public class MenuController : MonoBehaviour {
     private State _state;
     
     public GameObject ExitConfirmation, NewPlayer, FirstPick, Confirmation;
-    public GameObject LoadingScreen;
+    public GameObject LoadingScreen, retryPanel;
     public Image LoadingBar;
     public Text NameText;
     public Button StartButton;

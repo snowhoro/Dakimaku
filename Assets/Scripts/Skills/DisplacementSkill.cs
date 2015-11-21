@@ -1,33 +1,34 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class DisplacementSkill : BaseSkill
 {
     public DisplacementSkill()
     {
-        _name = "DisplacementTEST";
+        _name = "Displacement";
         _description = "Moves enemies";
 
         _power = 0;
         _cooldown = 0;
 
-        _attribute = Types.Attributes.None;
-        _statusEffect = Types.StatusEffects.None;
-        _statusChance = 0;
         _isPhysical = false;
         _isDisplacement = true;
         _isActive = false;
+        _isAOE = true;
+
+        _attribute = Types.Attributes.None;
+        _statusEffect = Types.StatusEffects.None;
+        _statusChance = 0;
+
         _activationChance = 10.0f;
-    }
+        _prefabFX = LoadAsset.FX("ThunderHit");
 
-    public override void Displacement()
-    {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach (GameObject enemy in enemies)
+        _AOE = new[]
         {
-            Debug.Log("asdf displa");
-            //enemy.transform.position = newPos(transform.position, enemy.transform.position);
-        }
+            new Vector2(1, 0), 
+            new Vector2(0, -1),
+            new Vector2(-1, 0),
+            new Vector2(0, 1),  
+        };
     }
 }

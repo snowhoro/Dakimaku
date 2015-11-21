@@ -6,23 +6,23 @@ public static class Types
     [System.Flags]
     public enum Attributes
     {
-        None    = 1 << 0,
-        Fire    = 1 << 1,
-        Water   = 1 << 2,
-        Wood    = 1 << 3,
-        Light   = 1 << 4,
-        Dark    = 1 << 5
+        None    = 0,
+        Fire    = 1 << 0,
+        Water   = 1 << 1,
+        Wood    = 1 << 2,
+        Light   = 1 << 3,
+        Dark    = 1 << 4
     }
 
     [System.Flags]
     public enum StatusEffects
     {
-        None        = 1 << 0,
-        KO          = 1 << 1,
-        Burn        = 1 << 2,
-        Paralize    = 1 << 3,
-        Freeze      = 1 << 4,
-        Poison      = 1 << 5
+        None        = 0,
+        KO          = 1 << 0,
+        Burn        = 1 << 1,
+        Paralize    = 1 << 2,
+        Freeze      = 1 << 3,
+        Poison      = 1 << 4
     }
 
     [System.Flags]

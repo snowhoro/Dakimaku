@@ -17,12 +17,14 @@ public class PlayerTurn : State<BattleManager>
     {
         Debug.Log("ENTER PLAYER TURN..." + entity_type.name);
         gridSelect = FindObjectOfType<GridSelection>();
-        gridSelect.enabled = true;
+        BattleUIController.instance.UIPlayerTurn.SetActive(true);
+        //gridSelect.enabled = true;
         endTurn = false;
     }
 
     public override void Execute(BattleManager entity_type)
     {
+        BattleUIController.instance.CheckUIPlayerTurn();
         if(endTurn)
             entity_type.ChangeState(BattleCalcs.instance);
         //Debug.Log("...PLAYER TURN..." + entity_type.name);

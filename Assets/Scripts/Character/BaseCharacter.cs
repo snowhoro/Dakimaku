@@ -23,7 +23,9 @@ public abstract class BaseCharacter : MonoBehaviour
     public string _portrait;
     public AudioSource _battleRoar;
 
+    [EnumFlag]
     public Types.StatusEffects _status;
+    [EnumFlag]
     public Types.Attributes _attribute;
 
     public Vector2 _gridPos;
@@ -35,6 +37,8 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         _skillList = new List<BaseSkill>();
         _skillList.Add(AddSkill("QuickSlash"));
+        _skillList.Add(AddSkill("DisplacementSkill"));
+        _skillList.Add(AddSkill("ThunderHitTopDown"));
         //Debug.Log("Name: " + _skillList[0]._name + " | Skills: " + _skillList.Count);
     }
 
@@ -76,8 +80,6 @@ public abstract class BaseCharacter : MonoBehaviour
         _magicBaseDefense = bMagDef;
         _physicalBaseAttack = bPhyAtt;
         _physicalBaseDefense = bPhyDef;
-
-        _sprite.sprite = Resources.Load("UI/BattleUI/" + _name, typeof(Sprite)) as Sprite;
     }
 
 }

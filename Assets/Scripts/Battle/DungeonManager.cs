@@ -13,8 +13,6 @@ public class DungeonManager : MonoBehaviour
             if (_instance == null)
             {
                 _instance = GameObject.FindObjectOfType<DungeonManager>();
-
-                //DontDestroyOnLoad(_instance.gameObject);
             }
 
             return _instance;
@@ -31,6 +29,7 @@ public class DungeonManager : MonoBehaviour
 
     private bool isReqStages;
     private bool isReqEnemies;
+    private bool charactersSpawned;
 
     private static Vector2[] DIRS = new[]
     {
@@ -46,7 +45,6 @@ public class DungeonManager : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-            //DontDestroyOnLoad(this);
         }
         else
         {
@@ -57,32 +55,28 @@ public class DungeonManager : MonoBehaviour
 
     public bool isRequesting()
     {
-        return isReqEnemies && isReqStages;
+        return isReqEnemies || isReqStages;
     }
-
     public bool wasLastStage()
     {
         return _stageIndex >= stageEnemyList.Length;
     }
-
 	public void StartDungeon() 
     {
         _stageIndex = 0;
         isReqStages = isReqEnemies = true;
-        enemiesDictionary = new Dictionary<string, Enemy>();
+        charactersSpawned = false;
         RequestStages();
 	}
-
 	public void SpawnStage() 
     {
-        Debug.Log("enemycount " + stageEnemyList[_stageIndex].Count);
+        //Debug.Log("enemycount " + stageEnemyList[_stageIndex].Count);
         for (int i = 0; i < stageEnemyList[_stageIndex].Count; i++)
         {
             AddEnemy(stageEnemyList[_stageIndex][i]);
         }
         _stageIndex++;
 	}
-
     private void AddEnemy(Enemy enemy)
     {
         DIRSindex = 0;
@@ -91,8 +85,6 @@ public class DungeonManager : MonoBehaviour
 
         Enemy cEnemy = objEnemy.GetComponent<Enemy>();
         cEnemy._gridPos = enemy._gridPos;
-
-        //Debug.Log(enemiesDictionary.Count);
 
         Enemy enemyStats = enemiesDictionary[enemy._id];
         objEnemy.name = cEnemy._name = enemyStats._name;
@@ -107,22 +99,27 @@ public class DungeonManager : MonoBehaviour
         cEnemy._skillList = enemyStats._skillList;
         BattleList.instance.Add(cEnemy);
 
+        cEnemy._skillList = new List<BaseSkill>();
+        cEnemy._skillList.Add(new ThunderHitTopDown());
         //Cargo el Portrait.
         //objEnemy.GetComponent<SpriteRenderer>().sprite = LoadAsset.Portrait(cEnemy._portrait);
     }
-
-    public void RequestStages()
+    private void RequestStages()
     {
-        ServerRequests.Instance.RequestDungeonById("5639359c0ef0b2a310ab1fa6", "564ca2a0b801d3a659fd87b8", LoadStages);
+        ServerRequests.Instance.RequestDungeonById("5639359c0ef0b2a310ab1fa6", "564de03d36be9eb06c619b60", LoadStages);
+    }
+    private void RequestEnemies()
+    {
         ServerRequests.Instance.RequestAllEnemies("5639359c0ef0b2a310ab1fa6", LoadEnemiesDictionary);
     }
-
-    public void LoadStages(string data)
+    private void LoadStages(string data)
     {
         var dataJson = JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+        }
         else
         {
             int stageLength = dataJson["Stages"].Count;
@@ -136,11 +133,13 @@ public class DungeonManager : MonoBehaviour
             JSONNode dataCharacters = dataJson["Stages"][0]["Characters"];
             LoadCharacters(dataCharacters);
             isReqStages = false;
+            RequestEnemies();
         }
     }
-    public void LoadEnemies(JSONNode stage, int stageIndex)
+    private void LoadEnemies(JSONNode stage, int stageIndex)
     {
         stageEnemyList[stageIndex] = new List<Enemy>();
+        enemiesDictionary = new Dictionary<string, Enemy>();
         for (int i = 0; i < stage["Enemies"].Count; i++)
         {
             JSONNode dataEnemy = stage["Enemies"].AsArray[i];
@@ -150,13 +149,10 @@ public class DungeonManager : MonoBehaviour
             stageEnemyList[stageIndex].Add(enemy);
 
             if (!enemiesDictionary.ContainsKey(enemy._id))
-            {
-                //Debug.Log(enemy._id);
                 enemiesDictionary.Add(enemy._id, enemy);
-            }
         }
     }
-    public void LoadCharacters(JSONNode charac)
+    private void LoadCharacters(JSONNode charac)
     {
         charPosList = new List<Vector2>();
         for (int i = 0; i < charac.Count; i++)
@@ -164,12 +160,13 @@ public class DungeonManager : MonoBehaviour
             charPosList.Add(new Vector2(charac[i]["CharacterPos"]["x"].AsFloat, charac[i]["CharacterPos"]["y"].AsFloat));
         }
     }
-    public void LoadEnemiesDictionary(string data)
+    private void LoadEnemiesDictionary(string data)
     {
         var dataJson = SimpleJSON.JSON.Parse(data);
-
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+        }
         else
         {
             int enemiesLength = dataJson["enemies"].Count;
@@ -205,7 +202,7 @@ public class DungeonManager : MonoBehaviour
             isReqEnemies = false;
         }
     }
-    public Vector2 GetEmptyPosition(Vector2 pos)
+    private Vector2 GetEmptyPosition(Vector2 pos)
     {
         if(!GridManager.instance.InBounds(pos))
         {
@@ -234,5 +231,23 @@ public class DungeonManager : MonoBehaviour
             }
         }
         return pos;
+    }
+    public void SpawnCharacters()
+    {
+        if (charactersSpawned)
+            return;
+
+        for (int i = 0; i < 6; i++)
+            AddCharacter(charPosList[i], "c" + (i+1));
+        charactersSpawned = true;
+    }
+    private void AddCharacter(Vector2 gridPosition, string name = "")
+    {
+        GameObject charac = (GameObject)Instantiate(character, GridManager.instance.GetWorldPosition(gridPosition), Quaternion.identity);
+        charac.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
+        charac.name = name;
+        BaseCharacter bcharac = charac.GetComponent<BaseCharacter>();
+        bcharac._gridPos = gridPosition;
+        BattleList.instance.Add(bcharac);
     }
 }

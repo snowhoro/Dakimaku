@@ -45,7 +45,8 @@ public class BattleCalcs : State<BattleManager>
         else
         {
             //LOSE
-            if (BattleList.instance.GetHeroes().Count == 0)
+            Debug.Log(BattleList.instance.GetHeroes().Count);
+            if (BattleList.instance.GetHeroes().Count < 2)
                 entity_type.ChangeState(Lose.instance);
             //PLAYERTURN
             else

@@ -7,16 +7,34 @@ public class ServerRequests : MonoBehaviour
 {
     public static ServerRequests Instance;
 
+    struct RetryStruct
+    {
+        public string retryFunction;
+        public CallBack callBack;
+        public List<string> arguments;
+    }
+
     //public static string host = "https://localhost:3030";
-    public static string host = "http://dakimakuws-igna92ts.c9.io/";
+    public static string host = "https://dakimakuws-igna92ts.c9.io/";
+
+    private RetryStruct retryRequest;
 
     public delegate void CallBack(string data);
 
     void Awake()
     {
         Instance = this;
+        retryRequest.arguments = new List<string>();
     }
 
+    private void SetRetryRequest(string accountID, string function, CallBack callBack)
+    {
+        retryRequest.arguments.Clear();
+
+        retryRequest.retryFunction = function;
+        retryRequest.callBack = callBack;
+        retryRequest.arguments.Add(accountID);
+    }
     IEnumerator WaitForRequest(WWW www, CallBack callBack)
     {
         yield return www;
@@ -32,6 +50,10 @@ public class ServerRequests : MonoBehaviour
         else
         {
             Debug.Log(www.error);
+
+            string strError = "{ \"error\": \"" + www.error + "\" }";
+
+            callBack(strError);
         }
             
      }
@@ -42,9 +64,47 @@ public class ServerRequests : MonoBehaviour
         WWW www = new WWW(url);
         StartCoroutine(WaitForRequest(www, cb));
     }
+    public void RetryRequest()
+    {
+        switch (retryRequest.retryFunction)
+        { 
+            case "SignUp":
+                SignUp(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "RequestAccount":
+                RequestAccount(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "RequestInventory":
+                RequestInventory(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "CreateInventory":
+                CreateInventory(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.callBack);
+                break;
+            case "RequestTeams":
+                RequestTeams(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "UpdateTeams":
+                UpdateTeams(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.callBack);
+                break;
+            case "RequestAllDungeons":
+                RequestAllDungeons(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "RequestDungeonById":
+                RequestDungeonById(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.callBack);
+                break;
+            case "RequestAllEnemies":
+                RequestAllEnemies(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "FuseCharacter":
+                FuseCharacter(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.arguments[2], retryRequest.callBack);
+                break;
+        }
+    }
 
     public void SignUp(string name, CallBack callBack)
     {
+        SetRetryRequest(name, "SignUp", callBack);
+
         string url = host + "signup";
         WWWForm form = new WWWForm();
         form.AddField("PlayerName", name);
@@ -54,6 +114,8 @@ public class ServerRequests : MonoBehaviour
     }
     public void RequestAccount(string accountID, CallBack callBack)
     {
+        SetRetryRequest(accountID, "RequestAccount", callBack);
+
         string url = host + "getAccount";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
@@ -63,20 +125,25 @@ public class ServerRequests : MonoBehaviour
     
     public void RequestInventory(string accountID, CallBack callBack)
     {
+        SetRetryRequest(accountID, "RequestInventory", callBack);
+
         string url = host + "getInventory";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
-    public void CreateInventory(string accountID, string starterID, CallBack callback)
+    public void CreateInventory(string accountID, string starterID, CallBack callBack)
     {
+        SetRetryRequest(accountID, "CreateInventory", callBack);
+        retryRequest.arguments.Add(starterID);
+
         string url = host + "createInventory";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
         form.AddField("ModTeams", starterID.ToString());
         WWW www = new WWW(url, form);
-        StartCoroutine(WaitForRequest(www, callback));
+        StartCoroutine(WaitForRequest(www, callBack));
     }
 
     /*public void CreateTeams(string accountID, , CallBack callBack) 
@@ -92,6 +159,8 @@ public class ServerRequests : MonoBehaviour
     }*/
     public void RequestTeams(string accountID, CallBack callBack) 
     {
+        SetRetryRequest(accountID, "RequestTeams", callBack);
+
         string url = host + "getTeams";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
@@ -103,15 +172,21 @@ public class ServerRequests : MonoBehaviour
     }
     public void UpdateTeams(string accountID, string jsonTeams, CallBack callBack)
     {
-        string url = host + "setTeams";
+        SetRetryRequest(accountID, "UpdateTeams", callBack);
+        retryRequest.arguments.Add(jsonTeams);
+
+        string url = host + "EditTeams";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
+        form.AddField("ModTeams", jsonTeams);
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
 
     public void RequestActiveGachas(string accountID, CallBack callBack)
     {
+        SetRetryRequest(accountID, "RequestActiveGachas", callBack);
+
         string url = host + "getGachas";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
@@ -120,6 +195,9 @@ public class ServerRequests : MonoBehaviour
     }
     public void Hatch(string accountID, string gachaID, CallBack callBack)
     {
+        SetRetryRequest(accountID, "Hatch", callBack);
+        retryRequest.arguments.Add(gachaID);
+
         string url = host + "roll";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
@@ -130,14 +208,19 @@ public class ServerRequests : MonoBehaviour
 
 	public void RequestAllDungeons(string accountID, CallBack callBack)
 	{
+        SetRetryRequest(accountID, "RequestAllDungeons", callBack);
+
 		string url = host + "getAllDungeons";
 		WWWForm form = new WWWForm();
 		form.AddField("PlayerId", accountID.ToString());
 		WWW www = new WWW(url, form);
 		StartCoroutine(WaitForRequest(www, callBack));
 	}
-	public void RequestDungeonById(string accountID,string dungeonID, CallBack callBack)
-	{
+	public void RequestDungeonById(string accountID, string dungeonID, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "RequestDungeonById", callBack);
+        retryRequest.arguments.Add(dungeonID);
+
 		string url = host + "getDungeon";
 		WWWForm form = new WWWForm();
 		form.AddField("PlayerId", accountID.ToString());
@@ -148,9 +231,26 @@ public class ServerRequests : MonoBehaviour
 
     public void RequestAllEnemies(string accountID, CallBack callBack)
     {
+        SetRetryRequest(accountID, "RequestAllEnemies", callBack);
+
         string url = host + "getEnemies";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+
+    public void FuseCharacter(string accountID, string characterID, string foddersJson, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "FuseCharacter", callBack);
+        retryRequest.arguments.Add(characterID);
+        retryRequest.arguments.Add(foddersJson);
+
+        string url = host + "characterFusion";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID);
+        form.AddField("Character", characterID);
+        form.AddField("FodderIds", foddersJson);
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }

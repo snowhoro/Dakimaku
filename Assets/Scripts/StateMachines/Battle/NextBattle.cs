@@ -14,18 +14,23 @@ public class NextBattle : State<BattleManager>
     public override void Enter(BattleManager entity_type)
     {
         Debug.Log("PREPARING FOR NEXT BATTLE..." + entity_type.name);
+
+        if (DungeonManager.instance.wasLastStage())
+            entity_type.ChangeState(Win.instance);
+        else
+            StartCoroutine(BattleUIController.instance.ShowStageMessage());
     }
 
     public override void Execute(BattleManager entity_type)
     {
         //Debug.Log("...NEXT BATTLE..." + entity_type.name);
-        
-        if (DungeonManager.instance.wasLastStage())
-            entity_type.ChangeState(Win.instance);
-        else
+        if (!BattleUIController.instance.showing)
         {
-            DungeonManager.instance.SpawnStage();
-            entity_type.ChangeState(PlayerTurn.instance);
+            if (!BattleUIController.instance.UIStage.activeSelf)
+            {
+                DungeonManager.instance.SpawnStage();
+                entity_type.ChangeState(PlayerTurn.instance);
+            }
         }
     }
 

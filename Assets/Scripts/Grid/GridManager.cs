@@ -9,6 +9,7 @@ public class GridManager : MonoBehaviour
     public static GridManager instance { get; private set; }
 
     public RectTransform gridpanel;
+    public RectTransform _gridpostion;
     public int height;
     public int width;
 
@@ -43,35 +44,10 @@ public class GridManager : MonoBehaviour
         DrawGrid();
     }
 
-	public void StartChar()
-    {
-        Debug.Log("CHARACTERS");
-        AddCharacter(new Vector2(0, 4), character, "c1");
-        AddCharacter(new Vector2(3, 4), character, "c2");
-        AddCharacter(new Vector2(1, 4), character, "c3");
-        /*AddCharacter(new Vector2(2, 4), enemytest, "enemy1");
-        AddCharacter(new Vector2(4, 4), enemytest, "enemy2");
-        AddCharacter(new Vector2(5, 6), enemytest, "enemy3");*/
-
-        //AddCharacter(new Vector2(4, 5), character, "c4");
-        AddCharacter(new Vector2(4, 3), character, "c5");
-        AddCharacter(new Vector2(5, 4), character, "c6");
-	}
-
-    private void AddCharacter(Vector2 position, GameObject _character, string name = "")
-    {
-        GameObject charac = (GameObject)Instantiate(_character, grid[position].position - Vector3.forward, Quaternion.identity);
-        charac.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
-        charac.name = name;
-        BaseCharacter bcharac = charac.GetComponent<BaseCharacter>();
-        bcharac._gridPos = position;
-        //charac.AddComponent(System.Type.GetType("QuickSlash"));
-        BattleList.instance.Add(bcharac);
-    }
-
     private void DrawGrid()
     {
-        Vector2 startPoint = (Vector2)gridpanel.transform.position + GetSeparation();
+        Vector2 startPoint = Camera.main.ScreenToWorldPoint(Vector2.zero);
+        startPoint += GetSeparation();
         Vector2 point = startPoint;
         for (int y = 0; y < height; y++)
         {
@@ -89,15 +65,22 @@ public class GridManager : MonoBehaviour
         }
 
         transform.localScale = new Vector3(0.9f, 0.9f, 1f);
+        //transform.position = new Vector3(0.3f, 0.3f, 1f);
+        transform.position = transform.position + new Vector3(0f, 1.5f, 5f);
     }
 
     private Vector2 GetSeparation()
     {
-        Vector2 aspect = AspectRatio.GetAspectRatio(Screen.width, Screen.height);
+        Vector2 aspectRatio = AspectRatio.GetAspectRatio(new Vector2(Screen.width, Screen.height));
 
-        if (aspect == new Vector2(9, 16))
+        if (aspectRatio == new Vector2(9, 16))
             return new Vector2(0.3f, 0.3f);
-        return new Vector2(0.3f, 0.3f);
+        else if (aspectRatio == new Vector2(10, 16))
+            return new Vector2(0.45f, 0.45f);
+        else if (aspectRatio == new Vector2(3, 2))
+            return new Vector2(0.6f, 0.6f);
+        else
+            return new Vector2(0.3f, 0.3f);
 
     }
 

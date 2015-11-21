@@ -24,14 +24,38 @@ public class ShowBattle : MonoBehaviour
     public GameObject dmgNumbers;
     public List<HitList> hitList;
     public bool showing;
+    public bool pause = false;
+
     public IEnumerator StartShowBattle()
     {
         showing = true;
         foreach(HitList hitGroup in hitList)
         {
+            //GET VICTIMS
+            BaseCharacter[] victims = hitGroup.GetVictims();
+            
+            //SHOW ATTACKERS
             ShowAttackers(hitGroup.GetAttackers());
+            
+            //WAIT
             yield return new WaitForSeconds(1.1f);
 
+            //SHOW DAMAGE
+            int length = 2;
+            /*if (hitGroup.GetAttacker() is Character)
+                length += linked[0].Count + linked[1].Count;*/
+
+            for (int j = 0; j < length; j++)
+            {
+                for (int i = 0; i < victims.Length; i++)
+                {
+                    ShowDamage(victims[i].gameObject, Combat.Damage(hitGroup.GetAttackers()[j], victims[i]));
+                }
+                //WAIT NUMBERS
+                yield return new WaitForSeconds(waitTimeBetweenNumbers);
+            }
+
+            //GET LINKED
             List<BaseCharacter>[] linked = hitGroup.GetLinked();
             if (hitGroup.GetAttacker() is Character)
             {
@@ -39,38 +63,35 @@ public class ShowBattle : MonoBehaviour
                 {
                     for (int j = 0; j < linked[i].Count; j++)
                     {
-                        Debug.Log(linked[i][j].name);
-                        linked[i][j].GetComponent<Animator>().SetTrigger("Attack");
+                        //Debug.Log(linked[i][j].name);
+                        linked[i][j].GetComponent<Animator>().SetTrigger("Selected");
                         yield return new WaitForSeconds(1.1f);
+                        
+                        //SKILL SELECT
+                        SkillPanelController.instance.GetSkillSelected(linked[i][j]);
+                        yield return _sync();
+                        SkillPanelController.instance.HideButtons();
+                        linked[i][j]._skillList[SkillPanelController.instance.Selected].Use(victims, linked[i][j]);
+                        linked[i][j].GetComponent<Animator>().SetTrigger("Selected");
+                        //END SKILL SELECT
                     }
                 }
             }
-            BaseCharacter[] victims = hitGroup.GetVictims();
-            int length = 2;
-            if (hitGroup.GetAttacker() is Character)
-                length += linked[0].Count + linked[1].Count;
+            //END GET LINKED
 
-            for (int j = 0; j < length; j++)
-            {
-                for (int i = 0; i < victims.Length; i++)
-                {
-                    ShowDamage(victims[i].gameObject);
-                }
-                yield return new WaitForSeconds(waitTimeBetweenNumbers);
-            }
+            
             yield return new WaitForSeconds(waitTimeBetweenVictims);
+            
             //SI EL HP ES 0 O MENOR LO BORRO
-            HpZeroKill(victims);
+            BattleList.instance.CheckDead();
         }
         showing = false;
     }
-
     public void ShowAttackers(BaseCharacter[] attackers)
     {
         attackers[0].GetComponent<Animator>().SetTrigger("Attack");
         attackers[1].GetComponent<Animator>().SetTrigger("Attack");
     }
-
     public IEnumerator ShowLinked(List<BaseCharacter>[] linked)
     {
         for (int i = 0; i < linked.Length; i++)
@@ -83,24 +104,17 @@ public class ShowBattle : MonoBehaviour
             }
         }
     }
-
-    public void ShowDamage(GameObject obj)
+    public void ShowDamage(GameObject obj, int damage)
     {
         GameObject aux = Instantiate(dmgNumbers);
         aux.transform.SetParent(obj.transform.FindChild("Canvas"));
         RectTransform rect = aux.GetComponent<RectTransform>();
         rect.transform.localPosition = dmgNumbers.transform.localPosition;
         rect.transform.localScale = dmgNumbers.transform.localScale;
-        int dmg = Random.Range(20, 50);
-        //MEJORAR!!! //////////////////////////////////////
-        BaseCharacter character = obj.GetComponent<BaseCharacter>();
-        character._currentHP -= dmg;
-        ///////////////////////////////////////////////////
-        
-        aux.GetComponent<Text>().text = dmg.ToString();
+
+        aux.GetComponent<Text>().text = damage.ToString();
         Destroy(aux, 1f);
     }
-
     public void HpZeroKill(BaseCharacter[] characters)
     {
         for (int i = 0; i < characters.Length; i++)
@@ -113,5 +127,29 @@ public class ShowBattle : MonoBehaviour
             }
         }
 
+    }
+    public Coroutine _sync()
+    {
+        return StartCoroutine(PauseRoutine());
+    }
+    public IEnumerator PauseRoutine()
+    {
+        while (pause)
+        {
+            yield return new WaitForFixedUpdate();
+        }
+        yield return new WaitForEndOfFrame();
+    }
+    private IEnumerator ShowSkill(BaseSkill skill, BaseCharacter attacker)
+    {
+        showing = true;
+        skill.Use(null, attacker);
+        BattleList.instance.CheckDead();
+        yield return new WaitForSeconds(waitTimeBetweenVictims);
+        showing = false;
+    }
+    public void UseSkill(BaseSkill skill, BaseCharacter attacker)
+    {
+        StartCoroutine(ShowSkill(skill, attacker));
     }
 }

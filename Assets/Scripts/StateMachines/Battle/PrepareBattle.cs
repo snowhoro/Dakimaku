@@ -5,7 +5,7 @@ public class PrepareBattle : State<BattleManager>
 {
 
     public static PrepareBattle instance { get; private set; }
-
+    private bool started = false;
     void Awake()
     {
         instance = this;
@@ -20,20 +20,23 @@ public class PrepareBattle : State<BattleManager>
     public override void Execute(BattleManager entity_type)
     {
         //Debug.Log("...PREPARING..." + entity_type.name);
-        //if enemyzerocd
-        //entity_type.ChangeState(EnemyTurn.instance);
-        //else
-        //Debug.Log("Requesting: " + DungeonManager.instance.isRequesting());
+
         if (!DungeonManager.instance.isRequesting())
         {
-            entity_type.ChangeState(PlayerTurn.instance);
+            if (!BattleUIController.instance.showing && started)
+                entity_type.ChangeState(PlayerTurn.instance);
+            else
+            {
+                started = true;
+                StartCoroutine(BattleUIController.instance.ShowStageMessage());
+            }
         }
     }
 
     public override void Exit(BattleManager entity_type)
     {
         //Debug.Log("...EXIT BATTLE PREPARATIONS" + entity_type.name);
-        GridManager.instance.StartChar();
+        DungeonManager.instance.SpawnCharacters();
         DungeonManager.instance.SpawnStage();
     }
 }

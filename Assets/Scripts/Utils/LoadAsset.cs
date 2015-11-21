@@ -6,7 +6,8 @@ public static class LoadAsset
     private static string portraitPath = "Characters/Portrait/";
     private static string uiPath = "UI/";
     private static string uiBattlePath = "UI/BattleUI/";
-
+    private static string fxPath = "FX/";
+    
     public static Sprite Portrait(string name)
     {
         return Resources.Load<Sprite>(portraitPath + name);
@@ -20,5 +21,15 @@ public static class LoadAsset
     public static Sprite UIBattle(string name)
     {
         return Resources.Load<Sprite>(uiBattlePath + name);
+    }
+
+    public static Sprite Numbers(string name, int number)
+    {
+        return Resources.LoadAll<Sprite>(uiBattlePath + name)[number];
+    }
+
+    public static GameObject FX(string name)
+    {
+        return Resources.Load<GameObject>(fxPath + name);
     }
 }

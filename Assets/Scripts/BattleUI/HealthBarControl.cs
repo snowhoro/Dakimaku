@@ -10,7 +10,7 @@ public class HealthBarControl : MonoBehaviour {
 	void Start () 
     {
         character = GetComponent<BaseCharacter>();
-        character._currentHP = character._maxBaseHP = 20;
+        character._currentHP = character._maxBaseHP = 10;
         healthBar = transform.FindChild("Canvas").FindChild("HealthBack").FindChild("Health").GetComponent<Image>();
 	}
 	

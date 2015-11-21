@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 
 public abstract class BTNode
@@ -116,6 +118,8 @@ public abstract class BTNode
             return true;
     }
 
+#if UNITY_EDITOR
+
     public float HandleGizmo(Vector3 position)
     {
         GUIStyle style = new GUIStyle();
@@ -148,7 +152,7 @@ public abstract class BTNode
 
         return position.x;
     }
-
+#endif
     private Color GetStatusColor()
     {
         switch(GetStatus())
