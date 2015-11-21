@@ -15,7 +15,8 @@ public class BaseSkill : ScriptableObject
     public bool _isAOE;
 
     public Types.Attributes _attribute;
-    public Types.StatusEffects _statusEffect;
+    public bool _statusEffect;
+    //public Types.StatusEffects _statusEffect;
     public float _statusChance;
 
     public float _activationChance;
@@ -106,10 +107,13 @@ public class BaseSkill : ScriptableObject
         {
             ShowBattle.instance.ShowDamage(victims[i].gameObject, Combat.Damage(attacker,victims[i], this));
         }
+        if (_statusEffect)
+            AddStatusEffect(victims);
     }
     public virtual void RunFX(BaseCharacter target)
     {
-        Destroy(Instantiate(_prefabFX, target.transform.position, Quaternion.identity), 2.0f);
+        if (_prefabFX != null)
+            Destroy(Instantiate(_prefabFX, target.transform.position, Quaternion.identity), 2.0f);
     }
     public virtual void RunFX(BaseCharacter[] target)
     {
@@ -132,5 +136,23 @@ public class BaseSkill : ScriptableObject
                 return true;
         }
         return false;
+    }
+    public virtual void AddStatusEffect(BaseCharacter[] victims)
+    {
+        for (int i = 0; i < victims.Length; i++)
+            AddStatusEffect(victims[i]);
+    }
+    public virtual void AddStatusEffect(BaseCharacter victim)
+    {
+        if(_statusChance >= Random.Range(0, 100))
+        {
+            BaseStatusEffect effect = EffectToApply();
+            if (effect != null)
+                victim._statusEffects.Add(effect);
+        }
+    }
+    public virtual BaseStatusEffect EffectToApply()
+    {
+        return null;
     }
 }

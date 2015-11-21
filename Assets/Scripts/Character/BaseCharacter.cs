@@ -31,10 +31,14 @@ public abstract class BaseCharacter : MonoBehaviour
     public Vector2 _gridPos;
 
     public List<BaseSkill> _skillList;
+
+    public List<BaseStatusEffect> _statusEffects;
     #endregion
     
     void Awake()
     {
+        _statusEffects = new List<BaseStatusEffect>();
+        _statusEffects.Add(new Poison());
         _skillList = new List<BaseSkill>();
         _skillList.Add(AddSkill("QuickSlash"));
         _skillList.Add(AddSkill("DisplacementSkill"));

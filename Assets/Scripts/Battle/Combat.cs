@@ -104,7 +104,7 @@ public class Combat : MonoBehaviour
         CombatCheck combatCheck = new CombatCheck();
         List<HitList> hitlist = combatCheck.GetEnemiesAttacked();
         ShowBattle.instance.hitList = hitlist;
-        StartCoroutine(ShowBattle.instance.StartShowBattle());
+        StartCoroutine(ShowBattle.instance.StartShowBattle(true));
     }
 
     public void CheckHeroesAttacked(BaseCharacter enemy)
@@ -112,6 +112,6 @@ public class Combat : MonoBehaviour
         CombatCheck combatCheck = new CombatCheck();
         List<HitList> hitlist = combatCheck.GetHeroesAttackedBy(enemy);
         ShowBattle.instance.hitList = hitlist;
-        StartCoroutine(ShowBattle.instance.StartShowBattle());
+        StartCoroutine(ShowBattle.instance.StartShowBattle(false));
     }
 }

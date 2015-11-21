@@ -17,7 +17,8 @@ public class DisplacementSkill : BaseSkill
         _isAOE = true;
 
         _attribute = Types.Attributes.None;
-        _statusEffect = Types.StatusEffects.None;
+        //_statusEffect = Types.StatusEffects.None;
+        _statusEffect = false;
         _statusChance = 0;
 
         _activationChance = 10.0f;
