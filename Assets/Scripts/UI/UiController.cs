@@ -368,8 +368,8 @@ public class UiController : MonoBehaviour {
     // --------------------------------------------------------------------------------------------------------------------------
     /// <summary>Teams 0-4, nPosition 0-5</summary>
     public void SetTeam(int nTeam, int nPosition, Item item) {
-        //Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage); 
-        //if (_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem != null)
+        //Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage);
+        if (item != null)
         {
             _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem = item;
             _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage.sprite = item._CharImg.sprite;
@@ -463,6 +463,7 @@ public class UiController : MonoBehaviour {
         SetInventoryPanelVisibility(false);
         _teamEditPanel.SetActive(false);
         _inventoryState = InventoryState.None;
+        ShopUIController.Instance._pearlsPanel.SetActive(false);
     }
     public void Hatcher()
     {

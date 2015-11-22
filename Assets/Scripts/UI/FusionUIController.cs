@@ -40,7 +40,7 @@ public class FusionUIController : MonoBehaviour {
 
     public bool AddFuseItem(Item item)
     {
-        if (item.ItemID == _selectedFuseItem.RefItem.ItemID)
+        if (item.ItemID == _selectedFuseItem.RefItem.ItemID || Account.Instance.ItemExistsInTeam(item))
             return false;
 
         Debug.Log(_fuseItems[0].RefItem);

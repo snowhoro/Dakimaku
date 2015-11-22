@@ -39,14 +39,26 @@ public class ShopUIController : MonoBehaviour {
         {
             if (Account.Instance._hardCurrency > 0)
                 ServerRequests.Instance.StaminaRecharge(Account.Instance._playerId, StaminaRCb);
-        }
-        else
-        {
-            Debug.Log("No hay plata pibe.");
+            else
+            {
+                Debug.Log("No hay plata pibe.");
+            }
         }
     }
-    public void BuyPearls(int ammount, decimal price)
+    public void BuyPearls(int ammount)
     {
+        decimal price;
+
+        switch (ammount)
+        {
+            case 5: price = 5; break;
+            case 10: price = 9.75m; break;
+            case 20: price = 19.00m; break;
+            case 50: price = 46.25m; break;
+            case 100: price = 95.00m; break;
+            default: return;
+        }
+
         ServerRequests.Instance.BuyHardCurrency(Account.Instance._playerId, ammount, price, BuyPearlsCb);
     }
 
@@ -62,6 +74,8 @@ public class ShopUIController : MonoBehaviour {
         }
         else
         {
+            Debug.Log("Compre " + dataJson["ammount"].Value);
+
             UiController.Instance.LoadSucces();
 
             Account.Instance.AddHardCurrency(int.Parse(dataJson["ammount"].Value));

@@ -136,10 +136,12 @@ public class Account : MonoBehaviour
     public void AddHardCurrency(int currencyAmount)
     {
         _hardCurrency += currencyAmount;
+        AccountStatsUI.Instance.HardCurrency.text = _hardCurrency.ToString();
     }
     public void UseHardCurrency(int ammount)
     {
         _hardCurrency -= ammount;
+        AccountStatsUI.Instance.HardCurrency.text = _hardCurrency.ToString();
     }
     public void AddMaxStamina(int stmAmount)
     {
@@ -288,6 +290,20 @@ public class Account : MonoBehaviour
         }
     }
 
+    public bool ItemExistsInTeam(Item item) {
+
+        for (int i = 0; i < _teams.Count; i++)
+        {
+            for (int j = 0; j < _teams[i].Length; j++)
+            {
+                if (_teams[i][j] != null)
+                    if (_teams[i][j].ItemID == item.ItemID)
+                        return true;
+            }
+        }
+        
+        return false;
+    }
     public void SetLoadedTeam()
     {
         

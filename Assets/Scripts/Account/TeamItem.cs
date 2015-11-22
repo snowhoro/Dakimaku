@@ -4,12 +4,24 @@ using System.Collections;
 
 public class TeamItem : MonoBehaviour {
 
-    public Image SlotImage;
+    private Image _slotImage;
+    public Image SlotImage 
+    { 
+        get {
+            if (_slotImage == null)
+                _slotImage = this.GetComponent<Image>();
+            return _slotImage; 
+        }
+        private set {
+            _slotImage = value;
+        }
+    }
     public Item RefItem;
 
 	// Use this for initialization
 	void Awake () {
-        SlotImage = this.GetComponent<Image>();
+        if (SlotImage == null)
+            SlotImage = this.GetComponent<Image>();
 	}
 
     public void UnSelect()
