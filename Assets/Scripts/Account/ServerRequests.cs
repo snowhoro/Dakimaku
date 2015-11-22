@@ -98,6 +98,15 @@ public class ServerRequests : MonoBehaviour
             case "FuseCharacter":
                 FuseCharacter(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.arguments[2], retryRequest.callBack);
                 break;
+            case "EvolveCharacter":
+                EvolveCharacter(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.arguments[2], retryRequest.callBack);
+                break;
+            case "StaminaRecharge":
+                StaminaRecharge(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "BuyPearls":
+                BuyPearls(retryRequest.arguments[0], int.Parse(retryRequest.arguments[1]), decimal.Parse(retryRequest.arguments[2]), retryRequest.callBack);
+                break;
         }
     }
 
@@ -253,5 +262,55 @@ public class ServerRequests : MonoBehaviour
         form.AddField("FodderIds", foddersJson);
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
+    }
+    public void EvolveCharacter(string accountID, string characterID, string foddersJson, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "FuseCharacter", callBack);
+        retryRequest.arguments.Add(characterID);
+        retryRequest.arguments.Add(foddersJson);
+
+        string url = host + "characterFusion";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID);
+        form.AddField("Character", characterID);
+        form.AddField("FodderIds", foddersJson);
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+
+    public void StaminaRecharge(string accountID, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "StaminaRecharge", callBack);
+        /*
+        string url = host + "staminaRecharge";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+        */
+        string cm = "\"";
+        string value = "{ " + cm + "succes" + cm + " }";
+
+        callBack(value);
+        
+    }
+    public void BuyPearls(string accountID, int ammount, decimal price, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "BuyPearl", callBack);
+        retryRequest.arguments.Add(ammount.ToString());
+        retryRequest.arguments.Add(price.ToString("N2"));
+
+        /*
+           string url = host + "staminaRecharge";
+           WWWForm form = new WWWForm();
+           form.AddField("PlayerId", accountID.ToString());
+           WWW www = new WWW(url, form);
+           StartCoroutine(WaitForRequest(www, callBack));
+         
+        */
+        string cm = "\"";
+        string value = "{ " + cm + "ammount" + cm + " : " + ammount + " }";
+
+        callBack(value);
     }
 }

@@ -30,7 +30,11 @@ public class GachaItem : MonoBehaviour {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+
+            UiController.Instance.LoadFail();
+        }
         else
         {
             UiController.Instance.GachaSucces();

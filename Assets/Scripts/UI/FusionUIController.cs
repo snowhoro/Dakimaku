@@ -7,6 +7,7 @@ public class FusionUIController : MonoBehaviour {
     public GameObject _fusionPanel;
     public TeamItem _selectedFuseItem;
     public TeamItem[] _fuseItems;
+    public bool isActive = false;
 
 	void Awake () {
         Instance = this;
@@ -15,7 +16,20 @@ public class FusionUIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    
+        if (Input.GetKeyDown(KeyCode.Escape) && isActive)
+        {
+            if (!_fusionPanel.activeSelf)
+            {
+                Debug.Log("quice cerrar fusion");
+                UiController.Instance.BackToTeamMain();
+            }
+            else
+            {
+                Debug.Log("quice abrir fusion");
+                UiController.Instance.OpenImprovementMenu();
+                _fusionPanel.SetActive(false);
+            }
+        }
 	}
 
     public void SetFuseItem(Item item)

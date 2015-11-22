@@ -14,7 +14,11 @@ public class Game : MonoBehaviour {
     public GameObject _gachaItemPrefab;
 	public List<DungeonItem> _dungeonItems = new List<DungeonItem>();
 	public GameObject _dungeonItemPrefab;
-    public List<Transform> _parents = new List<Transform>();
+    
+    public Transform _gachaParent;
+    public Transform _dungeonParent;
+    public Transform _itemsParent;
+    
     public string _selectedDungeonID;
 
     public delegate void CallBack(float loading);
@@ -80,13 +84,23 @@ public class Game : MonoBehaviour {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+
+            if (MenuController.Instance != null)
+                MenuController.Instance.retryPanel.SetActive(true);
+            else if (UiController.Instance != null)
+                UiController.Instance.LoadFail();
+            else
+                Debug.Log("Se rompio todo");
+        }
         else
         {
 
             GameObject parent = new GameObject();
             parent.name = "Gachas";
             DontDestroyOnLoad(parent);
+            _gachaParent = parent.transform;
 
             Debug.Log("Number of gachas: " + dataJson.Count);
 
@@ -98,14 +112,14 @@ public class Game : MonoBehaviour {
 
                 _gachaItems.Add(goComponent);
 
-				Debug.Log(dataJson[i]["_id"].Value);
+                Debug.Log(dataJson[i]["_id"].Value);
 
                 goComponent.Initialize(Resources.Load(dataJson[i]["ImgPath"].Value, typeof(Sprite)) as Sprite, dataJson[i]["_id"].Value);
             }
 
             MenuController.Instance.LoadingBar.fillAmount = 0.8f;
 
-			LoadAllDungeons();
+            LoadAllDungeons();
         }
     }
 
@@ -116,31 +130,43 @@ public class Game : MonoBehaviour {
 	public void AllDungeonsCb(string data)
 	{
 		var dataJson = SimpleJSON.JSON.Parse(data);
-		
-		if (dataJson ["error"] != null)
-			Debug.Log (dataJson ["error"]);
-		else {
 
-			GameObject parent = new GameObject ();
-			parent.name = "Dungeons";
-			DontDestroyOnLoad (parent);
-			
-			Debug.Log ("Number of Dungeons: " + dataJson.Count);
-			for (int i = 0; i < dataJson.Count; i++) {
-				GameObject go = GameObject.Instantiate (_dungeonItemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-				go.transform.SetParent (parent.transform);
-				DungeonItem goComponent = go.GetComponent<DungeonItem> ();
-				
-				_dungeonItems.Add (goComponent);
-				
-				goComponent.Initialize(dataJson[i]["DungeonName"].Value, dataJson[i]["_id"].Value);
+        if (dataJson["error"] != null)
+        {
+            Debug.Log(dataJson["error"]);
 
-			}
+            if (MenuController.Instance != null)
+                MenuController.Instance.retryPanel.SetActive(true);
+            else if (UiController.Instance != null)
+                UiController.Instance.LoadFail();
+            else
+                Debug.Log("Se rompio todo");
+        }
+        else
+        {
+
+            GameObject parent = new GameObject();
+            parent.name = "Dungeons";
+            DontDestroyOnLoad(parent);
+            _dungeonParent = parent.transform;
+
+            Debug.Log("Number of Dungeons: " + dataJson.Count);
+            for (int i = 0; i < dataJson.Count; i++)
+            {
+                GameObject go = GameObject.Instantiate(_dungeonItemPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+                go.transform.SetParent(parent.transform);
+                DungeonItem goComponent = go.GetComponent<DungeonItem>();
+
+                _dungeonItems.Add(goComponent);
+
+                goComponent.Initialize(dataJson[i]["DungeonName"].Value, dataJson[i]["_id"].Value);
+
+            }
 
             MenuController.Instance.LoadingBar.fillAmount = 1f;
 
-			LoadEnd ();
-		}
+            LoadEnd();
+        }
 	}
 
     public void Reconnect()

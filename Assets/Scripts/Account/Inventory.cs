@@ -62,14 +62,23 @@ public class Inventory : MonoBehaviour
          var dataJson = SimpleJSON.JSON.Parse(data);
 
          if (dataJson["error"] != null)
+         {
              Debug.Log(dataJson["error"]);
+
+             if (MenuController.Instance != null)
+                 MenuController.Instance.retryPanel.SetActive(true);
+             else if (UiController.Instance != null)
+                 UiController.Instance.LoadFail();
+             else
+                 Debug.Log("Se rompio todo");
+         }
          else
          {
 
              GameObject parent = new GameObject();
              parent.name = "Items";
              DontDestroyOnLoad(parent);
-             Game.Instance._parents.Add(parent.transform);
+             Game.Instance._itemsParent = parent.transform;
 
              Debug.Log("Items in inventory: " + dataJson["inventory"]["Characters"].Count);
              for (int i = 0; i < dataJson["inventory"]["Characters"].Count; i++)
@@ -81,14 +90,14 @@ public class Inventory : MonoBehaviour
                  _items.Add(goComponent);
 
                  string name = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Name"].Value;
-                 string id =   dataJson["inventory"]["Characters"][i]["_id"].Value;
+                 string id = dataJson["inventory"]["Characters"][i]["_id"].Value;
 
                  int baseHp = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["HP"].Value);
                  int phyAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["PhysicalAttack"].Value);
                  int magAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicAttack"].Value);
                  int phyDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["PhysicalDefense"].Value);
                  int magDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicDefense"].Value);
-                 int level =  int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Level"].Value);
+                 int level = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Level"].Value);
                  int rarity = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Rarity"].Value);
                  int experience = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Experience"].Value);
                  string maxCharID = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["_id"].Value;

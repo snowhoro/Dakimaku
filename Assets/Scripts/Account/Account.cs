@@ -137,9 +137,18 @@ public class Account : MonoBehaviour
     {
         _hardCurrency += currencyAmount;
     }
+    public void UseHardCurrency(int ammount)
+    {
+        _hardCurrency -= ammount;
+    }
     public void AddMaxStamina(int stmAmount)
     {
         _maxStamina += stmAmount;
+    }
+    public void RefillStamina()
+    {
+        _currentStamina = _maxStamina;
+        AccountStatsUI.Instance.UpdateStaminaBar(_maxStamina, _currentStamina);
     }
 
     private void LevelUp() 
@@ -151,16 +160,21 @@ public class Account : MonoBehaviour
         _inventory.AddMaxSlots(2);
     }
 
-    public bool ConsumeStamina(int stmAmount)
+    public void ConsumeStamina(int stmAmount)
     {
-        if (_currentStamina > stmAmount)
-        { 
-            //stmAmount
-            return true;
+        if (_currentStamina >= stmAmount)
+        {
+            _currentStamina -= stmAmount;
+            AccountStatsUI.Instance.UpdateStaminaBar(_maxStamina, _currentStamina);
         }
-        return false;
     }
- 
+
+    public int CalculateExpToNxtLv(int level)
+    {
+        if (level == 0) return 1;
+        
+        return (int)(Mathf.Pow((float)level, 3f));
+    }
     // CallBacks
     public void CreateCb(string data)
     {
@@ -200,9 +214,10 @@ public class Account : MonoBehaviour
             _softCurrency = int.Parse(dataJson["account"]["SoftCurrency"].Value);
             _hardCurrency = int.Parse(dataJson["account"]["HardCurrency"].Value);
             _maxStamina = int.Parse(dataJson["account"]["Stamina"].Value);
+            _currentExp = int.Parse(dataJson["account"]["Experience"].Value);
+            _expToNextLevel = CalculateExpToNxtLv(_playerLevel);
             _currentStamina = 0;// int.Parse(d["CurrentStamina"].ToString());
-            _currentExp = 0;//int.Parse(dataJson["account"]["CurrentExp"].Value);
-            _expToNextLevel = 0; //int.Parse(d["ExpToNextLevel"].ToString());
+            
             _rechargeTime = 0;// float.Parse(d["floatTime"].ToString());
 
             _stats = new AccountStats(int.Parse(dataJson["account"]["LogDays"].Value),
@@ -220,7 +235,11 @@ public class Account : MonoBehaviour
         var dataJson = SimpleJSON.JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+
+            MenuController.Instance.retryPanel.SetActive(true);
+        }
         else
         {
             for (int i = 1; i <= 5; i++)
@@ -232,9 +251,9 @@ public class Account : MonoBehaviour
                         Item iFind = Inventory.Instance.FindItem(dataJson["teams"]["Teams"]["team_" + i.ToString()][j].Value);
 
                         if (iFind != null)
-                            _teams[i-1][j] = iFind;
+                            _teams[i - 1][j] = iFind;
                     }
-                    
+
                     //dataJson["Teams"][i][j].Value
                 }
             }
@@ -290,7 +309,7 @@ public class Account : MonoBehaviour
         {
             _selectedTeamList[i] = _teams[_selectedTeam][i]._character;
             if (_selectedTeamList[i] != null)
-                _selectedTeamList[i].gameObject.transform.SetParent(Game.Instance._parents[0]);
+                _selectedTeamList[i].gameObject.transform.SetParent(Game.Instance._itemsParent);
         }
     }
 }
