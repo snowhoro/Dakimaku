@@ -64,7 +64,7 @@ public class Account : MonoBehaviour
 
             for (int j = 0; j < _teams[i].Length; j++)
             {
-                _teams[i][j] = UiController.Instance._hudTeams[(j + System.Convert.ToInt32(UiController.MAXC_INTEAM * _selectedTeam))].RefItem;
+                _teams[i][j] = UiController.Instance._hudTeams[(j + System.Convert.ToInt32(UiController.MAXC_INTEAM * i))].RefItem;
 
                 if (i == _selectedTeam)
                 {

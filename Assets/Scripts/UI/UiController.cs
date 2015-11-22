@@ -369,9 +369,7 @@ public class UiController : MonoBehaviour {
     /// <summary>Teams 0-4, nPosition 0-5</summary>
     public void SetTeam(int nTeam, int nPosition, Item item) {
         //Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage); 
-        Debug.Log("REVISAME QUE ESTOY PINCHANDO");
-
-        if (_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem != null)
+        //if (_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem != null)
         {
             _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem = item;
             _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage.sprite = item._CharImg.sprite;
@@ -411,7 +409,7 @@ public class UiController : MonoBehaviour {
             Inventory.Instance.DeselectAll();
             _selectedItems.Clear();
 
-            for (int i = 1; i <= MAXC_INTEAM; i++)
+            for (int i = 0; i < MAXC_INTEAM; i++)
             {
                 if (_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem != null)
                     _selectedItems.Add(_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem);
@@ -425,7 +423,7 @@ public class UiController : MonoBehaviour {
 
         teamTarget = GetTeamTarget(_selectedTeam);
 
-        Debug.Log("Team Changing: " + TeamChanging + ". To team: " + _selectedTeam + ". Position: " + teamTarget.x + "," + teamTarget.y + "," + teamTarget.z);
+        //Debug.Log("Team Changing: " + TeamChanging + ". To team: " + _selectedTeam + ". Position: " + teamTarget.x + "," + teamTarget.y + "," + teamTarget.z);
     }
     private Vector3 GetTeamTarget(int team)
     {

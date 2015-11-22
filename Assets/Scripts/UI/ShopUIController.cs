@@ -47,7 +47,7 @@ public class ShopUIController : MonoBehaviour {
     }
     public void BuyPearls(int ammount, decimal price)
     {
-        ServerRequests.Instance.BuyPearls(Account.Instance._playerId, ammount, price, BuyPearlsCb);
+        ServerRequests.Instance.BuyHardCurrency(Account.Instance._playerId, ammount, price, BuyPearlsCb);
     }
 
     public void BuyPearlsCb(string data)

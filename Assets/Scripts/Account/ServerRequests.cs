@@ -105,7 +105,7 @@ public class ServerRequests : MonoBehaviour
                 StaminaRecharge(retryRequest.arguments[0], retryRequest.callBack);
                 break;
             case "BuyPearls":
-                BuyPearls(retryRequest.arguments[0], int.Parse(retryRequest.arguments[1]), decimal.Parse(retryRequest.arguments[2]), retryRequest.callBack);
+                BuyHardCurrency(retryRequest.arguments[0], int.Parse(retryRequest.arguments[1]), decimal.Parse(retryRequest.arguments[2]), retryRequest.callBack);
                 break;
         }
     }
@@ -265,7 +265,7 @@ public class ServerRequests : MonoBehaviour
     }
     public void EvolveCharacter(string accountID, string characterID, string foddersJson, CallBack callBack)
     {
-        SetRetryRequest(accountID, "FuseCharacter", callBack);
+        SetRetryRequest(accountID, "EvolveCharacter", callBack);
         retryRequest.arguments.Add(characterID);
         retryRequest.arguments.Add(foddersJson);
 
@@ -273,7 +273,7 @@ public class ServerRequests : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID);
         form.AddField("Character", characterID);
-        form.AddField("FodderIds", foddersJson);
+        form.AddField("MatIds", foddersJson);
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
@@ -294,9 +294,9 @@ public class ServerRequests : MonoBehaviour
         callBack(value);
         
     }
-    public void BuyPearls(string accountID, int ammount, decimal price, CallBack callBack)
+    public void BuyHardCurrency(string accountID, int ammount, decimal price, CallBack callBack)
     {
-        SetRetryRequest(accountID, "BuyPearl", callBack);
+        SetRetryRequest(accountID, "BuyHardCash", callBack);
         retryRequest.arguments.Add(ammount.ToString());
         retryRequest.arguments.Add(price.ToString("N2"));
 
