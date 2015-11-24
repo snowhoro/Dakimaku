@@ -43,6 +43,7 @@ public class Item : MonoBehaviour {
     public void Select()
     {
         _selected = !_selected;
+        _animator.SetTrigger("Selected");
     }
 
     public void setImage(string imagePath) 
@@ -54,6 +55,6 @@ public class Item : MonoBehaviour {
     public void ItemClick()
     {
         UiController.Instance.ItemClick(this);
-        _animator.SetTrigger("Selected");
+        //_animator.SetTrigger("Selected");
     }
 }
