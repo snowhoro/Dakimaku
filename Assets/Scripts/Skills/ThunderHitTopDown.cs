@@ -15,6 +15,7 @@ public class ThunderHitTopDown : BaseSkill
         _isDisplacement = false;
         _isActive = false;
         _isAOE = true;
+        _isOnTarget = false;
 
         _attribute = Types.Attributes.Light;
         //_statusEffect = Types.StatusEffects.None;

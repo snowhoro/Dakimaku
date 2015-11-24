@@ -27,6 +27,8 @@ public class BattleUIController : MonoBehaviour
     public GameObject UIStageFrontNumber;
     public GameObject UIStageBackNumber;
 
+    public GameObject UIClear;
+
     public bool showing;
 
 	void Start () 

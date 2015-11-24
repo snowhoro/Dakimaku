@@ -116,7 +116,7 @@ public class DungeonManager : MonoBehaviour
     }
     private void RequestStages()
     {
-        ServerRequests.Instance.RequestDungeonById("5639359c0ef0b2a310ab1fa6", "564de03d36be9eb06c619b60", LoadStages);
+        ServerRequests.Instance.RequestDungeonById(Account.Instance._playerId, Game.Instance._selectedDungeonID, LoadStages);
     }
     private void RequestEnemies()
     {
@@ -248,16 +248,17 @@ public class DungeonManager : MonoBehaviour
             return;
 
         for (int i = 0; i < 6; i++)
-            AddCharacter(charPosList[i], "c" + (i+1));
+            AddCharacter(charPosList[i], Account.Instance._selectedTeamList[i]);
         charactersSpawned = true;
     }
-    private void AddCharacter(Vector2 gridPosition, string name = "")
+    private void AddCharacter(Vector2 gridPosition, Character bc)
     {
         GameObject charac = (GameObject)Instantiate(character, GridManager.instance.GetWorldPosition(gridPosition), Quaternion.identity);
         charac.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
-        charac.name = name;
-        BaseCharacter bcharac = charac.GetComponent<BaseCharacter>();
+        Character bcharac = charac.GetComponent<Character>();
+        bcharac.Initialize(bc._name, bc._baseHP,bc._level,bc._rarity,bc._mBaseAttack,bc._pBaseAttack,bc._mBaseDefense,bc._pBaseDefense,bc._currentExp,bc._sprite);
         bcharac._gridPos = gridPosition;
+        charac.name = bcharac._name;
         BattleList.instance.Add(bcharac);
     }
 }

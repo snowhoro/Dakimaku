@@ -12,7 +12,8 @@ public class Win : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("PREPARING FOR BATTLE..." + entity_type.name);
+        //Debug.Log("PREPARING FOR BATTLE..." + entity_type.name);
+        BattleUIController.instance.UIClear.SetActive(true);
     }
 
     public override void Execute(BattleManager entity_type)

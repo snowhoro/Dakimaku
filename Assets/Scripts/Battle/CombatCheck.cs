@@ -35,7 +35,7 @@ public class CombatCheck
             friendList = BattleList.instance.GetEnemies();
         }
 
-        //LEFT RIGHT
+        #region LEFT RIGHT
         NextTo nextTo;
         int auxPos = 0;
         do
@@ -59,8 +59,8 @@ public class CombatCheck
                 hitList.Add(hitGroup);
             }
         }
-
-        // UP DOWN
+        #endregion
+        #region UP DOWN
         hitGroup = new HitList();
         hitGroup.AddVictim(character);
         auxPos = 0;
@@ -85,6 +85,52 @@ public class CombatCheck
                 hitList.Add(hitGroup);
             }
         }
+        #endregion
+        #region CORNER ATTACK
+        hitGroup = new HitList();
+        hitGroup.AddVictim(character);
+        NextTo nextTo2;
+        if(character._gridPos == new Vector2(0,0))
+        {
+            nextTo = CheckDirection(character._gridPos, Vector2.right);
+            nextTo2 = CheckDirection(character._gridPos, Vector2.up);
+
+            if(nextTo == NextTo.Enemy && nextTo2 == NextTo.Enemy)
+            {
+                hitList.Add(hitGroup);
+            }
+        }
+        else if (character._gridPos == new Vector2(5, 0))
+        {
+            nextTo = CheckDirection(character._gridPos, Vector2.left);
+            nextTo2 = CheckDirection(character._gridPos, Vector2.up);
+
+            if (nextTo == NextTo.Enemy && nextTo2 == NextTo.Enemy)
+            {
+                hitList.Add(hitGroup);
+            }
+        }
+        else if (character._gridPos == new Vector2(0, 7))
+        {
+            nextTo = CheckDirection(character._gridPos, Vector2.right);
+            nextTo2 = CheckDirection(character._gridPos, Vector2.down);
+
+            if (nextTo == NextTo.Enemy && nextTo2 == NextTo.Enemy)
+            {
+                hitList.Add(hitGroup);
+            }
+        }
+        else if (character._gridPos == new Vector2(5, 7))
+        {
+            nextTo = CheckDirection(character._gridPos, Vector2.left);
+            nextTo2 = CheckDirection(character._gridPos, Vector2.down);
+
+            if (nextTo == NextTo.Enemy && nextTo2 == NextTo.Enemy)
+            {
+                hitList.Add(hitGroup);
+            }
+        }
+        #endregion
     }
     private NextTo CheckDirection(Vector2 targetPos, Vector2 direction)
     {

@@ -166,12 +166,13 @@ public class ShowBattle : MonoBehaviour
             for (int j = 0; j < affected._statusEffects.Count; j++)
             {
                 affected._statusEffects[j].Effect(affected);
-                yield return new WaitForSeconds(waitTimeBetweenNumbers);
             }
             //yield return new WaitForSeconds(waitTimeBetweenVictims);
             BattleList.instance.CheckDead();
         }
+        //yield return new WaitForSeconds(waitTimeBetweenNumbers);
         showing = false;
+        yield return 0;
     }
     public IEnumerator ShowStatusEffects()
     {

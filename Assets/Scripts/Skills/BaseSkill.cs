@@ -13,6 +13,7 @@ public class BaseSkill : ScriptableObject
     public bool _isDisplacement;
     public bool _isActive;
     public bool _isAOE;
+    public bool _isOnTarget;
 
     public Types.Attributes _attribute;
     public bool _statusEffect;
@@ -33,12 +34,12 @@ public class BaseSkill : ScriptableObject
             if (_isDisplacement)
             {
                 Displacement(attacker);
-                RunFX(attacker);
+                RunFX(attacker.transform.position);
             }
             else
             {
                 AreaOfEffect(attacker);
-                RunFX(victimList.ToArray());
+                RunFX(attacker);
             }
         }
         else
@@ -110,15 +111,20 @@ public class BaseSkill : ScriptableObject
         if (_statusEffect)
             AddStatusEffect(victims);
     }
-    public virtual void RunFX(BaseCharacter target)
+    public virtual void RunFX(Vector2 targetPos)
     {
         if (_prefabFX != null)
-            Destroy(Instantiate(_prefabFX, target.transform.position, Quaternion.identity), 2.0f);
+            Destroy(Instantiate(_prefabFX, targetPos, Quaternion.identity), 2.0f);
     }
     public virtual void RunFX(BaseCharacter[] target)
     {
         for (int i = 0; i < target.Length; i++)
-            RunFX(target[i]);
+            RunFX(target[i].transform.position);
+    }
+    public virtual void RunFX(BaseCharacter target)
+    {
+        for (int i = 0; i < _AOE.Length; i++)
+            RunFX((Vector2)target.transform.position + _AOE[i]);
     }
     public virtual bool CheckSkillHit(BaseCharacter attacker) 
     {

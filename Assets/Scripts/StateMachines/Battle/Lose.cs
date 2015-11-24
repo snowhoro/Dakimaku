@@ -23,7 +23,7 @@ public class Lose : State<BattleManager>
         //if continue
         //entity_type.ChangeState(PlayerTurn.instance);
         //else
-        //entity_type.ChangeState(EndScreen.instance);
+        entity_type.ChangeState(EndScreen.instance);
         Application.LoadLevel("Menus");
     }
 

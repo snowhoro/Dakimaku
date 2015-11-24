@@ -14,11 +14,13 @@ public abstract class BaseCharacter : MonoBehaviour
     public int _level;
     public int _rarity;
 
+    [Header("Base Stats")]
     public int _mBaseAttack;
     public int _mAttack;
     public int _mBaseDefense;
     public int _mDefense;
 
+    [Header("Calc Stats")]
     public int _pBaseAttack;
     public int _pAttack;
     public int _pBaseDefense;

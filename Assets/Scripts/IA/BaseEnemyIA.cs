@@ -19,9 +19,9 @@ public class BaseEnemyIA : BTExecuter
 
 
         repeater.AddChild(selector1);
+        selector1.AddChild(inverter2);
         selector1.AddChild(sequencer1);
         selector1.AddChild(inverter3);
-        selector1.AddChild(inverter2);
         inverter3.AddChild(new ApplyStatusEffect());
         inverter2.AddChild(new DiscountTurn());
         selector1.AddChild(new NextTurn());
