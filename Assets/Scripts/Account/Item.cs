@@ -13,6 +13,7 @@ public class Item : MonoBehaviour {
     public Character _character { get; private set; }
     public Image _CharImg;
     public Transform _transform;
+    public Animator _animator;
 
     public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, string itemID, int experience, string maxCharID)
     {
@@ -29,7 +30,9 @@ public class Item : MonoBehaviour {
     {
         _selected = false;
         _transform = this.transform;
-        itemButton = this.GetComponent<Button>();
+        _animator = GetComponent<Animator>();
+        itemButton = GetComponent<Button>();
+
     }
 	
 	// Update is called once per frame
@@ -51,5 +54,6 @@ public class Item : MonoBehaviour {
     public void ItemClick()
     {
         UiController.Instance.ItemClick(this);
+        _animator.SetTrigger("Selected");
     }
 }
