@@ -24,7 +24,7 @@ public class Lose : State<BattleManager>
         //entity_type.ChangeState(PlayerTurn.instance);
         //else
         //entity_type.ChangeState(EndScreen.instance);
-        Application.LoadLevel("Menus");
+        Application.LoadLevel("BattleResults");
     }
 
     public override void Exit(BattleManager entity_type)

@@ -189,6 +189,9 @@ public class Game : MonoBehaviour {
         if (_itemsParent != null)
             Destroy(_itemsParent.gameObject);
 
+        _gachaItems.Clear();
+        _dungeonItems.Clear();
+
         Inventory.Instance.LoadInventory(Account.Instance._playerId);
     }
 }
