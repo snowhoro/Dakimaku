@@ -143,6 +143,24 @@ public class BaseSkill : ScriptableObject
         }
         return false;
     }
+    public virtual int CheckSkillHitCount(BaseCharacter attacker)
+    {
+        int hitCount = 0;
+        for (int i = 0; i < _AOE.Length; i++)
+        {
+            Vector2 targetpos = attacker._gridPos + _AOE[i];
+            BaseCharacter bcharc;
+
+            if (attacker is Enemy)
+                bcharc = BattleList.instance.GetHero(targetpos);
+            else
+                bcharc = BattleList.instance.GetEnemy(targetpos);
+
+            if (bcharc != null)
+                hitCount++;
+        }
+        return hitCount;
+    }
     public virtual void AddStatusEffect(BaseCharacter[] victims)
     {
         for (int i = 0; i < victims.Length; i++)
