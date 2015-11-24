@@ -14,6 +14,7 @@ public class Lose : State<BattleManager>
     public override void Enter(BattleManager entity_type)
     {
         Debug.Log("ENTER LOSE..." + entity_type.name);
+        BattleUIController.instance.ShowUIContinue();
     }
 
     public override void Execute(BattleManager entity_type)
@@ -23,8 +24,18 @@ public class Lose : State<BattleManager>
         //if continue
         //entity_type.ChangeState(PlayerTurn.instance);
         //else
-        entity_type.ChangeState(EndScreen.instance);
-        Application.LoadLevel("Menus");
+        if (BattleUIController.instance.showing)
+        {
+            if (!BattleUIController.instance.isContinue)
+            {
+                Application.LoadLevel("Menus");
+                //entity_type.ChangeState(EndScreen.instance);
+            }
+            else
+            {
+                //recargar los personajes
+            }
+        }
     }
 
     public override void Exit(BattleManager entity_type)

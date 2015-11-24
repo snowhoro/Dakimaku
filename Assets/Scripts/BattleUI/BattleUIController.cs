@@ -19,7 +19,9 @@ public class BattleUIController : MonoBehaviour
     }
 
     public GameObject UIPlayerTurn;
+    public GameObject UIPlayerTurnUP;
     public GameObject UIEnemyTurn;
+    public GameObject UIEnemyTurnUP;
     private Animator UIPlayerAnimator;
     private Animator UIEnemyAnimator;
 
@@ -29,7 +31,13 @@ public class BattleUIController : MonoBehaviour
 
     public GameObject UIClear;
 
+    public GameObject UIWindowManager;
+    public GameObject UIContinue;
+    public GameObject UIGiveUp;
+
     public bool showing;
+    public bool isContinue;
+    public bool isGiveUP;
 
 	void Start () 
     {
@@ -55,7 +63,9 @@ public class BattleUIController : MonoBehaviour
         {
             if (UIPlayerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Exit"))
             {
+                UIEnemyTurnUP.SetActive(false);
                 UIPlayerTurn.SetActive(false);
+                UIPlayerTurnUP.SetActive(true);
                 FindObjectOfType<GridSelection>().enabled = true;
             }
         }
@@ -67,7 +77,9 @@ public class BattleUIController : MonoBehaviour
         {
             if (UIEnemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Exit"))
             {
+                UIPlayerTurnUP.SetActive(false);
                 UIEnemyTurn.SetActive(false);
+                UIEnemyTurnUP.SetActive(true);
                 BattleList.instance.GetEnemy().GetComponent<BaseEnemyIA>().enabled = true;
             }
         }
@@ -96,5 +108,55 @@ public class BattleUIController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         //BattleManager.instance._pauseUpdate = false;
         showing = false;
+    }
+
+    public void ShowUIContinue()
+    {
+        showing = true;
+        UIContinue.SetActive(true);
+        UIGiveUp.SetActive(false);
+        UIWindowManager.SetActive(true);
+    }
+
+    public void ShowUIGiveUp()
+    {
+        showing = true;
+        UIContinue.SetActive(false);
+        UIGiveUp.SetActive(true);
+        UIWindowManager.SetActive(true);
+    }
+    public void Continue(bool value)
+    {
+        if (UIContinue.activeSelf)
+        {
+            UIContinue.SetActive(false);
+            UIWindowManager.SetActive(false);
+            showing = false;
+        }
+    }
+
+    public void GiveUp(bool value)
+    {
+        if (value)
+            Application.LoadLevel("Menus");
+        if (UIGiveUp.activeSelf)
+        {
+            UIGiveUp.SetActive(false);
+            UIWindowManager.SetActive(false);
+            showing = false;
+        }
+    }
+
+    public void Volume()
+    {
+        Camera.main.GetComponent<AudioListener>().enabled = !Camera.main.GetComponent<AudioListener>().enabled; 
+    }
+
+    public void FastFoward()
+    {
+        if (Time.timeScale == 1f)
+            Time.timeScale = 2f;
+        else
+            Time.timeScale = 1f;
     }
 }
