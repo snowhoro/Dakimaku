@@ -59,6 +59,8 @@ public class ShopUIController : MonoBehaviour {
             default: return;
         }
 
+        UiController.Instance.BeginLoad();
+
         ServerRequests.Instance.BuyHardCurrency(Account.Instance._playerId, ammount, price, BuyPearlsCb);
     }
 
@@ -74,11 +76,11 @@ public class ShopUIController : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Compre " + dataJson["ammount"].Value);
+            Debug.Log("Compre " + dataJson["quantity"].Value);
 
             UiController.Instance.LoadSucces();
 
-            Account.Instance.AddHardCurrency(int.Parse(dataJson["ammount"].Value));
+            Account.Instance.AddHardCurrency(int.Parse(dataJson["quantity"].Value));
         }
     }
     public void StaminaRCb(string data)
@@ -94,8 +96,8 @@ public class ShopUIController : MonoBehaviour {
         else
         {
             Account.Instance.UseHardCurrency(1);
-            UiController.Instance.LoadSucces();
             Account.Instance.RefillStamina();
+            AccountStatsUI.Instance.UpdateSession();
         }
     }
 }

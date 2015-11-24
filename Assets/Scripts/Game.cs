@@ -70,9 +70,11 @@ public class Game : MonoBehaviour {
             MenuController.Instance.LoadScene();
         }
         else if (UiController.Instance != null)
-        { 
-            //UiController.getInstance()
+        {
+            UiController.Instance.LoadSucces();
         }
+        else if (ReloadClientData.Instance != null)
+            ReloadClientData.Instance.LoadEnded();
     }
 
     public void LoadGachas()
@@ -117,7 +119,8 @@ public class Game : MonoBehaviour {
                 goComponent.Initialize(Resources.Load(dataJson[i]["ImgPath"].Value, typeof(Sprite)) as Sprite, dataJson[i]["_id"].Value);
             }
 
-            MenuController.Instance.LoadingBar.fillAmount = 0.8f;
+            if (MenuController.Instance != null)
+                MenuController.Instance.LoadingBar.fillAmount = 0.8f;
 
             LoadAllDungeons();
         }
@@ -163,7 +166,10 @@ public class Game : MonoBehaviour {
 
             }
 
-            MenuController.Instance.LoadingBar.fillAmount = 1f;
+            if (MenuController.Instance != null)
+            {
+                MenuController.Instance.LoadingBar.fillAmount = 1f;
+            }
 
             LoadEnd();
         }
@@ -173,5 +179,16 @@ public class Game : MonoBehaviour {
     {
         ServerRequests.Instance.RetryRequest();
         MenuController.Instance.retryPanel.SetActive(false);
+    }
+    public void Reload()
+    {
+        if (_gachaParent != null)
+            Destroy(_gachaParent.gameObject);
+        if (_dungeonParent != null)
+            Destroy(_gachaParent.gameObject);
+        if (_itemsParent != null)
+            Destroy(_itemsParent.gameObject);
+
+        Inventory.Instance.LoadInventory(Account.Instance._playerId);
     }
 }

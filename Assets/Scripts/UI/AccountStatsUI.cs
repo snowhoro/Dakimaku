@@ -33,4 +33,24 @@ public class AccountStatsUI : MonoBehaviour {
         MaxStamina.text = max.ToString();
         CurrentStamina.text = current.ToString();
     }
+
+    public void UpdateSession()
+    {
+        ServerRequests.Instance.SessionUpdate(Account.Instance._playerId, Account.Instance._rechargeTime.ToString(), Account.Instance._currentStamina, UpdateSessionCb);
+    }
+    public void UpdateSessionCb(string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+        if (dataJson["error"] != null)
+        {
+            Debug.Log(dataJson["error"]);
+
+            UiController.Instance.LoadFail();
+        }
+        else
+        {
+            UiController.Instance.LoadSucces();
+        }
+    }
 }

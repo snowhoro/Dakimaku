@@ -109,7 +109,7 @@ public class Account : MonoBehaviour
             if (_rechargeTime >= 300) // cambiar por constante de recharge
             {
                 _rechargeTime -= 300;
-                _currentExp += 1;
+                _currentStamina += 1;
                 if (_currentStamina == _maxStamina)
                     _rechargeTime = 0;
             }
@@ -260,7 +260,10 @@ public class Account : MonoBehaviour
                 }
             }
 
-            MenuController.Instance.LoadingBar.fillAmount = 0.6f;
+            if (MenuController.Instance != null)
+            {
+                MenuController.Instance.LoadingBar.fillAmount = 0.6f;
+            }
 
             Game.Instance.LoadGachas();
         }

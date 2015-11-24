@@ -107,6 +107,9 @@ public class ServerRequests : MonoBehaviour
             case "BuyPearls":
                 BuyHardCurrency(retryRequest.arguments[0], int.Parse(retryRequest.arguments[1]), decimal.Parse(retryRequest.arguments[2]), retryRequest.callBack);
                 break;
+            case "SessionUpdate":
+                SessionUpdate(retryRequest.arguments[0], retryRequest.arguments[1], int.Parse(retryRequest.arguments[2]), retryRequest.callBack);
+                break;
         }
     }
 
@@ -281,17 +284,17 @@ public class ServerRequests : MonoBehaviour
     public void StaminaRecharge(string accountID, CallBack callBack)
     {
         SetRetryRequest(accountID, "StaminaRecharge", callBack);
-        /*
+        
         string url = host + "staminaRecharge";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
-        */
-        string cm = "\"";
+        
+        /*string cm = "\"";
         string value = "{ " + cm + "succes" + cm + " }";
 
-        callBack(value);
+        callBack(value);*/
         
     }
     public void BuyHardCurrency(string accountID, int ammount, decimal price, CallBack callBack)
@@ -300,17 +303,33 @@ public class ServerRequests : MonoBehaviour
         retryRequest.arguments.Add(ammount.ToString());
         retryRequest.arguments.Add(price.ToString("N2"));
 
-        /*
-           string url = host + "staminaRecharge";
-           WWWForm form = new WWWForm();
-           form.AddField("PlayerId", accountID.ToString());
-           WWW www = new WWW(url, form);
-           StartCoroutine(WaitForRequest(www, callBack));
+        string url = host + "buyHardCurrency";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        form.AddField("StoneQty", ammount.ToString());
+        //form.AddField("Price", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
          
-        */
+        /*
         string cm = "\"";
         string value = "{ " + cm + "ammount" + cm + " : " + ammount + " }";
 
-        callBack(value);
+        callBack(value);*/
+    }
+    public void SessionUpdate(string accountID, string staminaTimer, int currentStamina, CallBack callBack) {
+        
+        SetRetryRequest(accountID, "SessionUpdate", callBack);
+        retryRequest.arguments.Add(staminaTimer.ToString());
+        retryRequest.arguments.Add(currentStamina.ToString());
+
+        string url = host + "updateSession";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        form.AddField("staminaTimer", accountID.ToString());
+        form.AddField("currentStamina", currentStamina.ToString());
+        //form.AddField("Price", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
     }
 }

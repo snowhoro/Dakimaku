@@ -41,4 +41,12 @@ public class TeamItem : MonoBehaviour {
         SlotImage.sprite = item._CharImg.sprite;
     }
 
+    public void SelClick()
+    {
+        if (RefItem != null)
+        {
+            UiController.Instance.ItemClick(RefItem);
+        }
+    }
+
 }

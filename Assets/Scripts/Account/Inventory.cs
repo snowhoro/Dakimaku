@@ -69,6 +69,8 @@ public class Inventory : MonoBehaviour
                  MenuController.Instance.retryPanel.SetActive(true);
              else if (UiController.Instance != null)
                  UiController.Instance.LoadFail();
+             else if (ReloadClientData.Instance != null)
+                 ReloadClientData.Instance.LoadFail();
              else
                  Debug.Log("Se rompio todo");
          }
@@ -105,10 +107,12 @@ public class Inventory : MonoBehaviour
                  goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID);
              }
 
-             MenuController.Instance.LoadingBar.fillAmount = 0.4f;
+             if (MenuController.Instance != null)
+             {
+                 MenuController.Instance.LoadingBar.fillAmount = 0.4f;
+             }
 
              Account.Instance.LoadTeams();
-
          }
     }
 
