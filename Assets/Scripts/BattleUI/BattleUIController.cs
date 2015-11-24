@@ -42,7 +42,7 @@ public class BattleUIController : MonoBehaviour
 	void Start () 
     {
         showing = false;
-
+        isContinue = false;
         UIPlayerAnimator = UIPlayerTurn.GetComponent<Animator>();
         UIEnemyAnimator = UIEnemyTurn.GetComponent<Animator>();
         UIPlayerTurn.SetActive(false);
@@ -127,6 +127,7 @@ public class BattleUIController : MonoBehaviour
     }
     public void Continue(bool value)
     {
+        isContinue = value;
         if (UIContinue.activeSelf)
         {
             UIContinue.SetActive(false);
@@ -137,10 +138,11 @@ public class BattleUIController : MonoBehaviour
 
     public void GiveUp(bool value)
     {
-        if (value)
-            Application.LoadLevel("Menus");
         if (UIGiveUp.activeSelf)
         {
+            if (value)
+                Application.LoadLevel("Menus");
+
             UIGiveUp.SetActive(false);
             UIWindowManager.SetActive(false);
             showing = false;

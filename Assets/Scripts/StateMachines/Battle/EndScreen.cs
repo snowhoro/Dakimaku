@@ -22,6 +22,7 @@ public class EndScreen : State<BattleManager>
         //Application.LoadLevel("Menus");
         //entity_type.ChangeState(Mining.instance);
         //CHANGE SCENE?
+        Application.LoadLevel("Menus");
     }
 
     public override void Exit(BattleManager entity_type)

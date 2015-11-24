@@ -24,16 +24,18 @@ public class Lose : State<BattleManager>
         //if continue
         //entity_type.ChangeState(PlayerTurn.instance);
         //else
-        if (BattleUIController.instance.showing)
+        if (!BattleUIController.instance.showing)
         {
             if (!BattleUIController.instance.isContinue)
             {
-                Application.LoadLevel("Menus");
-                //entity_type.ChangeState(EndScreen.instance);
+                //Application.LoadLevel("Menus");
+                entity_type.ChangeState(EndScreen.instance);
             }
             else
             {
                 //recargar los personajes
+                BattleList.instance.Revive();
+                entity_type.ChangeState(PlayerTurn.instance);
             }
         }
     }

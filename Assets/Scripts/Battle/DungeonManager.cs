@@ -38,7 +38,7 @@ public class DungeonManager : MonoBehaviour
         new Vector2(-1, 0),
         new Vector2(0, 1), 
     };
-    private int DIRSindex;
+    private static int DIRSindex;
 
     void Awake()
     {
@@ -212,7 +212,7 @@ public class DungeonManager : MonoBehaviour
             isReqEnemies = false;
         }
     }
-    private Vector2 GetEmptyPosition(Vector2 pos)
+    public static Vector2 GetEmptyPosition(Vector2 pos)
     {
         if(!GridManager.instance.InBounds(pos))
         {
