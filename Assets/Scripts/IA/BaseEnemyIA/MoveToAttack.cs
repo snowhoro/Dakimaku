@@ -61,30 +61,33 @@ public class MoveToAttack : BTLeaf
             {
                 //SACO EL OPUESTO 
                 Vector2 opositeDirection = dirsList[i] * -1;
+                //Debug.Log(" comun " + dirsList[i] + " opuesto " + opositeDirection);
                 int hitCount = 0;
                 //SI NO HAY UN ENEMIGO EN EL OPUESTO - (LUGAR OCUPADO)
                 if (!dirsList.Contains(opositeDirection))
                 {
                     Vector2 position = hero._gridPos + opositeDirection;
-                    int auxPos = 1;
+                    int auxPos = 0;
                     //RECORRO TODOS LOS ENEMIGOS EN ESA DIRECCION HASTA NULL
-                    do
+                    while (BattleList.instance.GetHero(position) != null)
                     {
                         auxPos++;
                         position = enemy._gridPos + opositeDirection * auxPos;
-                    } while (BattleList.instance.GetHero(position) != null);
+                    }
 
                     //SI EN EL FINAL --NO-- HAY UN FRIEND CUENTO LOS HIT
                     if (BattleList.instance.GetEnemy(position) == null)
                         hitCount += auxPos;
 
+                    //Debug.Log("MOVETOATTACK" + hitCount + " POS" + position);
                     //SI LE PEGO A ALGUIEN LO AGRUEGO A _attackPriority
-                    if (hitCount > 0)
+                    if (hitCount > 0 && GridManager.instance.InBounds(position))
                     {
                         AttackPriority atkp = new AttackPriority();
                         atkp.posToMove = position;
                         atkp.priority = AttackPriority.CalculatePriority(enemy, hitCount, new Hit());
                         enemy._attackPriority.Add(atkp);
+                        Debug.Log("MOVETOATTACK POS " + atkp.posToMove + "  // skill= " + atkp.skillToUse + " // priority=" + atkp.priority);
                     }
                 }
             }

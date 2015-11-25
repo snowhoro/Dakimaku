@@ -24,15 +24,15 @@ public class NextTurn : BTLeaf
         if (enemiesIndex >= enemiesList.Count)
         {
             if (enemiesList.Count > (enemiesIndex - 1))
-                enemiesList[enemiesIndex - 1].gameObject.GetComponent<BaseEnemyIA2>().enabled = false;
+                enemiesList[enemiesIndex - 1].gameObject.GetComponent<BaseEnemyIA>().enabled = false;
             
             enemiesIndex = 0;
             EnemyTurn.instance.endTurn = true;
             BattleList.instance.enemiesIndex = enemiesIndex;
             return Status.SUCCESS;
         }
-        enemiesList[enemiesIndex].gameObject.GetComponent<BaseEnemyIA2>().enabled = true;
-        enemiesList[enemiesIndex - 1].gameObject.GetComponent<BaseEnemyIA2>().enabled = false;
+        enemiesList[enemiesIndex].gameObject.GetComponent<BaseEnemyIA>().enabled = true;
+        enemiesList[enemiesIndex - 1].gameObject.GetComponent<BaseEnemyIA>().enabled = false;
         BattleList.instance.enemiesIndex = enemiesIndex;
         return Status.SUCCESS;
     }

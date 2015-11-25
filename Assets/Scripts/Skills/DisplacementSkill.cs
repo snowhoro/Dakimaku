@@ -8,7 +8,7 @@ public class DisplacementSkill : BaseSkill
         _name = "Displacement";
         _description = "Moves enemies";
 
-        _power = 0;
+        _power = 80;
         _cooldown = 0;
 
         _isPhysical = false;

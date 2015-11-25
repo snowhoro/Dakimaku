@@ -83,7 +83,7 @@ public class GridManager : MonoBehaviour
             return new Vector2(0.3f, 0.3f);
 
     }
-
+    //VERDADERO SI ESTA ADENTRO
     public bool InBounds(Vector2 loc)
     {
         return 0 <= loc.x && loc.x < width

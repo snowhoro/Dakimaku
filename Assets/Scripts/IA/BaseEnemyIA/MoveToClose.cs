@@ -34,19 +34,18 @@ public class MoveToClose : BTLeaf
             new Vector2(-1, 0),
             new Vector2(0, 1), 
         };
-        Vector2 position = hero._gridPos + DIRS[Random.Range(0, 4)];
-        if (IsPassablePath(position) && (CheckHeroAtPosition(position) || CheckEnemyAtPosition(position)))
+
+        for (int i = 0; i < DIRS.Length; i++)
         {
-            for (int i = 0; i < DIRS.Length; i++)
+            Vector2 position = hero._gridPos + DIRS[i];
+            if (GridManager.instance.InBounds(position) && IsPassablePath(position) 
+                && !CheckHeroAtPosition(position) && !CheckEnemyAtPosition(position))
             {
-                position = hero._gridPos + DIRS[i];
-                if (IsPassablePath(position) && (!CheckHeroAtPosition(position) || !CheckEnemyAtPosition(position)))
-                {
-                    AttackPriority atkp = new AttackPriority();
-                    atkp.posToMove = position;
-                    atkp.priority = BattleList.instance.Surrounded(enemy);
-                    enemy._attackPriority.Add(atkp);
-                }
+                AttackPriority atkp = new AttackPriority();
+                atkp.posToMove = position;
+                atkp.priority -= BattleList.instance.Surrounded(position);
+                enemy._attackPriority.Add(atkp);
+                //Debug.Log("MOVETOCLOSE POS " + atkp.posToMove + "  // skill= " + atkp.skillToUse + " // priority=" + atkp.priority);
             }
         }
     }

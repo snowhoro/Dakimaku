@@ -27,6 +27,7 @@ public class CheckAllSkills : BTLeaf
                 atkp.skillToUse = enemy._skillList[i];
                 atkp.priority = AttackPriority.CalculatePriority(enemy, hitCount, new Hit());
                 enemy._attackPriority.Add(atkp);
+                Debug.Log("CHECKALLSKILLS POS " + atkp.posToMove + "  // skill= " + atkp.skillToUse + " // priority=" + atkp.priority);
             }
 		}
         return Status.SUCCESS;
