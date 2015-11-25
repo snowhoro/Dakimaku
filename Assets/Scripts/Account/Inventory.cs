@@ -18,6 +18,11 @@ public class Inventory : MonoBehaviour
         Instance = this;
     }
 
+    public void ClearItems()
+    {
+        _items.Clear();
+    }
+
     public void AddItem(Item item) { _items.Add(item); }
     public void DeleteItem(Item item) { _items.Remove(item); }
     public void LoadInventory(string id)

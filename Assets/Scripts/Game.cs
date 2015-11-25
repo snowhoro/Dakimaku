@@ -193,6 +193,7 @@ public class Game : MonoBehaviour {
 
         _gachaItems.Clear();
         _dungeonItems.Clear();
+        Inventory.Instance.ClearItems();
 
         Inventory.Instance.LoadInventory(Account.Instance._playerId);
     }
