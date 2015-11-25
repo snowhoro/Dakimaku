@@ -17,14 +17,18 @@ public class PrioritySelect : BTLeaf
 
     public override Status InternalTick()
     {
-        AttackPriority max = enemy._attackPriority[0];
-        for (int i = 1; i < enemy._attackPriority.Count; i++)
+        if (enemy._attackPriority.Count > 0)
         {
-            if (enemy._attackPriority[i].priority > max.priority)
-                max = enemy._attackPriority[i];
+            AttackPriority max = enemy._attackPriority[0];
+            for (int i = 1; i < enemy._attackPriority.Count; i++)
+            {
+                if (enemy._attackPriority[i].priority > max.priority)
+                    max = enemy._attackPriority[i];
+            }
+            enemy._attackPriority.Clear();
+            enemy._attackPriority.Add(max);
+            Debug.Log("CHECKALLSKILLS POS " + enemy._attackPriority[0].posToMove + "  // skill= " + enemy._attackPriority[0].skillToUse + " // priority=" + enemy._attackPriority[0].priority);
         }
-        enemy._attackPriority.Clear();
-        enemy._attackPriority.Add(max);
         return Status.SUCCESS;
     }
 }

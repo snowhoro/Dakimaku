@@ -8,7 +8,7 @@ public class ThunderHitTopDown : BaseSkill
         _name = "ThunderHitTopDown";
         _description = "TopDown thunder";
 
-        _power = 0;
+        _power = 85;
         _cooldown = 0;
 
         _isPhysical = false;

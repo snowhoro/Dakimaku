@@ -31,9 +31,10 @@ public class BaseEnemyIA2 : BTExecuter
         sequencer1.AddChild(new NextTurn());
 
         sequencer2.AddChild(new StayAndAttack());
-        //sequencer2.AddChild(new MoveToAttack());
+        sequencer2.AddChild(new MoveToAttack());
         sequencer2.AddChild(new MoveToClose());
         sequencer2.AddChild(new CheckAllSkills());
+        sequencer2.AddChild(new PrioritySelect());
         sequencer2.AddChild(new Move2());
         sequencer2.AddChild(new UseSkill2());
         sequencer2.AddChild(new EnemyAttack2());

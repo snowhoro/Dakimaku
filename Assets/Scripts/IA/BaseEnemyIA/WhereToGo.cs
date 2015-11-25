@@ -114,12 +114,12 @@ public class WhereToGo : BTLeaf
     public Vector2 GetPositionOfClosestHero(BaseCharacter hero)
     {
         Vector2 position = hero._gridPos + DIRS[Random.Range(0, 4)];
-        if (IsPassablePath(position) && (CheckHeroAtPosition(position) || CheckEnemyAtPosition(position)) )
+        if (GridManager.instance.InBounds(position) && IsPassablePath(position) && (CheckHeroAtPosition(position) || CheckEnemyAtPosition(position)) )
         {
             for (int i = 0; i < DIRS.Length; i++)
             {
                 position = hero._gridPos + DIRS[i];
-                if (IsPassablePath(position) && (!CheckHeroAtPosition(position) || !CheckEnemyAtPosition(position)))
+                if (GridManager.instance.InBounds(position) && IsPassablePath(position) && !CheckHeroAtPosition(position) && !CheckEnemyAtPosition(position))
                 {
                     return position;
                 }

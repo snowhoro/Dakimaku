@@ -148,7 +148,7 @@ public class BattleList : MonoBehaviour
             heroList[i]._statusEffects = new List<BaseStatusEffect>();
         }
     }
-    public int Surrounded(BaseCharacter enemy)
+    public int Surrounded(Vector2 position)
     {
         int surroundedCount = 0;
         Vector2[] DIRS = new[]
@@ -162,7 +162,7 @@ public class BattleList : MonoBehaviour
         {
             for (int i = 0; i < DIRS.Length; i++)
             {
-                if (hero._gridPos == enemy._gridPos + DIRS[i])
+                if (hero._gridPos == position + DIRS[i])
                     surroundedCount++;
             }
         }
