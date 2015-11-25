@@ -3,12 +3,17 @@ using System.Collections;
 
 public static class LoadAsset
 {
+    private static string enemiesportraitPath = "Enemies/Portrait/";
     private static string portraitPath = "Characters/Portrait/";
     private static string charSpritePath = "Characters/Sprite/";
     private static string uiPath = "UI/";
     private static string uiBattlePath = "UI/BattleUI/";
     private static string fxPath = "FX/";
-    
+
+    public static Sprite EnemyPortrait(string name)
+    {
+        return Resources.Load<Sprite>(enemiesportraitPath + name);
+    }
     public static Sprite Portrait(string name)
     {
         return Resources.Load<Sprite>(portraitPath + name);

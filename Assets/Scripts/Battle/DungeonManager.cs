@@ -107,8 +107,10 @@ public class DungeonManager : MonoBehaviour
         //CARGO SKILLS
         cEnemy._skillList = enemyStats._skillList;
 
-        cEnemy._skillList = new List<BaseSkill>();
-        cEnemy._skillList.Add(new ThunderHitTopDown());
+
+        objEnemy.GetComponent<SpriteRenderer>().sprite = LoadAsset.EnemyPortrait(cEnemy._portrait);
+        //cEnemy._skillList = new List<BaseSkill>();
+        //cEnemy._skillList.Add(new ThunderHitTopDown());
         //Cargo el Portrait.
         //objEnemy.GetComponent<SpriteRenderer>().sprite = LoadAsset.Portrait(cEnemy._portrait);
         BattleList.instance.Add(cEnemy);
@@ -122,7 +124,7 @@ public class DungeonManager : MonoBehaviour
     }
     private void RequestEnemies()
     {
-        ServerRequests.Instance.RequestAllEnemies("5639359c0ef0b2a310ab1fa6", LoadEnemiesDictionary);
+        ServerRequests.Instance.RequestAllEnemies(Account.Instance._playerId, LoadEnemiesDictionary);
     }
     private void LoadStages(string data)
     {
@@ -157,6 +159,7 @@ public class DungeonManager : MonoBehaviour
             JSONNode dataEnemy = stage["Enemies"].AsArray[i];
             Enemy enemy = new Enemy();
             enemy._id = dataEnemy["EnemyId"];
+            enemy._level = dataEnemy["EnemyLvl"].AsInt;
             enemy._gridPos = new Vector2(dataEnemy["EnemyPos"]["x"].AsFloat, dataEnemy["EnemyPos"]["y"].AsFloat);
             stageEnemyList[stageIndex].Add(enemy);
 
@@ -203,13 +206,13 @@ public class DungeonManager : MonoBehaviour
 
                     //skills
                     enemy._skillList = new List<BaseSkill>();
+                    Debug.Log(dataEnemy["Skills"]);
                     for (int j = 0; j < dataEnemy["Skills"].Count; j++)
                     {
-                        BaseSkill skill = BaseCharacter.AddSkill(dataEnemy["Skills"]["SkillName"]);
+                        Debug.Log(dataEnemy["Skills"][j]["SkillName"]);
+                        BaseSkill skill = BaseCharacter.AddSkill(dataEnemy["Skills"][j]["SkillName"]);
                         if (skill != null)
-                        {
                             enemy._skillList.Add(skill);
-                        }
                     }
 
                     enemiesDictionary[dataEnemy["_id"]] = enemy;
@@ -265,6 +268,7 @@ public class DungeonManager : MonoBehaviour
         bcharac.Initialize(bc._name, bc._baseHP, bc._level, bc._rarity, bc._mBaseAttack, bc._pBaseAttack, bc._mBaseDefense, bc._pBaseDefense, bc._currentExp, bc._sprite.name, bc._sprite, "");
         bcharac._gridPos = gridPosition;
         charac.name = bcharac._name;
+        charac.GetComponent<SpriteRenderer>().sprite = LoadAsset.Portrait(bc._portrait);
         BattleList.instance.Add(bcharac);
     }
 }

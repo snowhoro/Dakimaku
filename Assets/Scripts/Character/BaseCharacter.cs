@@ -45,7 +45,7 @@ public abstract class BaseCharacter : MonoBehaviour
     void Awake()
     {
         _statusEffects = new List<BaseStatusEffect>();
-        _statusEffects.Add(new Poison());
+        //_statusEffects.Add(new Poison());
         _skillList = new List<BaseSkill>();
         //_skillList.Add(AddSkill("QuickSlash"));
         //_skillList.Add(AddSkill("DisplacementSkill"));
@@ -55,7 +55,8 @@ public abstract class BaseCharacter : MonoBehaviour
 
     public static BaseSkill AddSkill(string skillClass)
     {
-        if (System.Type.GetType(skillClass) != null)
+        //Debug.Log(skillClass);
+        if (skillClass != null && System.Type.GetType(skillClass) != null)
             return (BaseSkill)System.Activator.CreateInstance(System.Type.GetType(skillClass));
         else
             return null;
