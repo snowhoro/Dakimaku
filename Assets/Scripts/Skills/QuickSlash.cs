@@ -8,7 +8,7 @@ public class QuickSlash : BaseSkill
         _name = "QuickSlash";
         _description = "Slashes quickly";
 
-        _power = 60;
+        _power = 50;
         _cooldown = 0;
 
         _isPhysical = true;
