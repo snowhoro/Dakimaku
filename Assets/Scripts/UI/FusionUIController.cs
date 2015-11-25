@@ -77,7 +77,10 @@ public class FusionUIController : MonoBehaviour {
         }
     }
     public void Fuse()
-    { 
+    {
+
+        UiController.Instance.BeginLoad();
+
         int fusedItems = 0;
 
         string cm = "\"";
@@ -130,14 +133,18 @@ public class FusionUIController : MonoBehaviour {
         }
         else
         {
-            UiController.Instance.FuseSucces();
             for (int i = 0; i < _fuseItems.Length; i++)
             {
                 if (_fuseItems[i].RefItem != null)
-                    Destroy(_fuseItems[i].RefItem.gameObject);
-                _fuseItems[i].RefItem = null;
-                _fuseItems[i].UnSelect();
+                {
+                    Debug.Log("RefItem " + _fuseItems[i].RefItem + ", gameobject " + _fuseItems[i].RefItem.gameObject);
+                    Inventory.Instance.DeleteItem(_fuseItems[i].RefItem);
+                    _fuseItems[i].RefItem.gameObject.SetActive(false);
+                    _fuseItems[i].UnSelect();
+                    
+                }
             }
+            UiController.Instance.FuseSucces();
         }
     }
 }

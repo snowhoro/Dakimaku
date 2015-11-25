@@ -25,9 +25,9 @@ public class Game : MonoBehaviour {
    
     // Use this for initialization
 	void Start () {
-
-        PlayerPrefs.SetString("accountID", "5639359c0ef0b2a310ab1fa6");
-        PlayerPrefs.Save();
+     
+        //PlayerPrefs.SetString("accountID", "5655cd6b8e14737d6ff87c54");
+        //PlayerPrefs.Save();
 		//PlayerPrefs.DeleteAll();
 
         if (PlayerPrefs.HasKey("accountID"))
@@ -114,7 +114,7 @@ public class Game : MonoBehaviour {
 
                 _gachaItems.Add(goComponent);
 
-                Debug.Log(dataJson[i]["_id"].Value);
+                //Debug.Log(dataJson[i]["_id"].Value);
 
                 goComponent.Initialize(Resources.Load(dataJson[i]["ImgPath"].Value, typeof(Sprite)) as Sprite, dataJson[i]["_id"].Value);
             }
