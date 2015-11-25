@@ -331,7 +331,8 @@ public class UiController : MonoBehaviour {
         }
         else if (_inventoryState == InventoryState.Edit)
         {
-            //Debug.Log(item.Selected);
+            Debug.Log(item.Selected);
+            Debug.Log(_selectedItems.Count);
 
             if (_selectedItems.Count < MAXC_INTEAM && !item.Selected)
             {
@@ -368,7 +369,9 @@ public class UiController : MonoBehaviour {
     // --------------------------------------------------------------------------------------------------------------------------
     /// <summary>Teams 0-4, nPosition 0-5</summary>
     public void SetTeam(int nTeam, int nPosition, Item item) {
-        //Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage);
+        
+        //Debug.Log("Team " + nTeam + ", pos " + nPosition + ", item is " + item.ToString());
+
         if (item != null)
         {
             _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem = item;
@@ -404,16 +407,22 @@ public class UiController : MonoBehaviour {
     }
     private void ChangeTeam()
     {
-        if (_menuState == MenuState.Inventory && _inventoryState == InventoryState.Edit)
+        if (_inventoryState == InventoryState.Edit)
         {
             Inventory.Instance.DeselectAll();
             _selectedItems.Clear();
 
+            Debug.Log("Team selected " + _selectedTeam);
+
             for (int i = 0; i < MAXC_INTEAM; i++)
             {
+                Debug.Log("pos " + i + ", RefItem is " + _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.ToString());
+
                 if (_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem != null)
+                {
                     _selectedItems.Add(_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem);
-                _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.Select();
+                    _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.Select();
+                }
             }
         }
     }

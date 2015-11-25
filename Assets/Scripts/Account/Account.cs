@@ -309,7 +309,6 @@ public class Account : MonoBehaviour
     }
     public void SetLoadedTeam()
     {
-        
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 6; j++)
@@ -319,8 +318,7 @@ public class Account : MonoBehaviour
                 if (_teams[i][j] != null)
                     UiController.Instance.SetTeam(i, j, _teams[i][j]);
 			}
-		}
-        
+		}   
     }
     public void SelectDungeonTeam()
     {
