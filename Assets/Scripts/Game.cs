@@ -25,8 +25,8 @@ public class Game : MonoBehaviour {
    
     // Use this for initialization
 	void Start () {
-
-        //PlayerPrefs.SetString("accountID", "5639359c0ef0b2a310ab1fa6");
+     
+        //PlayerPrefs.SetString("accountID", "5655cd6b8e14737d6ff87c54");
         //PlayerPrefs.Save();
 		//PlayerPrefs.DeleteAll();
 
