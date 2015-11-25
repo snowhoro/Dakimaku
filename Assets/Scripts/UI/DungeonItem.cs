@@ -26,6 +26,14 @@ public class DungeonItem : MonoBehaviour {
 
         Account.Instance.SelectDungeonTeam();
         Game.Instance._selectedDungeonID = DungeonID;
+
+        if (Account.Instance.TeamComplete()) 
+        {
+            Debug.Log("Team incompleto");
+            DungeonController.Instance.TeamIncomplete();
+            return;
+        }
+
         DungeonController.Instance.GoToBattle();
 
         //ServerRequests.Instance.RequestDungeonById(Account.Instance()._playerId, DungeonID, DungeonCb);

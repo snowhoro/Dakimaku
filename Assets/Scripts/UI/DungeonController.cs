@@ -10,6 +10,7 @@ public class DungeonController : MonoBehaviour {
     public Transform DungeonParent;
     public GameObject _normalsPanel, _eventsPanel, _mainPanel;
     public GameObject _normal, _events, _dungeons; // buttons
+    public GameObject noTeamPanel;
 
     Vector3 vector1 = new Vector3(1, 1, 1);
 
@@ -62,6 +63,16 @@ public class DungeonController : MonoBehaviour {
         _normalsPanel.SetActive(normalPanel);
         _eventsPanel.SetActive(eventPanel);
         _mainPanel.SetActive(mainPanel);
+    }
+
+    public void TeamIncomplete()
+    {
+        noTeamPanel.SetActive(true);
+    }
+
+    public void accept()
+    {
+        noTeamPanel.SetActive(false);
     }
 
     void Update()

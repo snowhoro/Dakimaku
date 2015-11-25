@@ -346,9 +346,25 @@ public class Account : MonoBehaviour
     {
         for (int i = 0; i < _selectedTeamList.Length; i++)
         {
-            _selectedTeamList[i] = _teams[_selectedTeam][i]._character;
+            if (_teams[_selectedTeam][i] != null)
+                _selectedTeamList[i] = _teams[_selectedTeam][i]._character; 
             if (_selectedTeamList[i] != null)
                 _selectedTeamList[i].gameObject.transform.SetParent(Game.Instance._itemsParent);
         }
+    }
+
+    public bool TeamComplete()
+    {
+        bool control = true;
+
+            for (int j = 0; j < _teams[_selectedTeam].Length; j++)
+            {
+                if (_teams[_selectedTeam][j] != null)
+                {
+                    control = false;
+                }
+            }
+
+            return control;
     }
 }
