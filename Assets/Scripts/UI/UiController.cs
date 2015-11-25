@@ -257,6 +257,8 @@ public class UiController : MonoBehaviour {
     private void SetInventoryPanelVisibility(bool visibility)
     {
         Inventory.Instance.DeselectAll();
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         _selectedItems.Clear();
         _itemShow = null;
         _inventoryPanel.SetActive(visibility);
