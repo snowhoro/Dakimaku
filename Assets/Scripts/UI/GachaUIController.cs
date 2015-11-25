@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GachaUIController : MonoBehaviour {
 
     public static GachaUIController Instance { get; private set; }
 
-    public TeamItem HatchedItem;
+    public Image HatchedItem;
     public Transform GachaParent;
     public GameObject ShowPanel;
 
@@ -37,7 +38,7 @@ public class GachaUIController : MonoBehaviour {
 
     public void ShowResults(Item item)
     {
-        HatchedItem.Select(item);
+        HatchedItem.sprite = item._character._sprite;
         ShowPanel.SetActive(true);
     }
 

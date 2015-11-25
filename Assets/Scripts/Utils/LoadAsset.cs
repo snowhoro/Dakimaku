@@ -4,6 +4,7 @@ using System.Collections;
 public static class LoadAsset
 {
     private static string portraitPath = "Characters/Portrait/";
+    private static string charSpritePath = "Characters/Sprite/";
     private static string uiPath = "UI/";
     private static string uiBattlePath = "UI/BattleUI/";
     private static string fxPath = "FX/";
@@ -11,6 +12,11 @@ public static class LoadAsset
     public static Sprite Portrait(string name)
     {
         return Resources.Load<Sprite>(portraitPath + name);
+    }
+    
+    public static Sprite CharacterSprite(string name)
+    {
+        return Resources.Load<Sprite>(charSpritePath + name);
     }
 
     public static Sprite UI(string name)

@@ -16,12 +16,14 @@ public class Item : MonoBehaviour {
     public Transform _transform;
     public Animator _animator;
 
-    public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, string itemID, int experience, string maxCharID)
+    public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, string itemID, int experience, string maxCharID, string portrait, string sprite)
     {
         Image imageCo = this.GetComponent<Image>();
-        imageCo.sprite = LoadAsset.Portrait("portraitGRILL");
+        imageCo.sprite = LoadAsset.Portrait(portrait);
+
+        Sprite charSprite = LoadAsset.CharacterSprite(sprite);
         _character = gameObject.AddComponent<Character>();
-        _character.Initialize(name, baseHP, level, rarity, baseMAtt, basePAtt, baseMDef, basePDef, experience, imageCo.sprite);
+        _character.Initialize(name, baseHP, level, rarity, baseMAtt, basePAtt, baseMDef, basePDef, experience, portrait, charSprite, itemID);
         _CharImg = imageCo;
         ItemID = itemID;
         CharacterMaxID = maxCharID;

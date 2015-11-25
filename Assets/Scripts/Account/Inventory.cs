@@ -108,8 +108,12 @@ public class Inventory : MonoBehaviour
                  int rarity = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Rarity"].Value);
                  int experience = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Experience"].Value);
                  string maxCharID = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["_id"].Value;
+                 string portrait = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Portrait"].Value;
+                 string sprite = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Sprite"].Value;
+                 bool evolution = bool.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Evolution"].Value);
 
-                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID);
+                 goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID, portrait, sprite);
+                 goComponent._canEvolve = true;
              }
 
              if (MenuController.Instance != null)

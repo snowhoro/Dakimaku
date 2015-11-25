@@ -86,8 +86,12 @@ public class GachaItem : MonoBehaviour {
             string maxCharID = gatchedJson["_id"].Value;
 
             int rarity = int.Parse(dataJson["Rarity"].Value);
+            string portrait = dataJson["Portrait"].Value;
+            string sprite = dataJson["Sprite"].Value;
+            bool evolution = bool.Parse(dataJson["Evolution"].Value);
 
-            goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID);
+            goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID, portrait, sprite);
+            goComponent._canEvolve = evolution;
 
             UiController.Instance.GachaSucces();
 

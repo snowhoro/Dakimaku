@@ -258,7 +258,7 @@ public class DungeonManager : MonoBehaviour
         GameObject charac = (GameObject)Instantiate(character, GridManager.instance.GetWorldPosition(gridPosition), Quaternion.identity);
         charac.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
         Character bcharac = charac.GetComponent<Character>();
-        bcharac.Initialize(bc._name, bc._baseHP,bc._level,bc._rarity,bc._mBaseAttack,bc._pBaseAttack,bc._mBaseDefense,bc._pBaseDefense,bc._currentExp,bc._sprite);
+        bcharac.Initialize(bc._name, bc._baseHP, bc._level, bc._rarity, bc._mBaseAttack, bc._pBaseAttack, bc._mBaseDefense, bc._pBaseDefense, bc._currentExp, bc._sprite.name, bc._sprite, "");
         bcharac._gridPos = gridPosition;
         charac.name = bcharac._name;
         BattleList.instance.Add(bcharac);
