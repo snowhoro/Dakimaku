@@ -18,8 +18,13 @@ public class EndScreen : State<BattleManager>
 
     public override void Execute(BattleManager entity_type)
     {
+<<<<<<< HEAD
         //Debug.Log("...ENDSCREEN...  " + entity_type.name);
         //Application.LoadLevel("Menus");
+=======
+        //Debug.Log("...ENDSCREEN...  " + entity_type.name);
+        Application.LoadLevel("BattleResults");
+>>>>>>> charfusion
         //entity_type.ChangeState(Mining.instance);
         //CHANGE SCENE?
         Application.LoadLevel("Menus");

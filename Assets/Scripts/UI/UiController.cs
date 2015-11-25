@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ public class UiController : MonoBehaviour {
     public static UiController Instance { get; private set; }
 
     enum MenuState { Main, Inventory, Shop, Friends, Options }
-    enum InventoryState { None, Sell, Fuse, SelFuse, Look, Evolve, Edit }
+    enum InventoryState { None, Sell, Fuse, SelFuse, Look, Evolve, SelEvolve, Edit }
     
     public GameObject _mainPanel, _teamEditPanel, _inventoryPanel, _teamPanel;
     public GameObject _home, _shop, _inventory, _hatcher, _options;
@@ -15,6 +16,7 @@ public class UiController : MonoBehaviour {
 
     public Transform InventoryParent, EditTeamParent;
     public Transform TeamSlider;
+    public ScrollRect sliderRect;
     public float teamSlideVelocity = 50;
 
     private int _maxSelectedItems;
@@ -86,6 +88,7 @@ public class UiController : MonoBehaviour {
             TeamSlider.position = Vector3.MoveTowards(TeamSlider.position, teamTarget, Time.deltaTime * teamSlideVelocity);
             if (TeamSlider.position == teamTarget)
             {
+                sliderRect.velocity = Vector2.zero;
                 TeamChanging = false;
             }
         }
@@ -97,9 +100,29 @@ public class UiController : MonoBehaviour {
                 {
                     teamSlided = false;
 
+                    if (TeamSlider.position.x > teamTarget.x + 20)
+                    {
+                        if (_selectedTeam > 0)
+                        {
+                            _selectedTeam--;
+                            Account.Instance._selectedTeam = _selectedTeam;
+                        }
+                    }
+                    else if (TeamSlider.position.x < teamTarget.x - 20)
+                    {
+                        if (_selectedTeam > 4)
+                        {
+                            _selectedTeam++;
+                            Account.Instance._selectedTeam = _selectedTeam;
+                        }
+                    }
+
+                    SetTeamTarget();
+
+                    /*
                     float distanceFromSame;
                     float distanceFromOther;
-
+                    
                     if (TeamSlider.position.x > teamTarget.x)
                     {
                         // todos van a ser negativos
@@ -130,7 +153,7 @@ public class UiController : MonoBehaviour {
                         }
 
                         SetTeamTarget();
-                    }
+                    }*/
                 }
             }
         }
@@ -150,14 +173,29 @@ public class UiController : MonoBehaviour {
 
         for (int i = 0; i < Inventory.Instance.Items.Count; i++)
         {
-            Debug.Log(InventoryParent.name);
+            //Debug.Log(InventoryParent.name);
             setIteminPanel(Inventory.Instance.Items[i], InventoryParent);
         }
+
+        FusionUIController.Instance.isActive = true;
     }
     public void OpenSelFuseMenu()
     {
         SetInventoryPanelVisibility(true);
         _inventoryState = InventoryState.SelFuse;
+    }
+    public void OpenEvolveMenu()
+    {
+        SetInventoryPanelVisibility(true);
+        _inventoryState = InventoryState.Evolve;
+
+        for (int i = 0; i < Inventory.Instance.Items.Count; i++)
+        {
+            Debug.Log(InventoryParent.name);
+            setIteminPanel(Inventory.Instance.Items[i], InventoryParent);
+        }
+
+        EvolveUIController.Instance.isActive = true;
     }
     public void OpenTeamEdition()
     {
@@ -202,6 +240,8 @@ public class UiController : MonoBehaviour {
     }
     private void SetInventoryPanelVisibility(bool visibility)
     {
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         Inventory.Instance.DeselectAll();
         _selectedItems.Clear();
         _itemShow = null;
@@ -214,7 +254,7 @@ public class UiController : MonoBehaviour {
     {
         _loadingPanel.SetActive(true);
     }
-    private void LoadSucces()
+    public void LoadSucces()
     {
        _loadingPanel.SetActive(false);
     }
@@ -284,9 +324,15 @@ public class UiController : MonoBehaviour {
                 //_hudTeams[0];
             }
         }
+        else if (_inventoryState == InventoryState.Evolve)
+        {
+            EvolveUIController.Instance.SetEvolveItem(item);
+            _inventoryPanel.SetActive(false);
+        }
         else if (_inventoryState == InventoryState.Edit)
         {
-            //Debug.Log(item.Selected);
+            Debug.Log(item.Selected);
+            Debug.Log(_selectedItems.Count);
 
             if (_selectedItems.Count < MAXC_INTEAM && !item.Selected)
             {
@@ -323,9 +369,14 @@ public class UiController : MonoBehaviour {
     // --------------------------------------------------------------------------------------------------------------------------
     /// <summary>Teams 0-4, nPosition 0-5</summary>
     public void SetTeam(int nTeam, int nPosition, Item item) {
-        //Debug.Log(_hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage); 
-        _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem = item;
-        _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage.sprite = item._CharImg.sprite;
+        
+        //Debug.Log("Team " + nTeam + ", pos " + nPosition + ", item is " + item.ToString());
+
+        if (item != null)
+        {
+            _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].RefItem = item;
+            _hudTeams[(nPosition + System.Convert.ToInt32(MAXC_INTEAM * nTeam))].SlotImage.sprite = item._CharImg.sprite;
+        }
     }
 
     public void NextTeam()
@@ -354,18 +405,25 @@ public class UiController : MonoBehaviour {
     {
         teamSlided = true;
     }
+
     private void ChangeTeam()
     {
-        if (_menuState == MenuState.Inventory && _inventoryState == InventoryState.Edit)
+        if (_inventoryState == InventoryState.Edit)
         {
             Inventory.Instance.DeselectAll();
             _selectedItems.Clear();
 
-            for (int i = 1; i <= MAXC_INTEAM; i++)
+            //Debug.Log("Team selected " + _selectedTeam);
+
+            for (int i = 0; i < MAXC_INTEAM; i++)
             {
+                //Debug.Log("pos " + i + ", RefItem is " + _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.ToString());
+
                 if (_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem != null)
+                {
                     _selectedItems.Add(_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem);
-                _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.Select();
+                    _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.Select();
+                }
             }
         }
     }
@@ -375,7 +433,7 @@ public class UiController : MonoBehaviour {
 
         teamTarget = GetTeamTarget(_selectedTeam);
 
-        Debug.Log("Team Changing: " + TeamChanging + ". To team: " + _selectedTeam + ". Position: " + teamTarget.x + "," + teamTarget.y + "," + teamTarget.z);
+        //Debug.Log("Team Changing: " + TeamChanging + ". To team: " + _selectedTeam + ". Position: " + teamTarget.x + "," + teamTarget.y + "," + teamTarget.z);
     }
     private Vector3 GetTeamTarget(int team)
     {
@@ -415,6 +473,7 @@ public class UiController : MonoBehaviour {
         SetInventoryPanelVisibility(false);
         _teamEditPanel.SetActive(false);
         _inventoryState = InventoryState.None;
+        ShopUIController.Instance._pearlsPanel.SetActive(false);
     }
     public void Hatcher()
     {

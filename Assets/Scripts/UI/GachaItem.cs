@@ -21,8 +21,15 @@ public class GachaItem : MonoBehaviour {
 
     public void Hatch()
     {
-        UiController.Instance.BeginLoad();
-        ServerRequests.Instance.Hatch(Account.Instance._playerId, GachaID, HatchCb);
+        if (Account.Instance._hardCurrency >= 5)
+        {
+            UiController.Instance.BeginLoad();
+            ServerRequests.Instance.Hatch(Account.Instance._playerId, GachaID, HatchCb);
+        }
+        else
+        {
+            Debug.Log("No hay plata maquinola.");
+        }
     }
 
     public void HatchCb(string data)
@@ -30,9 +37,14 @@ public class GachaItem : MonoBehaviour {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+
+            UiController.Instance.LoadFail();
+        }
         else
         {
+            Account.Instance.UseHardCurrency(5);
             UiController.Instance.GachaSucces();
         }
     }

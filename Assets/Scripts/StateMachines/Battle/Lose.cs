@@ -24,6 +24,7 @@ public class Lose : State<BattleManager>
         //if continue
         //entity_type.ChangeState(PlayerTurn.instance);
         //else
+<<<<<<< HEAD
         if (!BattleUIController.instance.showing)
         {
             if (!BattleUIController.instance.isContinue)
@@ -38,6 +39,10 @@ public class Lose : State<BattleManager>
                 entity_type.ChangeState(PlayerTurn.instance);
             }
         }
+=======
+        //entity_type.ChangeState(EndScreen.instance);
+        Application.LoadLevel("BattleResults");
+>>>>>>> charfusion
     }
 
     public override void Exit(BattleManager entity_type)

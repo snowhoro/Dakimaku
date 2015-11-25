@@ -15,7 +15,7 @@ public class ServerRequests : MonoBehaviour
     }
 
     //public static string host = "https://localhost:3030";
-    public static string host = "https://dakimakuws-igna92ts.c9.io/";
+    public static string host = "http://dakimakuws-igna92ts.c9.io/";
 
     private RetryStruct retryRequest;
 
@@ -97,6 +97,18 @@ public class ServerRequests : MonoBehaviour
                 break;
             case "FuseCharacter":
                 FuseCharacter(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.arguments[2], retryRequest.callBack);
+                break;
+            case "EvolveCharacter":
+                EvolveCharacter(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.arguments[2], retryRequest.callBack);
+                break;
+            case "StaminaRecharge":
+                StaminaRecharge(retryRequest.arguments[0], retryRequest.callBack);
+                break;
+            case "BuyPearls":
+                BuyHardCurrency(retryRequest.arguments[0], int.Parse(retryRequest.arguments[1]), decimal.Parse(retryRequest.arguments[2]), retryRequest.callBack);
+                break;
+            case "SessionUpdate":
+                SessionUpdate(retryRequest.arguments[0], retryRequest.arguments[1], int.Parse(retryRequest.arguments[2]), retryRequest.callBack);
                 break;
         }
     }
@@ -251,6 +263,72 @@ public class ServerRequests : MonoBehaviour
         form.AddField("PlayerId", accountID);
         form.AddField("Character", characterID);
         form.AddField("FodderIds", foddersJson);
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+    public void EvolveCharacter(string accountID, string characterID, string foddersJson, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "EvolveCharacter", callBack);
+        retryRequest.arguments.Add(characterID);
+        retryRequest.arguments.Add(foddersJson);
+
+        string url = host + "characterFusion";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID);
+        form.AddField("Character", characterID);
+        form.AddField("MatIds", foddersJson);
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
+
+    public void StaminaRecharge(string accountID, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "StaminaRecharge", callBack);
+        
+        string url = host + "staminaRecharge";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+        
+        /*string cm = "\"";
+        string value = "{ " + cm + "succes" + cm + " }";
+
+        callBack(value);*/
+        
+    }
+    public void BuyHardCurrency(string accountID, int ammount, decimal price, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "BuyHardCash", callBack);
+        retryRequest.arguments.Add(ammount.ToString());
+        retryRequest.arguments.Add(price.ToString("N2"));
+
+        string url = host + "buyHardCurrency";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        form.AddField("StoneQty", ammount.ToString());
+        //form.AddField("Price", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+         
+        /*
+        string cm = "\"";
+        string value = "{ " + cm + "ammount" + cm + " : " + ammount + " }";
+
+        callBack(value);*/
+    }
+    public void SessionUpdate(string accountID, string staminaTimer, int currentStamina, CallBack callBack) {
+        
+        SetRetryRequest(accountID, "SessionUpdate", callBack);
+        retryRequest.arguments.Add(staminaTimer.ToString());
+        retryRequest.arguments.Add(currentStamina.ToString());
+
+        string url = host + "updateSession";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        form.AddField("staminaTimer", accountID.ToString());
+        form.AddField("currentStamina", currentStamina.ToString());
+        //form.AddField("Price", accountID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }

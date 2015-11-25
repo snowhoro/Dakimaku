@@ -64,16 +64,18 @@ public class Account : MonoBehaviour
 
             for (int j = 0; j < _teams[i].Length; j++)
             {
-                _teams[i][j] = UiController.Instance._hudTeams[(j + System.Convert.ToInt32(UiController.MAXC_INTEAM * _selectedTeam))].RefItem;
+                _teams[i][j] = UiController.Instance._hudTeams[(j + System.Convert.ToInt32(UiController.MAXC_INTEAM * i))].RefItem;
 
-                if (i == _selectedTeam)
+                if (_teams[i][j] != null)
                 {
-                    if (_teams[i][j] != null)
-                    {
-                        _selectedTeamList[j] = (_teams[i][j]._character);
-                        teamJson += cm + _teams[i][j].ItemID.ToString() + cm + ",";
-                    }
+                    _selectedTeamList[j] = (_teams[i][j]._character);
+                    teamJson += cm + _teams[i][j].ItemID.ToString() + cm + ",";
                 }
+
+                /*if (i == _selectedTeam)
+                {
+
+                }*/
                 //teamJson.add
             }
 
@@ -109,7 +111,7 @@ public class Account : MonoBehaviour
             if (_rechargeTime >= 300) // cambiar por constante de recharge
             {
                 _rechargeTime -= 300;
-                _currentExp += 1;
+                _currentStamina += 1;
                 if (_currentStamina == _maxStamina)
                     _rechargeTime = 0;
             }
@@ -136,10 +138,21 @@ public class Account : MonoBehaviour
     public void AddHardCurrency(int currencyAmount)
     {
         _hardCurrency += currencyAmount;
+        AccountStatsUI.Instance.HardCurrency.text = _hardCurrency.ToString();
+    }
+    public void UseHardCurrency(int ammount)
+    {
+        _hardCurrency -= ammount;
+        AccountStatsUI.Instance.HardCurrency.text = _hardCurrency.ToString();
     }
     public void AddMaxStamina(int stmAmount)
     {
         _maxStamina += stmAmount;
+    }
+    public void RefillStamina()
+    {
+        _currentStamina = _maxStamina;
+        AccountStatsUI.Instance.UpdateStaminaBar(_maxStamina, _currentStamina);
     }
 
     private void LevelUp() 
@@ -151,16 +164,21 @@ public class Account : MonoBehaviour
         _inventory.AddMaxSlots(2);
     }
 
-    public bool ConsumeStamina(int stmAmount)
+    public void ConsumeStamina(int stmAmount)
     {
-        if (_currentStamina > stmAmount)
-        { 
-            //stmAmount
-            return true;
+        if (_currentStamina >= stmAmount)
+        {
+            _currentStamina -= stmAmount;
+            AccountStatsUI.Instance.UpdateStaminaBar(_maxStamina, _currentStamina);
         }
-        return false;
     }
- 
+
+    public int CalculateExpToNxtLv(int level)
+    {
+        if (level == 0) return 1;
+        
+        return (int)(Mathf.Pow((float)level, 3f));
+    }
     // CallBacks
     public void CreateCb(string data)
     {
@@ -200,9 +218,10 @@ public class Account : MonoBehaviour
             _softCurrency = int.Parse(dataJson["account"]["SoftCurrency"].Value);
             _hardCurrency = int.Parse(dataJson["account"]["HardCurrency"].Value);
             _maxStamina = int.Parse(dataJson["account"]["Stamina"].Value);
+            _currentExp = int.Parse(dataJson["account"]["Experience"].Value);
+            _expToNextLevel = CalculateExpToNxtLv(_playerLevel);
             _currentStamina = 0;// int.Parse(d["CurrentStamina"].ToString());
-            _currentExp = 0;//int.Parse(dataJson["account"]["CurrentExp"].Value);
-            _expToNextLevel = 0; //int.Parse(d["ExpToNextLevel"].ToString());
+            
             _rechargeTime = 0;// float.Parse(d["floatTime"].ToString());
 
             _stats = new AccountStats(int.Parse(dataJson["account"]["LogDays"].Value),
@@ -220,7 +239,11 @@ public class Account : MonoBehaviour
         var dataJson = SimpleJSON.JSON.Parse(data);
 
         if (dataJson["error"] != null)
+        {
             Debug.Log(dataJson["error"]);
+
+            MenuController.Instance.retryPanel.SetActive(true);
+        }
         else
         {
             for (int i = 1; i <= 5; i++)
@@ -232,14 +255,17 @@ public class Account : MonoBehaviour
                         Item iFind = Inventory.Instance.FindItem(dataJson["teams"]["Teams"]["team_" + i.ToString()][j].Value);
 
                         if (iFind != null)
-                            _teams[i-1][j] = iFind;
+                            _teams[i - 1][j] = iFind;
                     }
-                    
+
                     //dataJson["Teams"][i][j].Value
                 }
             }
 
-            MenuController.Instance.LoadingBar.fillAmount = 0.6f;
+            if (MenuController.Instance != null)
+            {
+                MenuController.Instance.LoadingBar.fillAmount = 0.6f;
+            }
 
             Game.Instance.LoadGachas();
         }
@@ -269,9 +295,22 @@ public class Account : MonoBehaviour
         }
     }
 
+    public bool ItemExistsInTeam(Item item) {
+
+        for (int i = 0; i < _teams.Count; i++)
+        {
+            for (int j = 0; j < _teams[i].Length; j++)
+            {
+                if (_teams[i][j] != null)
+                    if (_teams[i][j].ItemID == item.ItemID)
+                        return true;
+            }
+        }
+        
+        return false;
+    }
     public void SetLoadedTeam()
     {
-        
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 6; j++)
@@ -281,8 +320,7 @@ public class Account : MonoBehaviour
                 if (_teams[i][j] != null)
                     UiController.Instance.SetTeam(i, j, _teams[i][j]);
 			}
-		}
-        
+		}   
     }
     public void SelectDungeonTeam()
     {
@@ -290,7 +328,7 @@ public class Account : MonoBehaviour
         {
             _selectedTeamList[i] = _teams[_selectedTeam][i]._character;
             if (_selectedTeamList[i] != null)
-                _selectedTeamList[i].gameObject.transform.SetParent(Game.Instance._parents[0]);
+                _selectedTeamList[i].gameObject.transform.SetParent(Game.Instance._itemsParent);
         }
     }
 }

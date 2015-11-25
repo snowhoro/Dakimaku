@@ -7,6 +7,7 @@ public class FusionUIController : MonoBehaviour {
     public GameObject _fusionPanel;
     public TeamItem _selectedFuseItem;
     public TeamItem[] _fuseItems;
+    public bool isActive = false;
 
 	void Awake () {
         Instance = this;
@@ -15,7 +16,20 @@ public class FusionUIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    
+        if (Input.GetKeyDown(KeyCode.Escape) && isActive)
+        {
+            if (!_fusionPanel.activeSelf)
+            {
+                Debug.Log("quice cerrar fusion");
+                UiController.Instance.BackToTeamMain();
+            }
+            else
+            {
+                Debug.Log("quice abrir fusion");
+                UiController.Instance.OpenImprovementMenu();
+                _fusionPanel.SetActive(false);
+            }
+        }
 	}
 
     public void SetFuseItem(Item item)
@@ -26,7 +40,7 @@ public class FusionUIController : MonoBehaviour {
 
     public bool AddFuseItem(Item item)
     {
-        if (item.ItemID == _selectedFuseItem.RefItem.ItemID)
+        if (item.ItemID == _selectedFuseItem.RefItem.ItemID || Account.Instance.ItemExistsInTeam(item))
             return false;
 
         Debug.Log(_fuseItems[0].RefItem);
@@ -68,7 +82,7 @@ public class FusionUIController : MonoBehaviour {
 
         string cm = "\"";
 
-        string jsonFodders = "{ " + cm + "FodderIds" + cm + ": [";
+        string jsonFodders = "[";
 
         for (int i = 0; i < _fuseItems.Length; i++)
         {
@@ -80,11 +94,11 @@ public class FusionUIController : MonoBehaviour {
 		}
 
         jsonFodders = jsonFodders.Substring(0, jsonFodders.Length - 1);
-        jsonFodders += "] }";
+        jsonFodders += "]";
 
         _selectedFuseItem.RefItem._character.AddExperience(fusedItems * 100);
 
-        string jsonCharacter = "{ " + cm + "Character" + cm + ": { " + cm + "_id" + cm + ": " + cm + _selectedFuseItem.RefItem.ItemID + cm + ", " + cm + "PlayerChar" + cm + ": { " + cm + "MaxChar" + cm + ":" + cm + cm + ",";
+        string jsonCharacter = "{ " + cm + "_id" + cm + ": " + cm + _selectedFuseItem.RefItem.ItemID + cm + ", " + cm + "PlayerChar" + cm + ": { " + cm + "MaxChar" + cm + ":" + cm + _selectedFuseItem.RefItem.CharacterMaxID + cm + ",";
         jsonCharacter += cm + "SpecPhysicalDefense" + cm + ": 0,";
         jsonCharacter += cm + "PhysicalDefense" + cm + ": " + _selectedFuseItem.RefItem._character._pDefense + ",";
         jsonCharacter += cm + "SpecPhysicalAttack" + cm + ": 0,";
@@ -97,7 +111,7 @@ public class FusionUIController : MonoBehaviour {
         jsonCharacter += cm + "Experience" + cm + ": " + _selectedFuseItem.RefItem._character._currentExp + ",";
         jsonCharacter += cm + "Level" + cm + ": " + _selectedFuseItem.RefItem._character._level;
 
-        jsonCharacter += "} } }";
+        jsonCharacter += "} }";
 
         Debug.Log(jsonCharacter);
         Debug.Log(jsonFodders);
