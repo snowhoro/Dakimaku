@@ -126,6 +126,7 @@ public class ServerRequests : MonoBehaviour
         string url = host + "signup";
         WWWForm form = new WWWForm();
         form.AddField("PlayerName", name);
+        //form.AddField("DeviceId", SystemInfo.deviceUniqueIdentifier);
         WWW www = new WWW(url, form);
 
         StartCoroutine(WaitForRequest(www, callBack));
