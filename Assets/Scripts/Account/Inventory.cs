@@ -124,7 +124,8 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < _items.Count; i++)
         {
-            _items[i].Selected = false;
+            if (_items[i].Selected)
+                _items[i].Select();
         }
     }
 

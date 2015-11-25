@@ -405,6 +405,7 @@ public class UiController : MonoBehaviour {
     {
         teamSlided = true;
     }
+
     private void ChangeTeam()
     {
         if (_inventoryState == InventoryState.Edit)
@@ -412,11 +413,11 @@ public class UiController : MonoBehaviour {
             Inventory.Instance.DeselectAll();
             _selectedItems.Clear();
 
-            Debug.Log("Team selected " + _selectedTeam);
+            //Debug.Log("Team selected " + _selectedTeam);
 
             for (int i = 0; i < MAXC_INTEAM; i++)
             {
-                Debug.Log("pos " + i + ", RefItem is " + _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.ToString());
+                //Debug.Log("pos " + i + ", RefItem is " + _hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem.ToString());
 
                 if (_hudTeams[(i + System.Convert.ToInt32(MAXC_INTEAM * _selectedTeam))].RefItem != null)
                 {

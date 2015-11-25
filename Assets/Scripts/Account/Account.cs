@@ -66,14 +66,16 @@ public class Account : MonoBehaviour
             {
                 _teams[i][j] = UiController.Instance._hudTeams[(j + System.Convert.ToInt32(UiController.MAXC_INTEAM * i))].RefItem;
 
-                if (i == _selectedTeam)
+                if (_teams[i][j] != null)
                 {
-                    if (_teams[i][j] != null)
-                    {
-                        _selectedTeamList[j] = (_teams[i][j]._character);
-                        teamJson += cm + _teams[i][j].ItemID.ToString() + cm + ",";
-                    }
+                    _selectedTeamList[j] = (_teams[i][j]._character);
+                    teamJson += cm + _teams[i][j].ItemID.ToString() + cm + ",";
                 }
+
+                /*if (i == _selectedTeam)
+                {
+
+                }*/
                 //teamJson.add
             }
 
