@@ -45,17 +45,21 @@ public abstract class BaseCharacter : MonoBehaviour
     void Awake()
     {
         _statusEffects = new List<BaseStatusEffect>();
-        _statusEffects.Add(new Poison());
+        //_statusEffects.Add(new Poison());
         _skillList = new List<BaseSkill>();
-        _skillList.Add(AddSkill("QuickSlash"));
-        _skillList.Add(AddSkill("DisplacementSkill"));
-        _skillList.Add(AddSkill("ThunderHitTopDown"));
+        //_skillList.Add(AddSkill("QuickSlash"));
+        //_skillList.Add(AddSkill("DisplacementSkill"));
+        //_skillList.Add(AddSkill("ThunderHitTopDown"));
         //Debug.Log("Name: " + _skillList[0]._name + " | Skills: " + _skillList.Count);
     }
 
     public static BaseSkill AddSkill(string skillClass)
     {
-        return (BaseSkill)System.Activator.CreateInstance(System.Type.GetType(skillClass));
+        //Debug.Log(skillClass);
+        if (skillClass != null && System.Type.GetType(skillClass) != null)
+            return (BaseSkill)System.Activator.CreateInstance(System.Type.GetType(skillClass));
+        else
+            return null;
     }
 
     public virtual void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, int exp, string portrait, Sprite sprite, string id)

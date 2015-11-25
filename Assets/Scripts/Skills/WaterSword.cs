@@ -21,6 +21,6 @@ public class WaterSword : BaseSkill
         _statusChance = 100;
        
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("WaterSword");
+        _prefabFX = LoadAsset.FX("WaterHit");
     }
 }

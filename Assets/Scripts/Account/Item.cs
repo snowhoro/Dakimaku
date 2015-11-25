@@ -18,6 +18,8 @@ public class Item : MonoBehaviour {
 
     public void Initialize(string name, int baseHP, int level, int rarity, int baseMAtt, int basePAtt, int baseMDef, int basePDef, string itemID, int experience, string maxCharID, string portrait, string sprite)
     {
+        //Debug.Log("Item " + baseHP + " " + baseMAtt + " " + basePAtt + " " + baseMDef + " " + basePDef + " ");
+
         Image imageCo = this.GetComponent<Image>();
         imageCo.sprite = LoadAsset.Portrait(portrait);
 
@@ -59,5 +61,9 @@ public class Item : MonoBehaviour {
     {
         UiController.Instance.ItemClick(this);
         //_animator.SetTrigger("Selected");
+    }
+    public bool IsMaxLevel()
+    {
+        return _character.MaxLevelCheck();
     }
 }

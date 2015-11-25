@@ -5,17 +5,24 @@ public class FusionUIController : MonoBehaviour {
 
     public static FusionUIController Instance { get; private set; }
     public GameObject _fusionPanel;
+    public GameObject _fuseResult;
+
     public TeamItem _selectedFuseItem;
     public TeamItem[] _fuseItems;
+    public TeamItem _FuseResult;
     public bool isActive = false;
 
 	void Awake () {
         Instance = this;
         _fusionPanel.SetActive(false);
+        _fuseResult.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        isActive = false;
+        
         if (Input.GetKeyDown(KeyCode.Escape) && isActive)
         {
             if (!_fusionPanel.activeSelf)
@@ -28,6 +35,11 @@ public class FusionUIController : MonoBehaviour {
                 Debug.Log("quice abrir fusion");
                 UiController.Instance.OpenImprovementMenu();
                 _fusionPanel.SetActive(false);
+            }
+
+            if (_fuseResult.activeSelf)
+            {
+                ConfirmFuse();
             }
         }
 	}
@@ -79,7 +91,7 @@ public class FusionUIController : MonoBehaviour {
     public void Fuse()
     {
 
-        UiController.Instance.BeginLoad();
+        bool control = false;
 
         int fusedItems = 0;
 
@@ -91,10 +103,15 @@ public class FusionUIController : MonoBehaviour {
         {
             if (_fuseItems[i].RefItem != null)
             {
+                control = true;
                 fusedItems++;
                 jsonFodders += cm + _fuseItems[i].RefItem.ItemID + cm + ",";
             }
 		}
+
+        if (!control) return;
+
+        UiController.Instance.BeginLoad();
 
         jsonFodders = jsonFodders.Substring(0, jsonFodders.Length - 1);
         jsonFodders += "]";
@@ -144,7 +161,15 @@ public class FusionUIController : MonoBehaviour {
                     
                 }
             }
+
+            _fusionPanel.SetActive(false);
+            UiController.Instance.BackToTeamMain();
             UiController.Instance.FuseSucces();
         }
+    }
+
+    public void ConfirmFuse()
+    {
+        _fuseResult.SetActive(false);
     }
 }

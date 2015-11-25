@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,6 +7,9 @@ public class EvolveUIController : MonoBehaviour {
 
     public static EvolveUIController Instance { get; private set; }
     public GameObject _evolvePanel;
+    public GameObject _showPanel;
+    public Image _evolveImage;
+
     public TeamItem _selectedEvolveItem, _EvoForm;
     public List<Item> _materials = new List<Item>();
     public bool isActive = false;
@@ -14,12 +18,19 @@ public class EvolveUIController : MonoBehaviour {
     {
         Instance = this;
         _evolvePanel.SetActive(false);
+        _showPanel.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (_showPanel.activeSelf)
+            {
+                _showPanel.SetActive(false);
+            }
+        }
     }
 
     public void SetEvolveItem(Item item)
@@ -30,6 +41,10 @@ public class EvolveUIController : MonoBehaviour {
 
     public void Evolve()
     {
+
+        if (_selectedEvolveItem.RefItem.IsMaxLevel())
+            return;
+
         int fusedItems = 0;
 
         string cm = "\"";
@@ -68,9 +83,9 @@ public class EvolveUIController : MonoBehaviour {
         Debug.Log(jsonCharacter);
         Debug.Log(jsonFodders);
 
-        ServerRequests.Instance.EvolveCharacter(Account.Instance._playerId, jsonCharacter, jsonFodders, FuseCb);
+        ServerRequests.Instance.EvolveCharacter(Account.Instance._playerId, jsonCharacter, jsonFodders, EvolveCb);
     }
-    public void FuseCb(string data)
+    public void EvolveCb(string data)
     {
         var dataJson = SimpleJSON.JSON.Parse(data);
 
@@ -82,11 +97,26 @@ public class EvolveUIController : MonoBehaviour {
         }
         else
         {
-            UiController.Instance.FuseSucces();
             for (int i = 0; i < _materials.Count; i++)
             {
-                Destroy(_materials[i].gameObject);
+                if (_materials[i] != null)
+                {
+                    //Debug.Log("RefItem " + _materials[i] + ", gameobject " + _materials[i].RefItem.gameObject);
+                    Inventory.Instance.DeleteItem(_materials[i]);
+                    _materials[i].gameObject.SetActive(false);
+                }
             }
+
+            _evolvePanel.SetActive(false);
+            UiController.Instance.BackToTeamMain();
+            UiController.Instance.FuseSucces();
+
+            //_evolveImage.sprite =
         }
+    }
+
+    public void ConfirmEvolve()
+    {
+        _showPanel.SetActive(false);
     }
 }

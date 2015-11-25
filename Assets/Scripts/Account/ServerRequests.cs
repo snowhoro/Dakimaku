@@ -358,6 +358,8 @@ public class ServerRequests : MonoBehaviour
         form.AddField("staminaTimer", staminaTimer.ToString());
         form.AddField("currentStamina", currentStamina.ToString());
         WWW www = new WWW(url, form);
-        StartCoroutine(WaitForRequest(www, callBack));
+        //StartCoroutine(WaitForRequest(www, callBack));
+
+        callBack("{ true }");
     }
 }

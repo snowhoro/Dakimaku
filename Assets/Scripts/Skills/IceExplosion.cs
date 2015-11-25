@@ -12,7 +12,7 @@ public class IceExplosion : BaseSkill
         _cooldown = 0;
 
         _isPhysical = false;
-        _isDisplacement = false;
+        _isDisplacement = true;
         _isActive = false;
         _isAOE = true;
 
