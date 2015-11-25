@@ -1,29 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TopDownSlash : BaseSkill
+public class TopDownWater : BaseSkill
 {
-    public TopDownSlash()
+    public TopDownWater()
     {
-        _name = "TopDownSlash";
-        _description = "TopDown Slash";
+        _name = "TopDownWater";
+        _description = "TopDownWater";
 
         _power = 65;
         _cooldown = 0;
 
-        _isPhysical = true;
+        _isPhysical = false;
         _isDisplacement = false;
         _isActive = false;
         _isAOE = true;
         _isOnTarget = false;
 
-        _attribute = Types.Attributes.Light;
+        _attribute = Types.Attributes.Water;
         //_statusEffect = Types.StatusEffects.None;
         _statusEffect = false;
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("TopDownSlash");
+        _prefabFX = LoadAsset.FX("TopDownWater");
 
         _AOE = new[]
         {

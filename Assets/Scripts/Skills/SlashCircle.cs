@@ -1,28 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LightCircle : BaseSkill
+public class SlashCircle : BaseSkill
 {
-    public LightCircle()
+    public SlashCircle()
     {
-        _name = "Light Circle";
-        _description = "AOE attack of light";
+        _name = "Slash Circle";
+        _description = "AOE physical attack";
 
         _power = 80;
         _cooldown = 0;
 
-        _isPhysical = false;
+        _isPhysical = true;
         _isDisplacement = false;
         _isActive = false;
         _isAOE = true;
 
-        _attribute = Types.Attributes.Light;
+        _attribute = Types.Attributes.None;
         //_statusEffect = Types.StatusEffects.None;
         _statusEffect = false;
         _statusChance = 0;
 
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("LightCircle");
+        _prefabFX = LoadAsset.FX("SlashCircle");
 
         _AOE = new[]
         {

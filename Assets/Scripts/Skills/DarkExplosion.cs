@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireExplosion : BaseSkill
+public class DarkExplosion : BaseSkill
 {
-    public FireExplosion()
+    public DarkExplosion()
     {
-        _name = "Fire Explosion";
-        _description = "AOE attack of fire";
+        _name = "DarkExplosion";
+        _description = "AOE attack of dark";
 
         _power = 80;
         _cooldown = 0;
@@ -16,13 +16,13 @@ public class FireExplosion : BaseSkill
         _isActive = false;
         _isAOE = true;
 
-        _attribute = Types.Attributes.Fire;
+        _attribute = Types.Attributes.Dark;
         //_statusEffect = Types.StatusEffects.None;
         _statusEffect = false;
         _statusChance = 0;
 
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("FireExplosion");
+        _prefabFX = LoadAsset.FX("DarkExplosion");
 
         _AOE = new[]
         {

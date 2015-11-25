@@ -205,7 +205,11 @@ public class DungeonManager : MonoBehaviour
                     enemy._skillList = new List<BaseSkill>();
                     for (int j = 0; j < dataEnemy["Skills"].Count; j++)
                     {
-                        enemy._skillList.Add(BaseCharacter.AddSkill(dataEnemy["Skills"]["SkillName"]));
+                        BaseSkill skill = BaseCharacter.AddSkill(dataEnemy["Skills"]["SkillName"]);
+                        if (skill != null)
+                        {
+                            enemy._skillList.Add(skill);
+                        }
                     }
 
                     enemiesDictionary[dataEnemy["_id"]] = enemy;

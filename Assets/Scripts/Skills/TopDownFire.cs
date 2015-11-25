@@ -1,34 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireExplosion : BaseSkill
+public class TopDownFire : BaseSkill
 {
-    public FireExplosion()
+    public TopDownFire()
     {
-        _name = "Fire Explosion";
-        _description = "AOE attack of fire";
+        _name = "TopDownFire";
+        _description = "TopDownFire";
 
-        _power = 80;
+        _power = 65;
         _cooldown = 0;
 
         _isPhysical = false;
-        _isDisplacement = true;
+        _isDisplacement = false;
         _isActive = false;
         _isAOE = true;
+        _isOnTarget = false;
 
         _attribute = Types.Attributes.Fire;
         //_statusEffect = Types.StatusEffects.None;
         _statusEffect = false;
-        _statusChance = 0;
+        _statusChance = 100;
 
-        _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("FireExplosion");
+        _activationChance = 100.0f;
+        _prefabFX = LoadAsset.FX("TopDownFire");
 
         _AOE = new[]
         {
-            new Vector2(1, 0), 
             new Vector2(0, -1),
-            new Vector2(-1, 0),
             new Vector2(0, 1),  
         };
     }
