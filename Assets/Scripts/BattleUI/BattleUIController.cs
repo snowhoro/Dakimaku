@@ -80,7 +80,7 @@ public class BattleUIController : MonoBehaviour
                 UIPlayerTurnUP.SetActive(false);
                 UIEnemyTurn.SetActive(false);
                 UIEnemyTurnUP.SetActive(true);
-                BattleList.instance.GetEnemy().GetComponent<BaseEnemyIA>().enabled = true;
+                BattleList.instance.GetEnemy().GetComponent<BaseEnemyIA2>().enabled = true;
             }
         }
     }

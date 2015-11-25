@@ -15,7 +15,7 @@ public class PlayerTurn : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("ENTER PLAYER TURN..." + entity_type.name);
+        //Debug.Log("ENTER PLAYER TURN..." + entity_type.name);
         gridSelect = FindObjectOfType<GridSelection>();
         BattleUIController.instance.UIPlayerTurn.SetActive(true);
         //gridSelect.enabled = true;

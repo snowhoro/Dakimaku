@@ -45,7 +45,7 @@ public class MoveToClose : BTLeaf
                 atkp.posToMove = position;
                 atkp.priority -= BattleList.instance.Surrounded(position);
                 enemy._attackPriority.Add(atkp);
-                //Debug.Log("MOVETOCLOSE POS " + atkp.posToMove + "  // skill= " + atkp.skillToUse + " // priority=" + atkp.priority);
+                Debug.Log("MOVETOCLOSE POS " + atkp.posToMove + "  // skill= " + atkp.skillToUse + " // priority=" + atkp.priority);
             }
         }
     }

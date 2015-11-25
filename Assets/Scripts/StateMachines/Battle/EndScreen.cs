@@ -13,7 +13,7 @@ public class EndScreen : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("ENTER ENDSCREEN...  " + entity_type.name);
+        //Debug.Log("ENTER ENDSCREEN...  " + entity_type.name);
     }
 
     public override void Execute(BattleManager entity_type)

@@ -13,7 +13,7 @@ public class NextBattle : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("PREPARING FOR NEXT BATTLE..." + entity_type.name);
+        //Debug.Log("PREPARING FOR NEXT BATTLE..." + entity_type.name);
 
         if (DungeonManager.instance.wasLastStage())
             entity_type.ChangeState(Win.instance);

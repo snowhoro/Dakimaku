@@ -116,6 +116,8 @@ public class DungeonManager : MonoBehaviour
     }
     private void RequestStages()
     {
+
+        //ServerRequests.Instance.RequestDungeonById("564de03d36be9eb06c619b60", "564de03d36be9eb06c619b60", LoadStages);
         ServerRequests.Instance.RequestDungeonById(Account.Instance._playerId, Game.Instance._selectedDungeonID, LoadStages);
     }
     private void RequestEnemies()

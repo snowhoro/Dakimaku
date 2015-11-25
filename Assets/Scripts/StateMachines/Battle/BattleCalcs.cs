@@ -13,7 +13,7 @@ public class BattleCalcs : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("ENTER BATTLE CALCS..." + entity_type.name);
+        //Debug.Log("ENTER BATTLE CALCS..." + entity_type.name);
         BattleList.instance.CheckDead();
         if (entity_type.stateMachine.wasInState(PlayerTurn.instance))
         {

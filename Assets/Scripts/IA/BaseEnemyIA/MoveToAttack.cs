@@ -59,6 +59,7 @@ public class MoveToAttack : BTLeaf
             //RECORRO LA LISTA 
             for (int i = 0; i < dirsList.Count; i++)
             {
+                //Debug.Log("ENTRE----------------------");
                 //SACO EL OPUESTO 
                 Vector2 opositeDirection = dirsList[i] * -1;
                 //Debug.Log(" comun " + dirsList[i] + " opuesto " + opositeDirection);
@@ -66,8 +67,8 @@ public class MoveToAttack : BTLeaf
                 //SI NO HAY UN ENEMIGO EN EL OPUESTO - (LUGAR OCUPADO)
                 if (!dirsList.Contains(opositeDirection))
                 {
-                    Vector2 position = hero._gridPos + opositeDirection;
-                    int auxPos = 0;
+                    int auxPos = 1;
+                    Vector2 position = hero._gridPos + opositeDirection * auxPos;
                     //RECORRO TODOS LOS ENEMIGOS EN ESA DIRECCION HASTA NULL
                     while (BattleList.instance.GetHero(position) != null)
                     {
@@ -77,7 +78,7 @@ public class MoveToAttack : BTLeaf
 
                     //SI EN EL FINAL --NO-- HAY UN FRIEND CUENTO LOS HIT
                     if (BattleList.instance.GetEnemy(position) == null)
-                        hitCount += auxPos;
+                        hitCount = auxPos;
 
                     //Debug.Log("MOVETOATTACK" + hitCount + " POS" + position);
                     //SI LE PEGO A ALGUIEN LO AGRUEGO A _attackPriority

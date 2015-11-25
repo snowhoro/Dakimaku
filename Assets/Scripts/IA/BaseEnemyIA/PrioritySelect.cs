@@ -27,7 +27,7 @@ public class PrioritySelect : BTLeaf
             }
             enemy._attackPriority.Clear();
             enemy._attackPriority.Add(max);
-            Debug.Log("CHECKALLSKILLS POS " + enemy._attackPriority[0].posToMove + "  // skill= " + enemy._attackPriority[0].skillToUse + " // priority=" + enemy._attackPriority[0].priority);
+            Debug.Log("PRIORITY POS " + enemy._attackPriority[0].posToMove + "  // skill= " + enemy._attackPriority[0].skillToUse + " // priority=" + enemy._attackPriority[0].priority);
         }
         return Status.SUCCESS;
     }

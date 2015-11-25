@@ -14,7 +14,7 @@ public class EnemyTurn : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("ENTER ENEMY TURN...  " + entity_type.name);
+        //Debug.Log("ENTER ENEMY TURN...  " + entity_type.name);
         //BattleList.instance.GetEnemy().GetComponent<BaseEnemyIA>().enabled = true;
         BattleUIController.instance.UIEnemyTurn.SetActive(true);
         endTurn = false;

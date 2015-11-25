@@ -13,7 +13,7 @@ public class Lose : State<BattleManager>
 
     public override void Enter(BattleManager entity_type)
     {
-        Debug.Log("ENTER LOSE..." + entity_type.name);
+       // Debug.Log("ENTER LOSE..." + entity_type.name);
         BattleUIController.instance.ShowUIContinue();
     }
 

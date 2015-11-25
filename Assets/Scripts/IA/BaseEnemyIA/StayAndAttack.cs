@@ -62,6 +62,7 @@ public class StayAndAttack : BTLeaf
             atkp.posToMove = enemy._gridPos;
             atkp.priority = AttackPriority.CalculatePriority(enemy, hitCount, new Hit());
             enemy._attackPriority.Add(atkp);
+            Debug.Log("STAYANDATTACK POS " + atkp.posToMove + "  // skill= " + atkp.skillToUse + " // priority=" + atkp.priority);
         }
         return Status.SUCCESS;
     }
