@@ -58,9 +58,12 @@ public abstract class BaseCharacter : MonoBehaviour
         return (BaseSkill)System.Activator.CreateInstance(System.Type.GetType(skillClass));
     }
 
-    public virtual void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, int exp, Sprite imageCo)
+    public virtual void Initialize(string name, int baseHP, int level, int rarity, int bMagAtt, int bPhyAtt, int bMagDef, int bPhyDef, int exp, string portrait, Sprite sprite, string id)
     {
-        _sprite = imageCo;
+        _id = id;
+        
+        _sprite = sprite;
+        _portrait = portrait;
 
         _level = level;
 

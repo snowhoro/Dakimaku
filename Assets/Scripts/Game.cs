@@ -26,9 +26,11 @@ public class Game : MonoBehaviour {
     // Use this for initialization
 	void Start () {
      
-        //PlayerPrefs.SetString("accountID", "5655cd6b8e14737d6ff87c54");
-        //PlayerPrefs.Save();
-		//PlayerPrefs.DeleteAll();
+        #if UNITY_EDITOR
+            //PlayerPrefs.SetString("accountID", "5655cd6b8e14737d6ff87c54");
+            //PlayerPrefs.Save();
+		    //PlayerPrefs.DeleteAll();
+        #endif
 
         if (PlayerPrefs.HasKey("accountID"))
             _playerId = PlayerPrefs.GetString("accountID");

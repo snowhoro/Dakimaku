@@ -355,7 +355,7 @@ public class ServerRequests : MonoBehaviour
         string url = host + "updateSession";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
-        form.AddField("staminaTimer", accountID.ToString());
+        form.AddField("staminaTimer", staminaTimer.ToString());
         form.AddField("currentStamina", currentStamina.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
