@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GachaItem : MonoBehaviour {
 
@@ -90,7 +91,13 @@ public class GachaItem : MonoBehaviour {
             string sprite = dataJson["Sprite"].Value;
             bool evolution = bool.Parse(dataJson["Evolution"].Value);
 
-            goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID, portrait, sprite);
+            List<string> skills = new List<string>();
+            for (int j = 0; j < dataJson["Skills"].Count; j++)
+            {
+                skills.Add(dataJson["Skills"][j].Value);
+            }
+
+            goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID, portrait, sprite, skills);
             goComponent._canEvolve = evolution;
 
             UiController.Instance.GachaSucces();
