@@ -180,6 +180,24 @@ public class Account : MonoBehaviour
         return (int)(Mathf.Pow((float)level, 3f));
     }
     // CallBacks
+    public void CreateSession()
+    {
+        ServerRequests.Instance.SessionCreate(_playerId, SessionCreateCb);
+    }
+    public void SessionCreateCb(string data)
+    {
+        var d = SimpleJSON.JSON.Parse(data);
+
+        if (d["error"] != null)
+        {
+            Debug.Log(d["error"]);
+            MenuController.Instance.retryPanel.SetActive(true);
+        }
+        else
+        {
+            Game.Instance.StartGame();
+        }
+    }
     public void CreateCb(string data)
     {
         var d = SimpleJSON.JSON.Parse(data);
@@ -187,6 +205,8 @@ public class Account : MonoBehaviour
         if (d["error"] != null)
         {
             Debug.Log(d["error"]);
+
+            MenuController.Instance.retryPanel.SetActive(true);
         }
         else
         {

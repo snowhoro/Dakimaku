@@ -8,6 +8,7 @@ public class Item : MonoBehaviour {
     public string CharacterMaxID;
     private bool _selected;
     public bool Selected { get { return _selected; } set { _selected = value; } }
+    public bool _canEvolve = false;
     public Button itemButton;    
 
     public Character _character { get; private set; }

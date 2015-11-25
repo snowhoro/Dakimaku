@@ -183,6 +183,8 @@ public class UiController : MonoBehaviour {
     {
         SetInventoryPanelVisibility(true);
         _inventoryState = InventoryState.SelFuse;
+
+        Inventory.Instance.UnableFuse();
     }
     public void OpenEvolveMenu()
     {
@@ -191,9 +193,11 @@ public class UiController : MonoBehaviour {
 
         for (int i = 0; i < Inventory.Instance.Items.Count; i++)
         {
-            Debug.Log(InventoryParent.name);
+            //Debug.Log(InventoryParent.name);
             setIteminPanel(Inventory.Instance.Items[i], InventoryParent);
         }
+
+        Inventory.Instance.UnableEvolve();
 
         EvolveUIController.Instance.isActive = true;
     }

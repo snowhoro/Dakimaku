@@ -4,8 +4,10 @@ using System.Collections;
 public class GachaUIController : MonoBehaviour {
 
     public static GachaUIController Instance { get; private set; }
-   
+
+    public TeamItem HatchedItem;
     public Transform GachaParent;
+    public GameObject ShowPanel;
 
     Vector3 vector1 = new Vector3(1, 1, 1);
     
@@ -26,7 +28,21 @@ public class GachaUIController : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
+            if (ShowPanel.activeSelf)
+            {
+                GachaConfirm();
+            }
         }
 	}
+
+    public void ShowResults(Item item)
+    {
+        HatchedItem.Select(item);
+        ShowPanel.SetActive(true);
+    }
+
+    public void GachaConfirm()
+    {
+        ShowPanel.SetActive(false);
+    }
 }

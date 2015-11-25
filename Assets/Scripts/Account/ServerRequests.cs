@@ -74,6 +74,9 @@ public class ServerRequests : MonoBehaviour
             case "RequestAccount":
                 RequestAccount(retryRequest.arguments[0], retryRequest.callBack);
                 break;
+            case "GetCharacter":
+                GetCharacter(retryRequest.arguments[0], retryRequest.arguments[1], retryRequest.callBack);
+                break;
             case "RequestInventory":
                 RequestInventory(retryRequest.arguments[0], retryRequest.callBack);
                 break;
@@ -110,6 +113,9 @@ public class ServerRequests : MonoBehaviour
             case "SessionUpdate":
                 SessionUpdate(retryRequest.arguments[0], retryRequest.arguments[1], int.Parse(retryRequest.arguments[2]), retryRequest.callBack);
                 break;
+            case "SessionCreate":
+                SessionCreate(retryRequest.arguments[0], retryRequest.callBack);
+                break;
         }
     }
 
@@ -134,7 +140,19 @@ public class ServerRequests : MonoBehaviour
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
-    
+
+    public void GetCharacter(string accountID, string characterID, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "GetCharacter", callBack);
+        retryRequest.arguments.Add(characterID);
+
+        string url = host + "getCharacter";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        form.AddField("CharacterId", characterID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
     public void RequestInventory(string accountID, CallBack callBack)
     {
         SetRetryRequest(accountID, "RequestInventory", callBack);
@@ -153,7 +171,7 @@ public class ServerRequests : MonoBehaviour
         string url = host + "createInventory";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
-        form.AddField("ModTeams", starterID.ToString());
+        form.AddField("StarterId", starterID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }
@@ -317,6 +335,17 @@ public class ServerRequests : MonoBehaviour
 
         callBack(value);*/
     }
+
+    public void SessionCreate(string accountID, CallBack callBack)
+    {
+        SetRetryRequest(accountID, "SessionCreate", callBack);
+
+        string url = host + "createSession";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
     public void SessionUpdate(string accountID, string staminaTimer, int currentStamina, CallBack callBack) {
         
         SetRetryRequest(accountID, "SessionUpdate", callBack);
@@ -328,7 +357,6 @@ public class ServerRequests : MonoBehaviour
         form.AddField("PlayerId", accountID.ToString());
         form.AddField("staminaTimer", accountID.ToString());
         form.AddField("currentStamina", currentStamina.ToString());
-        //form.AddField("Price", accountID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
     }

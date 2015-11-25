@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
-
     public static Inventory Instance { get; private set; }
 
     public int _maxSlots { get; private set; }
@@ -19,6 +18,8 @@ public class Inventory : MonoBehaviour
         Instance = this;
     }
 
+    public void AddItem(Item item) { _items.Add(item); }
+    public void DeleteItem(Item item) { _items.Remove(item); }
     public void LoadInventory(string id)
     {
         ServerRequests.Instance.RequestInventory(id, FillInventory);
@@ -49,11 +50,15 @@ public class Inventory : MonoBehaviour
         var d = SimpleJSON.JSON.Parse(data);
 
         if (d["error"] != null)
+        {
             Debug.Log(d["error"]);
+
+            MenuController.Instance.retryPanel.SetActive(true);
+        }
         else
         {
-            Game.Instance.StartGame();
-            //Account.Instance().CreateTeams();
+            Account.Instance.CreateSession();
+
             // inventario creado
         }
     }
@@ -126,7 +131,38 @@ public class Inventory : MonoBehaviour
         {
             if (_items[i].Selected)
                 _items[i].Select();
+            
+            _items[i].itemButton.enabled = true;
+        }
+    }
+    public void UnableEvolve()
+    {
+        for (int i = 0; i < _items.Count; i++)
+        {
+            if (!_items[i]._canEvolve)
+            {
+                if (!_items[i].Selected)
+                    _items[i].Select();
+
+                _items[i].itemButton.enabled = false;
+            }
         }
     }
 
+    public void UnableFuse()
+    {
+        for (int i = 0; i < Account.Instance._teams.Count; i++)
+        {
+            for (int j = 0; j < Account.Instance._teams[i].Length; j++)
+            {
+                if (Account.Instance._teams[i][j] != null)
+                {
+                    if (!Account.Instance._teams[i][j].Selected)
+                        Account.Instance._teams[i][j].Select();
+
+                    Account.Instance._teams[i][j].itemButton.enabled = false;
+                }
+            }
+        }
+    }
 }

@@ -32,7 +32,9 @@ public class ShopUIController : MonoBehaviour {
         _pearlsPanel.SetActive(true);
     }
     public void ExpandBox()
-    { }
+    { 
+    
+    }
     public void StaminaRecharge()
     {
         if (Account.Instance._currentStamina != Account.Instance._maxStamina)
