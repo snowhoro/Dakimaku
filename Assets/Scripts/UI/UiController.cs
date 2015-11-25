@@ -163,11 +163,15 @@ public class UiController : MonoBehaviour {
 
     public void BackToTeamMain()
     {
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         SetInventoryPanelVisibility(false);
         _inventoryState = InventoryState.None;
     }
     public void OpenImprovementMenu()
     {
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         SetInventoryPanelVisibility(true);
         _inventoryState = InventoryState.Fuse;
 
@@ -188,6 +192,8 @@ public class UiController : MonoBehaviour {
     }
     public void OpenEvolveMenu()
     {
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         SetInventoryPanelVisibility(true);
         _inventoryState = InventoryState.Evolve;
 
@@ -203,6 +209,8 @@ public class UiController : MonoBehaviour {
     }
     public void OpenTeamEdition()
     {
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         _mainPanel.SetActive(false);
         _teamEditPanel.SetActive(true);
         _inventoryState = InventoryState.Edit;
@@ -216,6 +224,8 @@ public class UiController : MonoBehaviour {
     }
     public void OpenSellMenu()
     {
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         SetInventoryPanelVisibility(true);
         _inventoryState = InventoryState.Sell;
 
@@ -226,6 +236,8 @@ public class UiController : MonoBehaviour {
     }
     public void SeeInventory()
     {
+        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
+        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         SetInventoryPanelVisibility(true);
         _inventoryState = InventoryState.Look;
 
@@ -244,8 +256,6 @@ public class UiController : MonoBehaviour {
     }
     private void SetInventoryPanelVisibility(bool visibility)
     {
-        if (FusionUIController.Instance != null) FusionUIController.Instance.isActive = false;
-        if (EvolveUIController.Instance != null) EvolveUIController.Instance.isActive = false;
         Inventory.Instance.DeselectAll();
         _selectedItems.Clear();
         _itemShow = null;
@@ -310,6 +320,7 @@ public class UiController : MonoBehaviour {
         {
             FusionUIController.Instance.SetFuseItem(item);
             _inventoryPanel.SetActive(false);
+            FusionUIController.Instance.isActive = true;
             // Abrir hud de Fusing;
         }
         else if (_inventoryState == InventoryState.SelFuse) 

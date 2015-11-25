@@ -99,11 +99,11 @@ public class Inventory : MonoBehaviour
                  string name = dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Name"].Value;
                  string id = dataJson["inventory"]["Characters"][i]["_id"].Value;
 
-                 int baseHp = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["HP"].Value);
-                 int phyAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["PhysicalAttack"].Value);
-                 int magAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicAttack"].Value);
-                 int phyDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["PhysicalDefense"].Value);
-                 int magDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MagicDefense"].Value);
+                 int baseHp = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["MaxHP"].Value);
+                 int phyAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["MaxPhysicalAttack"].Value);
+                 int magAtt = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["MaxMagicAttack"].Value);
+                 int phyDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["MaxPhysicalDefense"].Value);
+                 int magDef = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["MaxMagicDefense"].Value);
                  int level = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Level"].Value);
                  int rarity = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Rarity"].Value);
                  int experience = int.Parse(dataJson["inventory"]["Characters"][i]["PlayerChar"]["Experience"].Value);

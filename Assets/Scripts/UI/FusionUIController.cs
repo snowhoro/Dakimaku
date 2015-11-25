@@ -16,6 +16,9 @@ public class FusionUIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        //isActive = false;
+        /*
         if (Input.GetKeyDown(KeyCode.Escape) && isActive)
         {
             if (!_fusionPanel.activeSelf)
@@ -29,7 +32,7 @@ public class FusionUIController : MonoBehaviour {
                 UiController.Instance.OpenImprovementMenu();
                 _fusionPanel.SetActive(false);
             }
-        }
+        }*/
 	}
 
     public void SetFuseItem(Item item)
