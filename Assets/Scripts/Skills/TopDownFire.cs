@@ -23,7 +23,7 @@ public class TopDownFire : BaseSkill
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("TopDownFire");
+        _prefabFX = LoadAsset.FX("FireHit");
 
         _AOE = new[]
         {

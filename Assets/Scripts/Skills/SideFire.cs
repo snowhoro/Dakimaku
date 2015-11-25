@@ -23,7 +23,7 @@ public class SideFire : BaseSkill
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("SideFire");
+        _prefabFX = LoadAsset.FX("FireHit");
 
         _AOE = new[]
         {

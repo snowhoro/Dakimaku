@@ -21,6 +21,6 @@ public class DarkSword : BaseSkill
         _statusChance = 100;
        
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("DarkSword");
+        _prefabFX = LoadAsset.FX("DarkHit");
     }
 }

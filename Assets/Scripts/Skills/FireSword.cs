@@ -21,6 +21,6 @@ public class FireSword : BaseSkill
         _statusChance = 100;
        
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("FireSword");
+        _prefabFX = LoadAsset.FX("FireHit");
     }
 }

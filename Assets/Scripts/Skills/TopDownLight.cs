@@ -23,7 +23,7 @@ public class TopDownLight : BaseSkill
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("TopDownLight");
+        _prefabFX = LoadAsset.FX("LightHit");
 
         _AOE = new[]
         {

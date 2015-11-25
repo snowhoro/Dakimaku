@@ -21,6 +21,6 @@ public class LightSword : BaseSkill
         _statusChance = 100;
        
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("LightSword");
+        _prefabFX = LoadAsset.FX("LightHit");
     }
 }

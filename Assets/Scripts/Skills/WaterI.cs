@@ -22,6 +22,6 @@ public class WaterI : BaseSkill
         _statusChance = 100;
 
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("WaterI");
+        _prefabFX = LoadAsset.FX("WaterHit");
     }
 }

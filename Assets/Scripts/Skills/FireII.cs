@@ -22,6 +22,6 @@ public class FireII : BaseSkill
         _statusChance = 100;
 
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("FireI");
+        _prefabFX = LoadAsset.FX("FireHit");
     }
 }

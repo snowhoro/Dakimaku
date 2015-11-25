@@ -23,7 +23,7 @@ public class TopDownWater : BaseSkill
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("TopDownWater");
+        _prefabFX = LoadAsset.FX("WaterHit");
 
         _AOE = new[]
         {

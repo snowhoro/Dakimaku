@@ -23,7 +23,7 @@ public class TopDownDark : BaseSkill
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("TopDownDark");
+        _prefabFX = LoadAsset.FX("DarkHit");
 
         _AOE = new[]
         {

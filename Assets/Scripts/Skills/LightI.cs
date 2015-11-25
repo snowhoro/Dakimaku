@@ -22,6 +22,6 @@ public class LightI : BaseSkill
         _statusChance = 100;
        
         _activationChance = 10.0f;
-        _prefabFX = LoadAsset.FX("LightI");
+        _prefabFX = LoadAsset.FX("LightHit");
     }
 }

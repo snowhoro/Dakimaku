@@ -23,7 +23,7 @@ public class SideLight : BaseSkill
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("SideLight");
+        _prefabFX = LoadAsset.FX("LightHit");
 
         _AOE = new[]
         {

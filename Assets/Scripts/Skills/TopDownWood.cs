@@ -23,7 +23,7 @@ public class TopDownWood : BaseSkill
         _statusChance = 100;
 
         _activationChance = 100.0f;
-        _prefabFX = LoadAsset.FX("TopDownWood");
+        _prefabFX = LoadAsset.FX("WoodHit");
 
         _AOE = new[]
         {
