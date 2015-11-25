@@ -62,4 +62,8 @@ public class Item : MonoBehaviour {
         UiController.Instance.ItemClick(this);
         //_animator.SetTrigger("Selected");
     }
+    public bool IsMaxLevel()
+    {
+        return _character.MaxLevelCheck();
+    }
 }
