@@ -141,7 +141,7 @@ public class BattleUIController : MonoBehaviour
         if (UIGiveUp.activeSelf)
         {
             if (value)
-                Application.LoadLevel("Menus");
+                Application.LoadLevel("BattleResults");
 
             UIGiveUp.SetActive(false);
             UIWindowManager.SetActive(false);

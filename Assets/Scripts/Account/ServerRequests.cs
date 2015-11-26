@@ -304,17 +304,17 @@ public class ServerRequests : MonoBehaviour
     {
         SetRetryRequest(accountID, "StaminaRecharge", callBack);
         
-        /*
+        
         string url = host + "staminaRecharge";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
         WWW www = new WWW(url, form);
         StartCoroutine(WaitForRequest(www, callBack));
-        */
-        string cm = "\"";
+        
+        /*string cm = "\"";
         string value = "{ " + cm + "succes" + cm + " }";
 
-        callBack(value);
+        callBack(value);*/
         
     }
     public void BuyHardCurrency(string accountID, int ammount, decimal price, CallBack callBack)
@@ -353,7 +353,7 @@ public class ServerRequests : MonoBehaviour
         SetRetryRequest(accountID, "SessionUpdate", callBack);
         retryRequest.arguments.Add(staminaTimer.ToString());
         retryRequest.arguments.Add(currentStamina.ToString());
-
+/*
         string url = host + "updateSession";
         WWWForm form = new WWWForm();
         form.AddField("PlayerId", accountID.ToString());
@@ -361,7 +361,7 @@ public class ServerRequests : MonoBehaviour
         form.AddField("currentStamina", currentStamina.ToString());
         WWW www = new WWW(url, form);
         //StartCoroutine(WaitForRequest(www, callBack));
-
+*/
         callBack("{ true }");
     }
 
