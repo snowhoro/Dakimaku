@@ -56,7 +56,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public static BaseSkill AddSkill(string skillClass)
     {
         //Debug.Log(skillClass);
-        if (skillClass != null && System.Type.GetType(skillClass) != null)
+        if (skillClass != null && System.Type.GetType(skillClass) != null)// && skillClass != "HealI" && skillClass != "HealII" && skillClass != "RegenI")
             return (BaseSkill)System.Activator.CreateInstance(System.Type.GetType(skillClass));
         else
             return null;

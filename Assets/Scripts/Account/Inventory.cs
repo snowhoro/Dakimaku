@@ -119,7 +119,7 @@ public class Inventory : MonoBehaviour
                  List<string> skills = new List<string>();
                  for (int j = 0; j < dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Skills"].Count; j++)
                  {
-                     skills.Add(dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Skills"][j].Value);
+                     skills.Add(Game.Instance._skills[dataJson["inventory"]["Characters"][i]["PlayerChar"]["MaxChar"]["Skills"][j].Value]);
                  }
 
                  goComponent.Initialize(name, baseHp, level, rarity, magAtt, phyAtt, magDef, phyDef, id, experience, maxCharID, portrait, sprite, skills);

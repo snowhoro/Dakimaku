@@ -363,4 +363,13 @@ public class ServerRequests : MonoBehaviour
 
         callBack("{ true }");
     }
+
+    public void GetSkills(string accountID, CallBack callBack)
+    {
+        string url = host + "getSkills";
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerId", accountID.ToString());
+        WWW www = new WWW(url, form);
+        StartCoroutine(WaitForRequest(www, callBack));
+    }
 }

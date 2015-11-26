@@ -266,6 +266,7 @@ public class DungeonManager : MonoBehaviour
         charac.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
         Character bcharac = charac.GetComponent<Character>();
         bcharac.Initialize(bc._name, bc._baseHP, bc._level, bc._rarity, bc._mBaseAttack, bc._pBaseAttack, bc._mBaseDefense, bc._pBaseDefense, bc._currentExp, bc._sprite.name, bc._sprite, "");
+        bcharac._skillList = bc._skillList;
         bcharac._gridPos = gridPosition;
         charac.name = bcharac._name;
         charac.GetComponent<SpriteRenderer>().sprite = LoadAsset.Portrait(bc._portrait);

@@ -7,6 +7,7 @@ public class Game : MonoBehaviour {
 
     public string _playerId;
     public string _starterId;
+    public Dictionary<string, string> _skills;
 
     public static Game Instance { get; private set; }
     
@@ -39,7 +40,52 @@ public class Game : MonoBehaviour {
 
         Debug.Log(_playerId);
 
+        
+
 	}
+
+    public void LoadSkills()
+    {
+        if (_skills == null)
+            ServerRequests.Instance.GetSkills(Account.Instance._playerId, loadSkillsCb);
+        else
+            Account.Instance._inventory.LoadInventory(_playerId);
+        
+    }
+
+    public void loadSkillsCb (string data)
+    {
+        var dataJson = SimpleJSON.JSON.Parse(data);
+
+        Debug.Log(dataJson);
+
+        if (dataJson["error"] != null)
+        {
+            Debug.Log(dataJson["error"]);
+
+            if (MenuController.Instance != null)
+                MenuController.Instance.retryPanel.SetActive(true);
+            else if (UiController.Instance != null)
+                UiController.Instance.LoadFail();
+            else
+                Debug.Log("Se rompio todo");
+        }
+        else
+        {
+            Debug.Log(dataJson.Count);
+
+            _skills = new Dictionary<string, string>();
+            for (int i = 0; i < dataJson.Count; i++)
+            {
+                _skills.Add(dataJson[i]["_id"].Value, dataJson[i]["SkillName"].Value);
+                Debug.Log("Agregue skill");
+            }
+
+
+            Debug.Log("cargo skills");
+            Account.Instance._inventory.LoadInventory(_playerId);
+        }
+    }
 
     void Awake()
     {

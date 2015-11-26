@@ -250,8 +250,7 @@ public class Account : MonoBehaviour
 
             MenuController.Instance.LoadingBar.fillAmount = 0.2f;
 
-            _inventory.LoadInventory(_playerId);
-
+            Game.Instance.LoadSkills();
         }
     }
     public void LoadTeamCb(string data)
@@ -366,5 +365,7 @@ public class Account : MonoBehaviour
             }
 
             return control;
+
+
     }
 }

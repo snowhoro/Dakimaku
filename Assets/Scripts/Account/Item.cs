@@ -29,7 +29,8 @@ public class Item : MonoBehaviour {
         _character.Initialize(name, baseHP, level, rarity, baseMAtt, basePAtt, baseMDef, basePDef, experience, portrait, charSprite, itemID);
         foreach (string skill in skills)
         {
-            _character._skillList.Add(BaseCharacter.AddSkill(skill));
+            if ( skill != "HealI" && skill != "HealII" && skill != "RegenI")
+                _character._skillList.Add(BaseCharacter.AddSkill(skill));
         }
         
         _CharImg = imageCo;
